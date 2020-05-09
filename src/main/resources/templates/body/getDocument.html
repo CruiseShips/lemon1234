@@ -1,0 +1,23 @@
+<meta charset="UTF-8">
+<div id="getDocument">
+	<div class="index_body">
+		<div class="data_list">
+			<div class="data_list_title">
+				<a href="#" class="btn btn-primary btn-lg active" role="button">返回</a>
+				<samp class="glyphicon glyphicon-file"></samp>
+				<span th:text="${document.name}" style="font-size: 20"></span>
+			</div>
+			<div class="datas">
+				<p>
+					<img th:src="${document.img}" width="50%;" height="50%;">
+				</p>
+				<p th:text="${#dates.format(document.createDt,'yyyy-MM-dd HH:mm:ss')}"></p>
+				<p th:text="${document.summary}" style="font-size: 20px;"></p>
+				
+				<p th:text="${document.author}"></p>
+				<p th:text="${document.baiduUrl}"></p>
+				<p th:text="${document.password}"></p>
+			</div>
+		</div>
+	</div>
+</div>

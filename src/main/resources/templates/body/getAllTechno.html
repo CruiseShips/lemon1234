@@ -1,0 +1,38 @@
+<meta charset="UTF-8">
+<div id="getAllTechno">
+	<div class="index_body row">
+		<ol class="breadcrumb" style="height: 36px; width: 95%; margin-left: 1.5%;">
+			<li><span class="label label-danger">难度</span> &nbsp;</li>
+			<li>
+				<img alt="难度1" src="/static/img/lev1.png" style="width: 10%; height: 10%;"> &lt;
+				<img alt="难度2" src="/static/img/lev2.png" style="width: 10%; height: 10%;"> &lt;
+				<img alt="难度3" src="/static/img/lev3.png" style="width: 10%; height: 10%;"> &lt;
+				<img alt="难度4" src="/static/img/lev4.png" style="width: 10%; height: 10%;">
+			</li>
+		</ol>
+	</div>
+	<div class="index_body row" th:each="technology:${technologyDTOs}" style="height: auto;; width: 100%; margin-top: 1%;">
+		<div class="bg-info">
+			<div class="col-md-2">
+				<img th:src="${technology.logo}" alt="Logo." class="img-thumbnail" style="width: 140px; height: 140px; margin-left: 2%;">
+			</div>
+			<div class="col-md-10">
+				<span th:if="${technology.codingPosition==1}"><kbd>前端</kbd></span>
+				<span th:if="${technology.codingPosition==2}"><kbd>后端</kbd></span>
+				<span th:if="${technology.codingPosition==0}"><kbd>中立</kbd></span>
+				
+				<a th:text="${technology.name}" target="_black" href="#"></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				难度：
+				<img th:if="${technology.level==0}" alt="难度1" src="/static/img/lev1.png" style="width: 2%; height: 1.5%; margin-bottom: 1%; margin-top: 5px;">
+				<img th:if="${technology.level==1}" alt="难度2" src="/static/img/lev2.png" style="width: 2%; height: 1.5%; margin-bottom: 1%; margin-top: 5px;">
+				<img th:if="${technology.level==2}" alt="难度3" src="/static/img/lev3.png" style="width: 2%; height: 1.5%; margin-bottom: 1%; margin-top: 5px;">
+				<img th:if="${technology.level==3}" alt="难度4" src="/static/img/lev4.png" style="width: 2%; height: 1.5%; margin-bottom: 1%; margin-top: 5px;">
+				
+				<span th:text="${'学习版本' + technology.version}"></span>
+				<br />
+				<a th:text="${technology.summary}" target="_black" href="#"></a>
+			</div>
+		</div>
+	</div>
+</div>

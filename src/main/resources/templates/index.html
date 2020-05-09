@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- 返回顶部 -->
+<meta name="toTop" content="true">
+<title th:text="${title}"></title>
+<link rel="bookmark" href="favicon.ico" />
+<link rel="stylesheet" href="/static/bootstrap3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/bootstrap3.3.7/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="/static/css/lemon1234.css" />
+<link rel="stylesheet" href="/static/css/empty.css" />
+<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/layui/css/modules/layer/default/layer.css" />
+
+</head>
+
+<body>
+	<div class="container">
+		<!-- this is head -->
+		<div th:include="common/head::#head" class="index_head"></div>
+		
+		<!-- this is menu -->
+		<div th:include="common/menu::#menu" class="index_menu"></div>
+		
+		<!-- this is body -->
+		<div th:include="${url}::${port}"></div>
+		
+		<!-- this is link -->
+		<div th:include="common/link::#link"></div>
+	
+		<!-- this is foot -->
+		<div th:include="common/foot::#foot" class="index_foot"></div>
+	</div>
+	
+</body>
+
+<script src="/static/bootstrap3.3.7/js/jquery-1.11.2.min.js"></script>
+<script src="/static/bootstrap3.3.7/js/bootstrap.min.js"></script>
+<script src="/static/js/lemon1234.js"></script>
+<script src="/static/layui/lay/modules/layer.js"></script>
+<script src="/static/layui/layui.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	layui.use(['carousel', 'form', 'layer'], function(){
+		var layer = layui.layer;
+		
+		$ = layui.jquery; // 使用jquery
+		
+		var carousel = layui.carousel
+		  ,form = layui.form;
+		  
+		  //常规轮播
+		  carousel.render({
+		    elem: '#carousel'
+		    ,arrow: 'always'
+		  });
+		
+	});
+	
+/*]]>*/
+</script>
+</html>

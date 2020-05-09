@@ -1,0 +1,120 @@
+<meta charset="UTF-8">
+<div id="body">
+	<div class="row">
+		<div class="col-md-7">
+			<div class="data_list" style="height:370px;">
+				<!-- 轮播 -->
+				<div class="layui-carousel" id="carousel" lay-filter="carousel" style="margin:0 auto;">
+				  <div carousel-item="" style="height:350px;">
+				    <div>
+				    	<img alt="..." src="/lemon1234/document/1920.jpg" width="100%;">
+				    </div>
+				    <div>
+				    	<img alt="..." src="/lemon1234/document/2360.jpg" width="100%;">
+				    </div>
+				    <div>
+				    	<img alt="..." src="/lemon1234/document/2kb.jpg" width="100%;">
+				    </div>
+				  </div>
+				</div>
+			</div>
+			<div class="data_list" style="height:110px;">
+				广告位:
+				<marquee>aksdjfklajsdf</marquee>
+				<marquee scrolldelay="100" >aksdjfklajsdf aksdjfklajsdf</marquee>
+				<marquee scrolldelay="1000" scrollamount="30">aksdjfklajsdf</marquee>
+				<marquee scrolldelay="500" scrollamount="60">aksdjfklajsdf</marquee>
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="data_list" style="height: 240px;">
+				<!-- 最新Java开源项目 top5 -->
+				<h3 style="margin: 5px 6px;">Java最新开源项目<span style="font-size: 12px; float: right; padding-top: 8px;">获取更多</span></h3>
+				<p th:each="project, stat:${projects}">
+					<a th:href="'/project/getProject/' + ${project.id}">
+						<font style="font-size: 16px;" th:text="${stat.count + '. ' + project.name}"></font>
+					</a>
+				</p>
+			</div>
+			<!-- 最新文档 top5 -->
+			<div class="data_list" style="height: 240px;">
+				<h3 style="margin: 5px;">技术文档</h3>
+				<p th:each="document, stat:${documents}">
+					<a th:href="'/document/getDocument/' + ${document.id}">
+						<font style="font-size: 16px;" th:text="${stat.count + '. ' + document.name}"></font>
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 data_list" style="background-color: orange; width: 97.5%; height: 90px; margin-left: 14px; padding-top: 2%;">
+			<a href="/studyRoad/getAllStudyRoad">
+				<h1 style="text-align: center;">Java 自学路线</h1>
+			</a>
+		</div>
+	</div>
+	
+	<!-- three text info -->
+	<div class="row">
+		<div class="col-md-12 data_list" style="width: 97.5%; margin-left: 14px;">
+			<div class="index_body_div col-md-4">
+				<div style="text-align: center; margin-top: 2%;">
+					<span class="glyphicon glyphicon-heart"></span>&nbsp;专注分享
+					<hr />
+				</div>
+				<div style="margin-left: 8px;">
+					<samp>
+						&nbsp;&nbsp;Java 在全球各地有超过 900 万的开发人员，开源项目更是数不胜数，对于这样优秀的语言，谁能不喜欢呢？<br />
+						&nbsp;&nbsp;为了能让更多人能够学习Java，所以开创了Lemon1234。本网站只分享Java这一种后端语言，争取将Java语言说到极致。
+					</samp>
+				</div>
+			</div>
+			<div class="index_body_div col-md-4">
+				<div style="text-align: center; margin-top: 2%;">
+					<span class="glyphicon glyphicon-search"></span>&nbsp;专注热情
+					<hr />
+				</div>
+				<div style="margin-left: 8px;">
+					<samp>
+						&nbsp;&nbsp;做事不要三分热度，贵在坚持。充满热情的学习、工作，才能让枯燥的生活变得色彩斑斓。
+						<p>&nbsp;&nbsp;人生若只如初见，何事西风悲画扇</p>
+						</samp>
+				</div>
+			</div>
+			<div class="index_body_div col-md-4">
+				<div style="text-align: center; margin-top: 2%;">
+					<span class="glyphicon glyphicon-headphones"></span>&nbsp;专注聆听
+					<hr />
+				</div>
+				<div style="margin-left: 8px;">
+					<samp>
+						&nbsp;&nbsp;本网站不仅仅只做分享， 更多的其实是交流。聆听大家的声音
+						<p>&nbsp;&nbsp;学习路上永无止境，只求有知音相伴，相互而行。</p>
+					</samp>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 data_list" style="width: 97.5%; margin-left: 14px;">
+			留言板
+			<form class="form-horizontal" style="width: 96%; margin-left: 2%; margin-top: 1%;">
+				<div class="form-group">
+					<label for="exampleInputEmail1">Email address</label>
+					<input type="email" class="form-control" placeholder="您的邮箱">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Password</label>
+					<textarea class="form-control" rows="3" placeholder="请留下您宝贵的意见"></textarea>
+				</div>
+				<button type="submit" class="btn btn-default" style="margin-left: 45%;">Submit</button>
+			</form>
+		</div>
+	</div>
+	
+	<!-- 广告  -->
+	
+</div>

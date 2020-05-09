@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.lemon.mapper.ProjectMapper">
+
+    <resultMap id="ProjectResult" type="Project">
+    	<result property="id" column="id"/>
+    	<result property="name" column="name"/>
+    	<result property="summary" column="summary"/>
+    	<result property="releaseDate" column="releaseDate"/>
+    	<result property="content" column="content"/>
+    	<result property="videoUrl" column="videoUrl"/>
+    	<result property="gitHubUrl" column="gitHubUrl"/>
+    	<result property="shareName" column="shareName"/>
+    	<result property="clickHit" column="clickHit"/>
+    	<result property="likeHit" column="likeHit"/>
+    	<result property="status" column="status"/>
+    </resultMap>
+    
+    <sql id="column">
+    	id, name, summary, releaseDate, content, videoUrl, gitHubUrl, shareName, clickHit, likeHit, status
+    </sql>
+    
+    <sql id="getAllProject">
+    	id, name, summary, releaseDate, clickHit, likeHit, status
+    </sql>
+    
+    <sql id="upOrDown">
+    	id, name
+    </sql>
+
+    <select id="getAllProject" parameterType="Map" resultMap="ProjectResult">
+        SELECT <include refid="getAllProject" />
+        FROM t_project
+        <where>
+        	<if test="status!=null and status!='' ">
+        		AND status=#{status}
+        	</if>
+        </where>
+        ORDER BY releaseDate DESC
+        <if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+    </select>
+
+	<select id="getProject" parameterType="Integer" resultType="Project">
+		SELECT <include refid="column" /> FROM t_project WHERE id=#{id} AND status=1
+	</select>
+	
+	<select id="getCount" resultType="Integer">
+		SELECT COUNT(*) FROM t_project
+		<where>
+			<if test="status!=null and status!='' ">
+        		AND status=#{status}
+        	</if>
+		</where>
+	</select>
+	
+	<select id="getLastProject" parameterType="Integer" resultType="Project">
+		SELECT <include refid="upOrDown" /> FROM t_project WHERE id&lt;#{id} ORDER BY id DESC LIMIT 1;
+	</select>
+	
+	<select id="getNextProject" parameterType="Integer" resultType="Project">
+		SELECT <include refid="upOrDown" /> FROM t_project WHERE id&gt;#{id} ORDER BY id ASC LIMIT 1;
+	</select>
+	
+	<select id="getTop9Project" resultMap="ProjectResult">
+		SELECT <include refid="upOrDown" /> FROM t_project ORDER BY releaseDate DESC LIMIT 0,9;
+	</select>
+</mapper>

@@ -1,0 +1,23 @@
+<meta charset="UTF-8">
+<div id="getAllProject">
+	<div class="index_body">
+		<div th:each="project:${projectList}" style="border: 1px solid #000; margin-top: 1%;">
+			<samp class="glyphicon glyphicon-link" style="font-size: 20px; margin-left: 10px;"></samp>
+			<a th:href="'/project/getProject/' + ${project.id}" target="_black">
+				<p style="font-size: 30px; display: inline-block; margin-left: 5px;" th:text="${project.name}"></p>
+			</a>
+			<a th:href="'/project/getProject/' + ${project.id}" style="margin-top: 1%;" target="_black">
+				<p th:utext="${project.summary}"></p>
+			</a>
+			<p style="margin-top: 1%;" th:text="${'发布日期：' + project.releaseDateStr + '&nbsp;&nbsp;|&nbsp;&nbsp;阅读数（' + project.clickHit + '）' +
+				'|&nbsp;&nbsp;点赞量（' + project.likeHit + '）'}"></p>
+		</div>
+	</div>
+	
+	<nav aria-label="...">
+		<ul class="pager" style="margin-left: 41%;">
+			<li class="previous" th:if="${start != null}"><a th:href="${start}"><span aria-hidden="true">&larr;</span>上一页</a></li>
+			<li class="next" th:if="${end != null}"><a th:href="${end}">下一页<span aria-hidden="true">&rarr;</span></a></li>
+		</ul>
+	</nav>
+</div>

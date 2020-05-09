@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.lemon.mapper.TechnologyMapper">
+
+    <resultMap id="TechnologyResult" type="Technology">
+    	<result property="id" column="id" />
+    	<result property="name" column="name" />
+    	<result property="codingPosition" column="codingPosition" />
+    	<result property="summary" column="summary" />
+    	<result property="content" column="content" />
+    	<result property="level" column="level" />
+    	<result property="version" column="version" />
+    	<result property="officialLink" column="officialLink" />
+    	<result property="createDt" column="createDt" />
+    	<result property="logo" column="logo" />
+    	
+    	<result property="roadId" column="roadId" />
+    	<result property="csdnUrl" column="csdnUrl" />
+    	<result property="videoUrl" column="videoUrl" />
+    	<result property="shareName" column="shareName" />
+    </resultMap>
+    
+    <sql id="column">
+    	id, name, codingPosition, summary, content, level, version, officialLink, createDt, logo, roadId, csdnUrl, videoUrl, shareName
+    </sql>
+    
+    <sql id="getAllTechnology">
+    	id, name, summary, logo, codingPosition, level, version
+    </sql>
+    
+    <sql id="getStudyRoadTechnology">
+    	id, name, csdnUrl, videoUrl, shareName
+    </sql>
+    
+    <select id="getAllTechnology" resultMap="TechnologyResult">
+    	SELECT <include refid="getAllTechnology" /> FROM t_technology ORDER BY createDt DESC
+    </select>
+    
+    <select id="getStudyRoadTechnology" parameterType="Integer" resultMap="TechnologyResult">
+    	SELECT <include refid="getStudyRoadTechnology" /> FROM t_technology WHERE roadId = #{roadId}
+    </select>
+    
+</mapper>

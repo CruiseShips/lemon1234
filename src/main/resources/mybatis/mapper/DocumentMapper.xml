@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.lemon.mapper.DocumentMapper">
+	
+	<resultMap id="DocumentResult" type="Document">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="author" column="author" />
+		<result property="summary" column="summary" />
+		<result property="img" column="img" />
+		<result property="createDt" column="createDt" />
+		<result property="baiduUrl" column="baiduUrl" />
+		<result property="password" column="password" />
+	</resultMap>
+	
+	<sql id="column">
+		id, name, author, summary, img, createDt, baiduUrl, password
+	</sql>
+	
+	<sql id="getAllDocument">
+		id, name, summary, img
+	</sql>
+	
+	<sql id="getTop9Document">
+		id, name
+	</sql>
+	
+	<select id="getAllDocument" resultMap="DocumentResult">
+		SELECT <include refid="getAllDocument" /> FROM t_document ORDER BY createDt DESC
+	</select>
+	
+	<select id="getDocument" parameterType="Integer" resultType="Document">
+		SELECT <include refid="column" /> FROM t_document WHERE id=#{id}
+	</select>
+	
+	<select id="getTop9Document" resultType="Document">
+		SELECT <include refid="getTop9Document" /> FROM t_document ORDER BY createDt DESC LIMIT 0,9;
+	</select>
+</mapper>

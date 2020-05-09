@@ -1,0 +1,24 @@
+<meta charset="UTF-8">
+<div id="getProject">
+	<div class="index_body">
+		<h2 th:text="${project.name}" style="text-align: center;"></h2>
+		<p style="text-align: center;" th:text="${'作者：' + project.shareName + '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;最后发布于：' + project.releaseDateStr
+			+ '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;阅读数（' + project.clickHit + ')' + '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;点赞（' + project.likeHit + '）'}"></p>
+		<p th:utext="${project.content}" style="margin-top: 2%;"></p>
+		
+		<p>
+			Github地址：<a th:href="${project.gitHubUrl}" th:text="${project.gitHubUrl}" target="view_window"></a>
+		</p>
+		<p>
+			视频链接：<a th:href="${project.videoUrl}" th:text="${project.videoUrl}" target="view_window"></a>
+		</p>
+		<p></p>
+		上一篇：
+		<a th:if="${lastPorProject != null}" th:text="${lastPorProject.name}" th:href="${'/project/getProject/' + lastPorProject.id}"></a>
+		<samp th:if="${lastPorProject == null}" th:text="亲，这是第一篇哦"></samp>
+		<br />
+		下一篇：
+		<a th:if="${nextPorProject != null}" th:text="${nextPorProject.name}" th:href="${'/project/getProject/' + nextPorProject.id}"></a>
+		<samp th:if="${nextPorProject == null}" th:text="亲，这是最后一篇哦"></samp>
+	</div>
+</div>

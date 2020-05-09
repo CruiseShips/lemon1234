@@ -1,0 +1,19 @@
+<meta charset="UTF-8">
+<div id="getAllDocument">
+	<div class="index_body">
+		<div class="row">
+			<div class="col-sm-6 col-md-3" th:each="document:${documentList}">
+				<div class="thumbnail">
+					<img th:src="${document.img}" style="width: 250px; height: 160px;">
+					<div class="caption">
+						<h4 th:text="${document.name}"></h4>
+						<p th:text="${document.summary}"></p>
+						<p>
+							<a th:href="'/document/getDocument/' + ${document.id}" class="btn btn-default" role="button">点击查看详情</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

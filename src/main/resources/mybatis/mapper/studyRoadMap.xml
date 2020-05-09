@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.lemon.mapper.StudyRoadMapMapper">
+
+    <resultMap id="StudyRoadMapResult" type="StudyRoadMap">
+    	<result property="id" column="id"/>
+    	<result property="name" column="name"/>
+    	<result property="aims" column="aims"/>
+    	<result property="sort" column="sort"/>
+    </resultMap>
+    
+    <sql id="column">
+    	id, name, aims, sort
+    </sql>
+    
+    <sql id="getAllStudyRoadMap">
+    	id, name, aims
+    </sql>
+    
+    <select id="getAllStudyRoadMap" resultMap="StudyRoadMapResult">
+    	SELECT <include refid="getAllStudyRoadMap" /> FROM t_studyroad ORDER BY sort
+    </select>
+</mapper>
