@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>添加 新文档</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>添加新文档</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入文档名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">作者：</label>
+            <div class="layui-input-block">
+                <input type="text" id="author" name="author" placeholder="请输入文档作者"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">简介：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简介(300字)" class="layui-textarea" name="summary" id="summary"></textarea>
+			</div>
+		</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">主体内容：</label>
+            <div class="layui-input-block">
+                <textarea type="text" class="ckeditor" id="content" name="content" class="layui-input" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">百度云链接：</label>
+            <div class="layui-input-block">
+                <input type="text" id="baiduUrl" name="baiduUrl" placeholder="请输入百度云链接地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">百度云密码：</label>
+            <div class="layui-input-block">
+                <input type="text" id="password" name="password" placeholder="请输入百度云链接密码"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">存活状态：</label>
+            <div class="layui-input-block">
+		        <select id="status" name="status" lay-filter="aihao">
+		          <option value="0">正常</option>
+		          <option value="1">过期</option>
+		        </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+	});
+	
+	function submitData(){
+		var name = $("#name").val().trim();
+		var author = $("#author").val().trim();
+        var summary = $("#summary").val().trim();
+        var content = CKEDITOR.instances.content.getData();
+        var baiduUrl = $("#baiduUrl").val().trim();
+        var password = $("#password").val().trim();
+        var status = $("#status").val().trim();
+        
+        if(name == "") {
+        	layer.alert("请输入文档名称");
+            return false;
+        }
+        if(author == "") {
+        	layer.alert("请输入作者");
+            return false;
+        }
+        if(summary == "") {
+        	layer.alert("请输入简介");
+            return false;
+        }
+        if(content == "") {
+        	layer.alert("请输入主体内容");
+            return false;
+        }
+        if(baiduUrl == "") {
+        	layer.alert("请输入百度云链接");
+            return false;
+        }
+        if(status == "") {
+        	layer.alert("请选择存活状态");
+            return false;
+        }
+        
+        $.post("/admin/document/addDocument",{name:name,author:author,summary:summary,content:content,baiduUrl:baiduUrl,password:password,status:status},function(result){
+            if(result.success){
+                layer.alert('添加成功！',function () {
+                    window.parent.openPage('documentManage.html');
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.LanguageMapper">
+
+    <resultMap type="Language" id="LanguageResult">
+    </resultMap>
+
+    <select id="getById" parameterType="Language" resultMap="LanguageResult">
+        select * from t_language where id = #{id}
+    </select>
+    
+    <select id="getlist" parameterType="Map" resultMap="LanguageResult">
+    	select * from t_language
+    	order by sort
+    	<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_language
+    </select>
+    
+    <insert id="addLanguage" parameterType="Language">
+    	INSERT INTO t_language(id, name, url, sort)
+    	VALUES(null, #{name}, #{url}, #{sort})
+    </insert>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_language
+    	WHERE id = #{id}
+    </delete>
+    
+    <update id="update" parameterType="Language">
+    	UPDATE t_language
+    	<set>
+    		<if test="name != null">
+    			name =#{name},
+    		</if>
+    		<if test="url != null">
+    			url =#{url},
+    		</if>
+    		<if test="sort != null">
+    			sort =#{sort},
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+
+</mapper>

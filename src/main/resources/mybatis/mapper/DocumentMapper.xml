@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.DocumentMapper">
+
+    <resultMap type="Document" id="DocumentResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="author" column="author"/>
+        <result property="summary" column="summary"/>
+        <result property="content" column="content"/>
+        <result property="img" column="img"/>
+        <result property="createDt" column="createDt"/>
+        <result property="baiduUrl" column="baiduUrl"/>
+        <result property="password" column="password"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="DocumentResult">
+        select 
+        	*
+		from t_document
+		WHERE 1=1
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		<if test="name != null">
+			AND name like CONCAT('%', #{name}, '%')
+		</if>
+		<choose>
+			<when test="orderby != null">
+				ORDER BY ${orderby}
+			</when>
+			<otherwise>
+				ORDER BY createDt DESC
+			</otherwise>
+		</choose>
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_document
+    	WHERE 1=1
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		<if test="name != null">
+			AND name like CONCAT('%', #{name}, '%')
+		</if>
+    </select>
+    
+    <select id="getById" parameterType="Integer" resultType="Document">
+    	SELECT * FROM t_document 
+    	WHERE id = #{id}
+    </select>
+
+	<update id="update" parameterType="Document">
+		UPDATE t_document
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="author != null">
+				author = #{author},
+			</if>
+			<if test="summary != null">
+				summary = #{summary},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="img != null">
+				img = #{img},
+			</if>
+			<if test="baiduUrl != null">
+				baiduUrl = #{baiduUrl},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="addDocument" parameterType="Document">
+		INSERT INTO t_document(id, name, author, summary, content, img, createDt, baiduUrl, password, status)
+		VALUES(null, #{name}, #{author}, #{summary}, #{content}, #{img}, NOW(), #{baiduUrl}, #{password}, #{status})
+	</insert>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_document
+		WHERE id = #{id}
+	</delete>
+</mapper>

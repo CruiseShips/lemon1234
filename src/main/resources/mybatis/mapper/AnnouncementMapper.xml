@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.AnnouncementMapper">
+
+    <resultMap type="Announcement" id="AnnouncementResult">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="createDt" column="createDt"/>
+        <result property="color" column="color"/>
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="AnnouncementResult">
+        SELECT *
+		from t_announcement order by createDt DESC
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_announcement
+    </select>
+
+	<select id="getbyId" parameterType="Integer" resultType="Announcement">
+		SELECT *
+		from t_announcement
+		WHERE id=#{id}
+	</select>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_announcement
+		WHERE id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="Announcement">
+		UPDATE t_announcement
+		<set>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="color != null">
+				color = #{color},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+	
+	<insert id="addAnnouncement" parameterType="Announcement">
+		INSERT INTO t_announcement(id, title, content, createDt, color)
+		VALUES(null, #{title}, #{content}, NOW(), #{color})
+	</insert>
+	
+</mapper>

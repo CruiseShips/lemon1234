@@ -1,0 +1,83 @@
+<meta charset="utf-8"/>
+<div id="body">
+	<!-- 轮播图 -->
+	<div class="carousel">
+		<div class="layui-carousel" id="carousel">
+		    <div carousel-item="">
+		    	<div th:each="activity:${activityList}">
+		        	<a th:href="'/activity/' + ${activity.id}" target="_blank">
+		        		<img th:src="${activity.img}" width="1170px" height="440px">
+		        	</a>
+	        	</div>
+		    </div>
+		</div>
+	</div>
+	
+	<!-- body主体 -->
+	<div class="container anno">
+		<div class="row">
+			<div class="col-md-4 gg">
+				<span>告示栏</span>
+				<div class="row" th:each="anno:${announcementList}" th:style="'color:'+${anno.color} + ';'">
+					<div class="col-md-12">
+						<a th:href="'/anno/' + ${anno.id}" target="_blank">
+							<b th:text="${anno.yyyyMMdd} + ' ' + ${anno.title}"></b>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				本网站属于个人开发，因为站长主要做后端，求一个小姐姐帮忙弄弄前端，价钱好商量，有的话直接联系我的邮箱
+				<p>邮箱： 18500399506@163.com</p>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 最新博客 -->
+	<!-- <div class="container" style="border: 1px solid; margin: 10px auto;">
+		最新博客
+	</div> -->
+	
+	<!-- apache开源介绍 -->
+	<div class="container apache">
+		<b class="title">Apache 开源组件</b>
+		<a href="/apache/getlist/1" target="_blank" class="text-right">(More)</a>
+		<div class="media apacheMedia" th:each="apache:${apacheOSList}">
+			<div class="media-left">
+				<a th:href="'/apache/' + ${apache.id}" target="_blank">
+					<img class="media-object apacheImg" th:src="${apache.img}">
+				</a>
+			</div>
+			<div class="media-body">
+				<a th:href="'/apache/' + ${apache.id}" target="_blank">
+					<span class="media-heading" th:text="${apache.name}" style="font-size: 20px;"></span>
+					<span th:text="'分享量:' + ${apache.share} + ' | 点击量:' + ${apache.view}"></span>
+					<p class="text-capitalize" th:text="${apache.summary}"></p>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 技术文档 -->
+	<div class="container document">
+		<div class="documenttitle">
+			<b class="text-left">技术文档</b>
+			<a href="/document/getlist/1" target="_blank" class="text-right">(More)</a>
+		</div>
+		<div class="documentbody" th:each="document:${documentList}">
+			<a th:href="'/document/' + ${document.id}" target="_blank">
+				<img th:src="${document.img}" width="200px" height="150px">
+			</a>
+			<div>
+				<a th:href="'/document/' + ${document.id}" target="_blank">
+					<span th:text="${document.name + '-' + document.author}">名称-作者</span>
+				</a>
+			</div>
+			<div class="documentsummary">
+				<a th:href="'/document/' + ${document.id}" target="_blank">
+					<span th:text='${document.summary}'>介绍</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

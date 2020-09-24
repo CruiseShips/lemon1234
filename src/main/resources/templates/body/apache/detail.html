@@ -1,0 +1,51 @@
+<meta charset="utf-8"/>
+<div id="apache">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a href="/apache/getlist/1">Apache 开源组件</a>
+			<a><cite th:text="${apacheOS.name}"></cite></a>
+		</span>
+		
+		<div style="width: 100%; height:210px; margin: 20px auto; padding: 5px;">
+			<div style="position: absolute;">
+				<img th:src="${apacheOS.img}" style="width: 400px; height: 200px;">
+			</div>
+			<div style="position: absolute; margin-left: 410px;">
+				<h1 th:text="${apacheOS.name}"></h1>
+				<p th:text="${apacheOS.summary}" style="width: 800px;"></p>
+				<a th:href="${apacheOS.url}" target="_blank">
+					<p th:text="'官网地址：' + ${apacheOS.url}"></p>
+				</a>
+				<p th:text="'使用语言：' + ${apacheOS.language.name} + ' | 项目类型：' + ${apacheOS.apacheOSType.name}"></p>
+				<p th:if="${apacheOS.status eq 0}" th:text="'状态:存活' + ' | 查看次数：' + ${apacheOS.view} + ' | 分享次数：' + ${apacheOS.share}"></p>
+				<p th:if="${apacheOS.status eq 1}" th:text="'状态:不存活' + ' | 查看次数：' + ${apacheOS.view} + ' | 分享次数：' + ${apacheOS.share}"></p>
+				<p th:if="${apacheOS.status eq 2}" th:text="'状态:正在培养' + ' | 查看次数：' + ${apacheOS.view} + ' | 分享次数：' + ${apacheOS.share}"></p>
+			</div>
+		</div>
+	
+		<div style="width: 100%; min-height:390px; margin: 20px auto; padding: 5px;">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+				  	<li class="layui-this">具体介绍</li>
+				  	<li>学习播客链接</li>
+				  	<li>Demo下载</li>
+				</ul>
+				<div class="layui-tab-content">
+				  	<div class="layui-tab-item layui-show">
+				  		<p th:utext="${apacheOS.content}"></p>
+				  	</div>
+				  	<div class="layui-tab-item">
+				  		<p th:text="${apacheOS.studyUrl}"></p>
+				  	</div>
+				  	<div class="layui-tab-item">
+				  		<p th:text="${apacheOS.demoUrl}"></p>
+				  	</div>
+				  	<div class="layui-tab-item">内容4</div>
+				  	<div class="layui-tab-item">内容5</div>
+				</div>
+			</div> 
+		</div>
+		
+	</div>
+</div>

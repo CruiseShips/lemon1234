@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改 语言</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改语言</cite></a>
+	</span>
+</div>
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">语言名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入语言名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">官网链接：</label>
+            <div class="layui-input-block">
+                <input type="text" id="url" name="url" placeholder="请输入官网地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号：</label>
+            <div class="layui-input-block">
+                <input type="text" id="sort" name="sort" placeholder="请输入顺序"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+	</form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+        
+	});
+	
+	// 获取上个页面传过来的ID
+	function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+	
+	$(function(){
+        var id = getQueryVariable("id");
+        $.post("/admin/language/getdetail",{id:id},function(result){
+            if(result.success){
+                var language=result.language;
+                
+                // 设置值
+                $("#name").val(language.name);
+                $("#url").val(language.url);
+                $("#sort").val(language.sort);
+                
+            }else{
+                layer.alert("服务器加载有问题，请联系管理员！");
+            }
+        },"json");
+    });
+	
+	function submitData() {
+		var name = $("#name").val();
+		var url = $("#url").val();
+		var sort = $("#sort").val();
+		var id = getQueryVariable("id");
+		
+		if(name == "") {
+        	layer.alert("请输入OS 类型名称");
+            return false;
+        }
+		if(url == "") {
+        	layer.alert("请输入官网链接");
+            return false;
+        }
+		if(sort == "") {
+			layer.alert("请输入顺序");
+			return false;
+		}
+		
+		$.post("/admin/language/update",{name:name,url:url,sort:sort,id:id},function(result){
+            if(result.success){
+                layer.alert('修改成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

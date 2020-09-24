@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.LinkMapper">
+
+    <resultMap type="Link" id="LinkResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="sort" column="sort"/>
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="LinkResult">
+        select *
+		from t_link order by sort
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_link
+    </select>
+    
+    <select id="getdetail" parameterType="Integer" resultType="Link">
+    	SELECT * FROM t_link WHERE id = #{id}
+    </select>
+    
+    <insert id="addLink" parameterType="Link">
+    	INSERT INTO t_link(id, name, url, sort)
+    	VALUES(null, #{name}, #{url}, #{sort})
+    </insert>
+    
+    <update id="update" parameterType="Link">
+    	UPDATE t_link
+    	<set>
+    		<if test="name != null">
+    			name = #{name},
+    		</if>
+    		<if test="url != null">
+    			url = #{url},
+    		</if>
+    		<if test="sort != null">
+    			sort = #{sort},
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_link WHERE id = #{id}
+	</delete>
+</mapper>

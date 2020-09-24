@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.ShoutMapper">
+
+    <resultMap type="Shout" id="ShoutResult">
+    </resultMap>
+
+	<insert id="addShout" parameterType="Shout">
+		INSERT INTO t_shout(id, openId, text, grit, createDt)
+		VALUES(null, #{openId}, #{text}, #{grit}, NOW())
+	</insert>
+	
+	<select id="getShout" parameterType="String" resultMap="ShoutResult">
+		SELECT * FROM t_shout WHERE openId = #{openId}
+		LIMIT 10
+	</select>
+	
+	<select id="list" parameterType="Map" resultMap="ShoutResult">
+		SELECT * FROM t_shout
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_shout
+    </select>
+    
+    <select id="proportion" resultType="Map">
+    	SELECT count(1) as count,DATE_FORMAT(createDt, '%y-%m-%d') as dt FROM t_shout GROUP BY dt ORDER BY dt LIMIT 5
+    </select>
+	
+</mapper>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改信息</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改信息</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入名字"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="userName" name="userName" readonly autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">密码：</label>
+            <div class="layui-input-block">
+                <input type="password" id="password" name="password" placeholder="请输入密码，如果没填写，继续使用之前的"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱：</label>
+            <div class="layui-input-block">
+                <input type="text" id="email" name="email" placeholder="请输入邮箱"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像：</label>
+            <div class="layui-input-block">
+            	<img height="350" width="448" class="layui-upload-img" id="uploadImage">
+            	<button type="button" class="layui-btn" id="uploadBtn">上传图片</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限：</label>
+            <div class="layui-input-block">
+                <input type="text" id="roleLevel" name="roleLevel" readonly autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	id = 0;
+	
+	layui.use(['element','form', 'upload'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        var upload = layui.upload;
+        
+      	//普通图片上传
+        var uplboadInst = upload.render({
+            elem: '#uploadBtn'
+            ,url: '/admin/uploadAdminImg'
+            ,size: 500 //限制文件大小，单位 KB
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#uploadImage').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+	});
+	
+	// 通过ID找到对应的数据
+	$(function(){
+        $.post("/admin/getInfo",{},function(result){
+            if(result.success){
+                var admin = result.admin;
+                
+                // 设置值
+                id = admin.id;
+                $("#name").val(admin.name);
+                $("#userName").val(admin.userName);
+                $("#email").val(admin.email);
+                $("#uploadImage").attr("src", admin.imageName);
+                $("#roleLevel").val(admin.roleLevel);
+                
+            }else{
+                layer.alert("服务器加载有问题，请联系管理员！");
+            }
+        },"json");
+    });
+	
+	function submitData(){
+		var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+		
+		var name = $("#name").val().trim();
+        var email = $("#email").val().trim();
+        var password = $("#password").val().trim();
+        
+        if(name == "") {
+        	layer.alert("请输入OS名称");
+            return false;
+        }
+        if(!reg.test(email)){
+			layer.alert("邮箱格式不正确");
+            return false;
+		}
+        
+        $.post("/admin/updateAdmin",{name:name, email:email, password:password},function(result){
+        	if(result.success) {
+        		layer.msg('修改成功，如果修改了密码，下次登录生效！', function(){
+        			parent.location.reload();
+        		});
+        	}
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

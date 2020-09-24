@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.MenuMapper">
+
+    <resultMap type="Menu" id="MenuResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="requestUrl" column="requestUrl"/>
+        <result property="color" column="color"/>
+        <result property="sort" column="sort"/>
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="MenuResult">
+        select *
+		from t_menu order by sort
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_menu
+    </select>
+    
+    <insert id="addMenu" parameterType="Menu">
+    	INSERT INTO t_menu(id, name, requestUrl, color, sort)
+    	VALUES(null, #{name}, #{requestUrl}, #{color}, #{sort})
+    </insert>
+    
+    <update id="update" parameterType="Menu">
+    	UPDATE t_menu
+    	<set>
+    		<if test="name != null">
+    			name = #{name},
+    		</if>
+    		<if test="requestUrl != null">
+    			requestUrl = #{requestUrl},
+    		</if>
+    		<if test="color != null">
+    			color = #{color},
+    		</if>
+    		<if test="sort != null">
+    			sort = #{sort},
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_menu
+    	WHERE id = #{id}
+    </delete>
+    
+    <select id="getdetail" parameterType="Integer" resultType="Menu">
+    	SELECT * FROM t_menu WHERE id = #{id}
+    </select>
+
+</mapper>

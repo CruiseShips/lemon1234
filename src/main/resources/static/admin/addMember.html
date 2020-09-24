@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>添加  会员</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>添加会员</cite></a>
+	</span>
+</div>
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="realName" name="realName" placeholder="请输入姓名"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">推荐人：</label>
+            <div class="layui-input-block">
+                <select id="parentId" name="parentId" class="layui-input" style="width: 360px" placeholder="请选择推荐人" lay-filter="parentId"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">QQ号：</label>
+            <div class="layui-input-block">
+                <input type="text" id="qqNum" name="qqNum" placeholder="请输入QQ号"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信号：</label>
+            <div class="layui-input-block">
+                <input type="text" id="wxNum" name="wxNum" placeholder="请输入QQ号"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">来源：</label>
+            <div class="layui-input-block">
+                <select id="from" name="from">
+		          <option value="1" selected="selected">csdn</option>
+		          <option value="2">bilibili</option>
+		          <option value="3">lemon1234</option>
+		          <option value="4">公众号</option>
+		          <option value="5">小程序</option>
+		          <option value="6">朋友推荐</option>
+		          <option value="7">其他</option>
+		        </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+	</form>
+</div>
+               
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	parentId = 0;
+		
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+        // 获取到所有的用户
+        $.post("/admin/member/memberList",{},function(result){
+            if(result.code==0){
+                $("#parentId").prepend("<option value='-1'>请选择类型类别</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    $("#parentId").append("<option value='" + result.data[i].id + "'>" + result.data[i].realName + "</option>");
+                }
+                layui.form.render("select");
+            }else{
+                layer.alert("服务器加载有问题，请联系管理员！");
+            }
+        },"json");
+        
+        form.on('select(parentId)', function(data){
+        	parentId=data.value;
+        });
+	});
+	
+	function submitData() {
+		var realName = $("#realName").val().trim();
+		var qqNum = $("#qqNum").val().trim();
+		var wxNum = $("#wxNum").val().trim();
+		var from = $("#from").val().trim();
+		
+		if(realName == "") {
+			layer.alert("请输入姓名");
+            return false;
+		}
+		
+		console.log(realName, qqNum, wxNum, from, parentId);
+		$.post("/admin/member/addMember",{realName:realName,qqNum:qqNum,wxNum:wxNum,from:from,parentId:parentId},function(result){
+            if(result.success){
+                layer.alert('添加成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="keywords" content="Java技术热点 |  – lemon1234.com">
+<meta name="description" content="Java是世界第一编程语言，业界称之为“黄金语言”，关注我，让我带你一起走进这门语言。">
+<title th:text="${title}"></title>
+<!-- icon 引入 -->
+<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+<!-- css 引入 -->
+<link rel="stylesheet" href="/css/lemon1234.css" />
+<link rel="stylesheet" href="/css/empty.css" />
+<link rel="stylesheet" href="/css/share.min.css" />
+<link rel="stylesheet" href="/layui/css/layui.css" />
+<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+<link rel="stylesheet" href="/bootstrap3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/bootstrap3.3.7/css/bootstrap-theme.min.css" />
+<!-- lemon1234.com Baidu 统计  analytics -->
+<script type="text/javascript">
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?e9dfe748c23aaaaf169fb44ac66ac97c";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+<style type="text/css">
+	body {
+		cursor: url('/mouse/mouse.png'), auto;
+	}
+</style>
+</head>
+
+<body>
+	<!-- head -->
+	<div th:include="common/head::#head"></div>
+
+	<!-- menu -->
+	<div th:include="common/menu::#menu"></div>
+
+	<!-- body 主体 -->
+	<div th:include="${url}::${port}"></div>
+
+	<!-- foot -->
+	<div th:include="common/foot::#foot"></div>
+
+</body>
+
+<!-- js 引入 -->
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/jquery.share.min.js"></script>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    
+	layui.use(['carousel', 'element', 'form'], function(){
+		var layer = layui.layer;
+		
+		$ = layui.jquery; // 使用jquery
+		
+		var carousel = layui.carousel,form = layui.form;
+		  
+		carousel.render({
+			elem: '#carousel'
+			,width: '1170px'
+			,height: '440px'
+			,interval: 5000
+			,arrow: 'none'
+		});
+		
+	});
+	
+	$('#share').share({sites: ['wechat','qzone', 'qq', 'weibo', 'facebook', 'twitter', 'google']});
+	
+/*]]>*/
+</script>
+
+</html>

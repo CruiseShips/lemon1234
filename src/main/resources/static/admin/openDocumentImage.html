@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改Document图片</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+
+    <div class="layui-upload" style="padding-top: 5px">
+        <button type="button" class="layui-btn" id="uploadBtn">上传图片</button>
+        <div class="layui-inline layui-word-aux">
+            图片大小限制500KB 标准尺寸448*280
+        </div>
+        <div class="layui-upload-list">
+            <img height="280" width="448" class="layui-upload-img" id="uploadImage">
+            <p id="demoText"></p>
+        </div>
+    </div>
+    <br/>
+    <input type="hidden" id="id">
+    <button class="layui-btn" onclick="javascript:parent.location.reload();">确定</button>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	layui.use(['form','upload'], function(){
+		var upload = layui.upload;
+        var form = layui.form;
+        
+      	//普通图片上传
+        var uplboadInst = upload.render({
+            elem: '#uploadBtn'
+            ,url: '/admin/document/uploadImage?id='+$("#id").val()
+            ,size: 500 //限制文件大小，单位 KB
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#uploadImage').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+	})
+	
+	/* 获取页面传入来的id */
+	function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    
+    /* 显示图片 */
+	$(function(){
+        var id=getQueryVariable("id");
+        $("#id").val(id);
+        if(id){
+            $.post("/admin/document/getdetail",{id:id},function(result){
+                if(result.success){
+                    var document=result.document;
+                    $("#uploadImage").attr("src", document.img);
+                }else{
+                    layer.alert('服务器加载有问题，请联系管理员！');
+                }
+            },"json");
+        }
+    });
+	
+/*]]>*/
+</script>
+</body>
+</html>

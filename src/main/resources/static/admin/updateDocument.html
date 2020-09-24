@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改Document</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改 Document</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入文档名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">作者：</label>
+            <div class="layui-input-block">
+                <input type="text" id="author" name="author" placeholder="请输入文档名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">简介：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简介(300字)" class="layui-textarea" name="summary" id="summary"></textarea>
+			</div>
+		</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">主体内容：</label>
+            <div class="layui-input-block">
+                <textarea type="text" class="ckeditor" id="content" name="content" class="layui-input" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">百度云链接：</label>
+            <div class="layui-input-block">
+                <input type="text" id="baiduUrl" name="baiduUrl" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">百度云密码：</label>
+            <div class="layui-input-block">
+                <input type="text" id="password" name="password" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">存活状态：</label>
+            <div class="layui-input-block">
+		        <select id="status" name="status" lay-filter="aihao">
+		          <option value="0">正常</option>
+		          <option value="1">过期</option>
+		        </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+	});
+	
+	// 获取上个页面传过来的ID
+	function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+	
+	// 通过ID找到对应的数据
+	$(function(){
+        var id = getQueryVariable("id");
+        $.post("/admin/document/getdetail",{id:id},function(result){
+            if(result.success){
+                var document=result.document;
+                
+                // 设置值
+                $("#name").val(document.name);
+                $("#author").val(document.author);
+                $("#summary").val(document.summary);
+                $("#baiduUrl").val(document.baiduUrl);
+                CKEDITOR.instances.content.setData(document.content);
+                $("#password").val(document.password);
+                $("#status").val(document.status);
+                
+            }else{
+                layer.alert("服务器加载有问题，请联系管理员！");
+            }
+        },"json");
+    });
+	
+	function submitData(){
+		var name = $("#name").val().trim();
+		var author = $("#author").val().trim();
+        var summary = $("#summary").val().trim();
+        var content = CKEDITOR.instances.content.getData();
+        var baiduUrl = $("#baiduUrl").val().trim();
+        var password = $("#password").val().trim();
+        var status = $("#status").val().trim();
+        
+        var id = getQueryVariable("id");
+        
+        if(name == "") {
+        	layer.alert("请输入文档名称");
+            return false;
+        }
+        if(author == "") {
+        	layer.alert("请输入作者");
+            return false;
+        }
+        if(summary == "") {
+        	layer.alert("请输入简介");
+            return false;
+        }
+        if(content == "") {
+        	layer.alert("请输入主体内容");
+            return false;
+        }
+        if(baiduUrl == "") {
+        	layer.alert("请输入百度云链接");
+            return false;
+        }
+        if(status == "") {
+        	layer.alert("请选择存活状态");
+            return false;
+        }
+        
+        $.post("/admin/document/update",{name:name,author:author,summary:summary,content:content,baiduUrl:baiduUrl,password:password,status:status,id:id},function(result){
+            if(result.success){
+                layer.alert('修改成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

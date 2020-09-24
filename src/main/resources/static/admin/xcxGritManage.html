@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>小程序A管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+	<style type="text/css">
+        .layui-table-cell {
+            height: auto;
+            line-height: 28px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>小程序A管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div style="padding: 20px">
+        <div class="layui-form">
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addGrit()">添加新沙粒</button>
+            </div>
+        </div>
+    </div>
+	<div>
+        <table width="100%" id="aTable" lay-filter="aTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#aTable'
+            ,url:'/admin/wx/alist'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center'}
+                ,{field:'text', title: '答案' ,align:'center', edit: 'text'}
+                ,{field:'openId', title: 'Open Id' ,align:'center'}
+                ,{field:'status', title: '状态',align:'center', templet:formatswitch}
+                ,{field:'createDt', title: '查询日期',align:'center', templet:'<div>{{ layui.util.toDateString(d.createDt, "yyyy-MM-dd HH:mm:ss") }}</div>'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+            ,limit: 20
+        });
+        
+        form.on('switch(switch)', function(data){
+        	var id = this.value;
+        	var status = data.elem.checked;
+        	if(status) {
+        		status = 1;
+        	} else {
+        		status = 0;
+        	}
+        	
+        	$.post("/admin/wx/changeStatus", {id:id,status:status}, function(result){
+        		
+        	}, "json");
+        });
+        
+        // 监听单元格 需要给table设置 lay-filter 属性
+        table.on('edit(aTable)', function(obj){
+        	var id = obj.data.id;
+        	var value = obj.value;
+        	
+			$.post("/admin/wx/changeName", {id:id,text:value}, function(result){
+        		
+        	}, "json");
+        });
+	})
+	
+	function formatAction(d) {
+		return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	function formatswitch(d) {
+		if(d.status == 0) {
+			return "<input type='checkbox' value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='通过|不通过'>";
+		} else {
+			return "<input type='checkbox' checked value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='通过|不通过'>";
+		}
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/wx/deletegrit",{"id":id},function (result) {
+                if(result.success){
+                    layer.msg("删除成功！");
+                    table.reload("aTable",{});
+                }else{
+                    layer.msg("删除失败，存在已经关联的ApacheOS，无法删除");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+	function addGrit() {
+		layer.open({
+            type: 2,
+            title: '添加沙粒',
+            area: ['400px', '300px'],
+            content: '/admin/addGrit.html'
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

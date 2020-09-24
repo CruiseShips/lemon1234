@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.AdminMapper">
+	
+	<resultMap id="AdminResult" type="Admin">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="userName" column="userName" />
+		<result property="password" column="password" />
+		<result property="email" column="email" />
+		<result property="imageName" column="imageName" />
+		<result property="roleLevel" column="roleLevel" />
+	</resultMap>
+	
+	<select id="findByUserName" parameterType="String" resultType="Admin">
+		SELECT * FROM t_admin WHERE userName = #{userName}
+	</select>
+	
+	<update id="update" parameterType="Admin">
+		UPDATE t_admin
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="imageName != null">
+				imageName = #{imageName},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

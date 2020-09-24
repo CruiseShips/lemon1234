@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改 ApacheOS</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改 ApacheOS</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">OS名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">简介：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简介(300字)" class="layui-textarea" name="summary" id="summary"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">官网地址：</label>
+            <div class="layui-input-block">
+                <input type="text" id="url" name="url" placeholder="请输入ApacheOS官网地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用语言：</label>
+            <div class="layui-input-block">
+                <select id="languageId" name="language.id" class="layui-input" style="width: 360px" placeholder="请选择ApahceOS使用语言" lay-filter="languageId"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类别状态：</label>
+            <div class="layui-input-block">
+                <select id="apacheOSTypeId" name="apacheOSType.id" class="layui-input" style="width: 360px" placeholder="请选择ApahceOS状态类别" lay-filter="apacheOSTypeId"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">存活状态：</label>
+            <div class="layui-input-block">
+		        <select id="status" name="status" lay-filter="aihao">
+		          <option value="0">存活</option>
+		          <option value="1">不存活</option>
+		          <option value="2">正在培养</option>
+		        </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Apache叙述：</label>
+            <div class="layui-input-block">
+                <textarea type="text" class="ckeditor" id="content" name="content" class="layui-input" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">博客链接：</label>
+            <div class="layui-input-block">
+                <input type="text" id="studyUrl" name="studyUrl" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">demo地址：</label>
+            <div class="layui-input-block">
+                <input type="text" id="demoUrl" name="demoUrl" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	apacheOSTypeId=-1;
+	languageId=-1;
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+        Promise.all([
+        	$.post("/admin/apacheOSType/list",{},function(result){
+                if(result.code==0){
+                    $("#apacheOSTypeId").prepend("<option value='-1'>请选择类型类别</option>");
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#apacheOSTypeId").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
+                    }
+                    layui.form.render("select");
+                }else{
+                    layer.alert("服务器加载有问题，请联系管理员！");
+                }
+            },"json"),
+            
+            $.post("/admin/language/list",{},function(result){
+                if(result.code==0){
+                    $("#languageId").prepend("<option value='-1'>请选择语言类型</option>");
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#languageId").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
+                    }
+                    layui.form.render("select");
+                }else{
+                    layer.alert("服务器加载有问题，请联系管理员！");
+                }
+            },"json")
+		]).then(function (results) {
+			let[arr,json]=results;
+
+            var id=getQueryVariable("id");
+            if(id){
+            	$.post("/admin/apacheOS/getdetail",{id:id},function(result){
+                    if(result.success){
+                    	var apacheOS=result.apacheOS;
+						// 给下拉框赋值
+                        $("#apacheOSTypeId").find("option[value=" + apacheOS.apacheOSType.id + "]").prop("selected",true);
+                        $("#languageId").find("option[value=" + apacheOS.language.id + "]").prop("selected",true);
+
+                        apacheOSTypeId = apacheOS.apacheOSType.id;
+                        languageId = apacheOS.language.id;
+
+                        layui.form.render("select");
+
+                    }else{
+                        layer.alert("服务器加载有问题，请联系管理员！");
+                    }
+                },"json");
+            }
+		});
+        
+        form.on('select(apacheOSTypeId)', function(data){
+            apacheOSTypeId=data.value;
+        });
+
+        form.on('select(languageId)', function(data){
+            languageId=data.value;
+        });
+	});
+	
+	// 获取上个页面传过来的ID
+	function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+	
+	// 通过ID找到对应的数据
+	$(function(){
+        var id = getQueryVariable("id");
+        $.post("/admin/apacheOS/getdetail",{id:id},function(result){
+            if(result.success){
+                var apacheOS=result.apacheOS;
+                
+                // 设置值
+                $("#name").val(apacheOS.name);
+                $("#summary").val(apacheOS.summary);
+                $("#url").val(apacheOS.url);
+                CKEDITOR.instances.content.setData(apacheOS.content);
+                $("#studyUrl").val(apacheOS.studyUrl);
+                $("#demoUrl").val(apacheOS.demoUrl);
+                
+            }else{
+                layer.alert("服务器加载有问题，请联系管理员！");
+            }
+        },"json");
+    });
+	
+	function submitData(){
+		var name = $("#name").val().trim();
+        var summary = $("#summary").val().trim();
+        var url = $("#url").val().trim();
+        var status = $("#status").val().trim();
+        var studyUrl = $("#studyUrl").val().trim();
+        var demoUrl = $("#demoUrl").val().trim();
+        var id = getQueryVariable("id");
+        
+        var content = CKEDITOR.instances.content.getData();
+        
+        if(name == "") {
+        	layer.alert("请输入OS名称");
+            return false;
+        }
+        if(summary == "") {
+        	layer.alert("请输入简介");
+            return false;
+        }
+        if(url == "") {
+        	layer.alert("请输入官网链接");
+            return false;
+        }
+        if(status == "") {
+        	layer.alert("请选择存活状态");
+            return false;
+        }
+        if(content == "") {
+        	layer.alert("请输入ApacheOS叙述");
+            return false;
+        }
+        if(apacheOSTypeId == -1) {
+        	layer.alert("请选择ApacheOS类型");
+            return false;
+        }
+		if(languageId == -1) {
+			layer.alert("请选择语言类型");
+            return false;
+        }
+        
+        $.post("/admin/apacheOS/updateApacheOS",{name:name,summary:summary,url:url,status:status,content:content,"language.id":languageId,"apacheOSType.id":apacheOSTypeId,studyUrl:studyUrl,demoUrl:demoUrl,id:id},function(result){
+            if(result.success){
+                layer.alert('添加成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

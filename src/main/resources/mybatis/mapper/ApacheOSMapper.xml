@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.ApacheOSMapper">
+	
+	<resultMap id="ApacheOSResult" type="ApacheOS">
+		<association property="language"
+					 column="languageId" select="com.lemon1234.mapper.LanguageMapper.getById"
+					 >
+		</association>
+		<association property="apacheOSType"
+					 column="typeId" select="com.lemon1234.mapper.ApacheOSTypeMapper.getById"
+					 >
+		</association>
+	</resultMap>
+	
+	<select id="getlist" parameterType="Map" resultMap="ApacheOSResult">
+		SELECT
+			*
+		FROM t_apacheos 
+		WHERE 1=1
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		<if test="typeId != null">
+			AND typeId = #{typeId}
+		</if>
+		<if test="name != null">
+			AND name like CONCAT('%', #{name}, '%')
+		</if>
+		<choose>
+			<when test="orderby != null">
+				ORDER BY ${orderby}
+			</when>
+			<otherwise>
+				ORDER BY createDt DESC
+			</otherwise>
+		</choose>
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+		SELECT COUNT(1)
+		FROM t_apacheos 
+		WHERE 1=1
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		<if test="typeId != null">
+			AND typeId = #{typeId}
+		</if>
+		<if test="name != null">
+			AND name like CONCAT('%', #{name}, '%')
+		</if>
+	</select>
+	
+	<select id="getById" parameterType="Integer" resultMap="ApacheOSResult">
+		SELECT *
+		FROM t_apacheos
+		WHERE id = #{id}
+	</select>
+	
+	<update id="updateApacheOS" parameterType="ApacheOS">
+		UPDATE t_apacheos
+		<set>
+			<if test="view != null">
+				view = view + #{view},
+			</if>
+			<if test="img != null">
+				img = #{img},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="summary != null">
+				summary = #{summary},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="url != null">
+				url = #{url},
+			</if>
+			<if test="language != null and language.id != null">
+				languageId = #{language.id},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="apacheOSType != null and apacheOSType.id != null">
+				typeId = #{apacheOSType.id},
+			</if>
+			<if test="studyUrl != null">
+				studyUrl = #{studyUrl},
+			</if>
+			<if test="demoUrl != null">
+				demoUrl = #{demoUrl},
+			</if>
+			<if test="share != null">
+				share = #{share},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteApacheOS" parameterType="Integer">
+		DELETE FROM t_apacheos WHERE id = #{id}
+	</delete>
+	
+	<insert id="addApacheOS" parameterType="ApacheOS">
+		INSERT INTO t_apacheos(
+			id, name, summary, img, content, url, createDt, languageId, status, typeId, studyUrl, demoUrl, view, share
+		)
+		VALUES(null, #{name}, #{summary}, #{img}, #{content}, #{url}, NOW(), #{language.id}, #{status}, #{apacheOSType.id}, #{studyUrl}, #{demoUrl}, #{view}, #{share})
+	</insert>
+	
+	<select id="findByTypeId" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(1) from t_apacheos
+		WHERE typeId = #{id}
+	</select>
+	
+	<select id="findByLanguageId" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(1) from t_apacheos
+		WHERE languageId = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.MemberMapper">
+
+    <resultMap type="Member" id="MemberResult">
+    </resultMap>
+    
+    <select id="list" parameterType="Map" resultMap="MemberResult">
+    	SELECT * FROM t_member
+    	WHERE 1=1
+    	<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_member
+    	WHERE 1=1
+    </select>
+    
+    <update id="update" parameterType="Member">
+    	UPDATE t_member
+    	<set>
+    		<if test="realName != null">
+    			realName = #{realName},
+    		</if>
+    		<if test="qqNum != null">
+    			qqNum = #{qqNum},
+    		</if>
+    		<if test="wxNum != null">
+    			wxNum = #{wxNum},
+    		</if>
+    		<if test="payDt != null">
+    			payDt = NOW(),
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+	
+	<insert id="addMember" parameterType="Member">
+		INSERT INTO t_member(id, parentId, realName, qqNum, wxNum, payDt, `from`)
+		VALUES(null, #{parentId}, #{realName}, #{qqNum}, #{wxNum}, null, #{from})
+	</insert>
+</mapper>

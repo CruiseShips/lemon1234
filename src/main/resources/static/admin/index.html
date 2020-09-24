@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  	<title>lemon1234-后台管理</title>
+  	<link rel="stylesheet" href="/layui/css/layui.css" />
+  	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+	<!-- 内容主体区域 -->
+	<div style="padding: 15px;">
+		<iframe style="float: right; padding-top: 10px;" width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&icon=1&num=5"></iframe>
+		<blockquote class="layui-elem-quote layui-quote-nm">
+			 相信自己，你的指尖有改变世界的力量 
+			<br>&nbsp;&nbsp;&nbsp;——陈胖子（lemon1234 创始人）
+		</blockquote>
+		<div class="layui-row">
+			<div class="layui-col-xs6">
+				<div class="grid-demo grid-demo-bg1">
+					<canvas id="myChart" width="400" height="400"></canvas>
+					<canvas id="myChart1" width="400" height="400" style="margin-left: 20px;"></canvas>
+				</div>
+			</div>
+			<div class="layui-col-xs6">
+				<div class="grid-demo grid-demo-bg1" style="padding: 5px;">
+					会员总注册量：<span class="layui-badge layui-bg-orange" id="member"></span>
+				</div>
+				<div class="grid-demo grid-demo-bg1" style="padding: 5px;">
+					小程序总人数：<span class="layui-badge layui-bg-green" id="wxuser">222</span>
+				</div>
+			</div>
+    	</div>
+    	<div class="layui-row">
+			<div class="layui-col-xs3">
+				<div class="grid-demo grid-demo-bg1">
+					<p style="text-align: center;">小程序男女比例</p>
+				</div>
+			</div>
+			<div class="layui-col-xs3">
+				<div class="grid-demo grid-demo-bg1">
+					<p style="text-align: center;">小程序当天提问量</p>
+				</div>
+			</div>
+			<div class="layui-col-xs6">
+				<div class="grid-demo grid-demo-bg1">
+					
+				</div>
+			</div>
+    	</div>
+		
+		<hr class="layui-bg-gray">
+		<hr class="layui-bg-orange">
+		
+		<div style="border: 1px solid;">
+			<fieldset class="layui-elem-field" style="margin-top:10px; width: 20%; float: left;">
+				<legend>开源项目总数</legend>
+				<div class="layui-field-box">
+					<h1>1</h1>
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field" style="margin-top:10px; width: 20%; float: left;">
+				<legend>技术文档总数</legend>
+				<div class="layui-field-box">
+					<h1 id="docu"></h1>
+				</div>
+			</fieldset>
+		</div>
+		
+		<!-- clear:both div块不浮动 -->
+		<div style="clear:both">
+			暂无。。
+		</div>
+	</div>
+</body>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/js/Chart.js"></script>
+<script type="text/javascript">
+
+	var ctx1 = document.getElementById("myChart").getContext("2d");
+	var ctx2 = document.getElementById("myChart1").getContext("2d");
+	
+	$(function(){
+		//男女比例
+		$.post("/admin/wx/proportion",{},function(result){
+			  if(result.success){
+				  var sex = result.sex;
+				  var sexChar = [];
+				  for(var i = 0; i < sex.length; i++) {
+					  // 性别 0：未知、1：男、2：女
+					  if(sex[i] == 0) {
+						  sexChar.push("未知")
+					  }
+					  if(sex[i] == 1) {
+						  sexChar.push("男")
+					  }
+					  if(sex[i] == 2) {
+						  sexChar.push("女")
+					  }
+				  }
+				  var count = result.count;
+				  
+				  var data = {
+				            labels: sexChar,
+				            datasets: [
+				            {
+				            label: "My First dataset",
+				            fillColor: "rgba(220,220,220,0.5)",
+				            strokeColor: "rgba(220,220,220,0.8)",
+				            highlightFill: "rgba(220,220,220,0.75)",
+				            highlightStroke: "rgba(220,220,220,1)",
+				            data: count
+				            }
+				            ]
+				            };
+				  var myBarChart = new Chart(ctx1).Bar(data, function(){});
+				  
+			  }else{
+                  layer.alert('服务器加载有问题，请联系管理员！');
+			  }
+		  },"json");
+		
+		// 问题数量
+		$.post("/admin/wx/getTop5",{},function(result){
+			  if(result.success){
+				  var dt = result.dt;
+				  var dtChar = [];
+				  for(var i = 0; i < dt.length; i++) {
+					  // 性别 0：未知、1：男、2：女
+					  dtChar.push(dt[i])
+				  }
+				  var count = result.count;
+				  
+				  var data = {
+				            labels: dtChar,
+				            datasets: [
+				            {
+				            label: "My First dataset",
+				            fillColor: "rgba(220,220,220,0.5)",
+				            strokeColor: "rgba(220,220,220,0.8)",
+				            highlightFill: "rgba(220,220,220,0.75)",
+				            highlightStroke: "rgba(220,220,220,1)",
+				            data: count
+				            }
+				            ]
+				            };
+				  var myLineChart = new Chart(ctx2).Line(data, function(){});
+				  
+			  }else{
+                layer.alert('服务器加载有问题，请联系管理员！');
+			  }
+		  },"json");
+		
+		// 一系列数字
+		$.post("/admin/getNum", {}, function(result){
+			if(result.success) {
+				$("#member").html(result.m);
+				$("#wxuser").html(result.w);
+				$("#docu").html(result.d);
+			}
+		}, "json");
+	});
+</script>
+</html>

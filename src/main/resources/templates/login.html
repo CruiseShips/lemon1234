@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户登录页面</title>
+<!-- icon 引入 -->
+<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="/layui/css/layui.css" />
+<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+<style type="text/css">
+
+	table tr td{
+		padding: 10px;
+	}
+	
+	body {
+		background-image: url(/img/login.gif);
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		background-attachment: fixed;
+	}
+
+</style>
+</head>
+<body>
+<div style="padding: 20px">
+<form action="" name="myForm" style="margin-top: 15%; margin-left: 35%; padding-top:50px; width: 400px; height: 200px; background-color: white;">
+	<div class="layui-form-item">
+		<label class="layui-form-label">账号:</label>
+		<div class="layui-input-inline">
+			<input type="text" id="userName" name="userName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">密码:</label>
+		<div class="layui-input-inline">
+			<input type="password" id="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+		</div>
+		<div style="padding: 6px;">
+			<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" onclick="douniwan()">重置密码</button>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" id="submit" lay-submit lay-filter="formDemo" onclick="submitData();return false;">登录</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+	
+</div>
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  
+	layui.use(['form','layer'], function(){
+		var form = layui.form;
+		var layer = layui.layer;
+	});
+	
+	function submitData(){
+		var userName = $("#userName").val().trim();
+		var password = $("#password").val().trim();
+		
+		if(userName == "" || userName == null || userName == undefined) {
+			layer.msg('请输入账号', function(){
+				return false;
+			});
+			$("#userName").focus();
+			return false;
+		}
+		if(password == '') {
+			layer.msg('请输入密码', function(){
+				return false;
+			});
+			$("#password").focus();
+			return false;
+		}
+		
+		var index = layer.load(1, {
+		  	shade: [0.3,'#fff']
+		});
+
+		$.post("/admin/login", {userName: userName, password: password}, function(result){
+			if(result.success){
+				$("#submit").attr('disabled',true);
+				window.location.href = "/admin/index";
+				
+			} else {
+				layer.closeAll('loading');
+				$("#password").val('');
+				$("#submit").attr('disabled',false);
+				layer.msg('用户名密码错误哦~', function(){
+					return false;
+				});
+			}
+		}, "json");
+		
+	}
+	
+	function douniwan(){
+		layer.msg('还想重置我密码？', function(){
+			return false;
+		});
+	};
+	/*]]>*/
+</script>
+</body>
+</html>

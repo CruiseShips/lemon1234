@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>修改 菜单</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改菜单</cite></a>
+	</span>
+</div>
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" placeholder="请输入菜单名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请求地址：</label>
+            <div class="layui-input-block">
+                <input type="text" id="requestUrl" name="requestUrl" placeholder="请输入请求地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">颜色：</label>
+            <div class="layui-input-inline" style="width: 120px;">
+				<input type="text" id="color" name="color" placeholder="请选择颜色" class="layui-input" >
+			</div>
+			<div class="layui-inline" style="left: -11px;">
+				<div id="color-form"></div>
+			</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号：</label>
+            <div class="layui-input-block">
+                <input type="text" id="sort" name="sort" placeholder="请输入顺序"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+	</form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','colorpicker'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        var colorpicker = layui.colorpicker;
+        
+        colorpicker.render({
+            elem: '#color-form'
+            ,color: '#000000'
+            ,done: function(color){
+                $('#color').val(color);
+            }
+        });
+	});
+	
+	function getQueryVariable(variable){
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i = 0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+	}
+	
+	$(function(){ 
+		var id = getQueryVariable("id");
+		if(id){
+			$.post("/admin/menu/getdetail",{id:id},function(result){
+				  if(result.success){
+					  var menu = result.menu;
+					  
+					  $("#name").val(menu.name);
+					  $("#requestUrl").val(menu.requestUrl);
+                      $("#color").val(menu.color);
+					  $("#sort").val(menu.sort);
+				  }else{
+                      layer.alert('服务器加载有问题，请联系管理员！');
+				  }
+			  },"json");
+		}
+	}); 
+	
+	function submitData() {
+		var name = $("#name").val().trim();
+		var requestUrl = $("#requestUrl").val().trim();
+        var color = $("#color").val().trim();
+		var sort = $("#sort").val().trim();
+		var id = getQueryVariable("id");
+		
+		if(name == "") {
+			layer.alert("请输入菜单名称");
+            return false;
+		}
+		if(requestUrl == "") {
+			layer.alert("请输入菜单请求地址");
+            return false;
+		}
+		if(color == "") {
+			layer.alert("请输入菜单名称颜色");
+            return false;
+		}
+		if(sort == "") {
+			layer.alert("请输入菜单排序");
+            return false;
+		}
+		
+		$.post("/admin/menu/update",{name:name,requestUrl:requestUrl,color:color,sort:sort,id:id},function(result){
+            if(result.success){
+                layer.alert('修改成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

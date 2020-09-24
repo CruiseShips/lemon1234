@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Apache 框架管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>Apache 框架管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+    <div style="padding: 20px">
+        <div class="layui-form">
+
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width: 140px;">Apache 开源名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="s_name"  placeholder="请输入" autocomplete="off" style="width: 400px" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search" style="margin: 15px;">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+                </button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addApacheOS()">添加新的ApacheOS</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table width="100%" id="apacheOSTable" ></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#apacheOSTable'
+            ,url:'/admin/apacheOS/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', width:60, title: '编号' ,align:'center'}
+                ,{field:'name', width:150, title: 'ApacheOS 名称' ,align:'center'}
+                ,{field:'summary', width:500, title: '简介'}
+                ,{field:'img', width:150,title: '图片',templet:formatImg, align:'center'}
+                ,{field:'url', width:200,title: '连接' ,align:'center'}
+                ,{field:'languageName', width:100, title: '所用语言' ,templet:formatLanguageName ,align:'center'}
+                ,{field:'view', width:100, title: '浏览次数' ,align:'center'}
+                ,{field:'share', width:100, title: '分享次数' ,align:'center'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+        });
+	})
+	
+	function formatImg(d) {
+		return "<img src='"+d.img+"'/>";
+	}
+	
+	function formatLanguageName(d) {
+		return d.language.name;
+	}
+	
+	function search(){
+        var s_name=$("#s_name").val();
+        table.reload("apacheOSTable",{
+            page:{
+                curr:1
+            }
+            ,where:{
+                name:s_name
+            }
+        })
+    }
+	
+	function formatAction(d) {
+		var button = "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyApacheOSImage("+d.id+")'><i class='layui-icon layui-icon-edit'></i>修改图片</button>" 
+					 +
+					 "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyApacheOS("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button>"
+					 +
+					 "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+		return button;
+	}
+	
+	function modifyApacheOSImage(id) {
+		layer.open({
+            type: 2,
+            title: '修改ApacheOS图片',
+            area: ['600px', '500px'],
+            content: '/admin/openApacheOSImage.html?id='+id
+        });
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/apacheOS/delete",{"id":id},function (result) {
+                if(result.success){
+                    layer.msg("删除成功！");
+                    table.reload("apacheOSTable",{});
+                }else{
+                    layer.msg("删除失败，请联系管理员！");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+	function addApacheOS() {
+		window.parent.openPage('addApacheOS.html');
+	}
+	
+	function modifyApacheOS(id) {
+		layer.open({
+            type: 2,
+            title: '修改ApacheOS',
+            area: ['1000px', '730px'],
+            content: '/admin/updateApacheOS.html?id='+id
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

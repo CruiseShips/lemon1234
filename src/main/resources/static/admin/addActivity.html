@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>添加 活动</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>添加 Activity</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" placeholder="请输入活动名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动描述：</label>
+            <div class="layui-input-block">
+                <textarea type="text" class="ckeditor" id="content" name="content" class="layui-input" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动是否开启：</label>
+            <div class="layui-input-block">
+		        <select id="status" name="status" lay-filter="aihao">
+		          <option value="0" >开启</option>
+		          <option value="1" selected="selected">不开启</option>
+		        </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	apacheOSTypeId=-1;
+	languageId=-1;
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+        
+	});
+	
+	function submitData(){
+		var title = $("#title").val().trim();
+        var status = $("#status").val().trim();
+        var content = CKEDITOR.instances.content.getData();
+        
+        if(title == "") {
+        	layer.alert("请输入活动名称");
+            return false;
+        }
+        if(content == "") {
+        	layer.alert("请输入活动内容");
+            return false;
+        }
+        
+        $.post("/admin/activity/addActivity",{title:title,content:content,status:status},function(result){
+            if(result.success){
+                layer.alert('添加成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.alert(result.errorInfo);
+            }
+        },"json");
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

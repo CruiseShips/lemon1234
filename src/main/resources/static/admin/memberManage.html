@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>member 管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>member 管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div style="padding: 20px">
+        <div class="layui-form">
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addMember()">添加新会员</button>
+            </div>
+        </div>
+    </div>
+	<div>
+        <table width="100%" id="memberTable" lay-filter="memberTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#memberTable'
+            ,url:'/admin/member/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center'}
+                ,{field:'parentId', title: '推荐人id' ,align:'center', templet:formatparent}
+                ,{field:'realName', title: '姓名' ,align:'center', edit: 'text'}
+                ,{field:'qqNum', title: 'QQ号' ,align:'center', edit: 'text'}
+                ,{field:'wxNum', title: '微信号' ,align:'center', edit: 'text'}
+                ,{field:'payDt', title: '支付日期' ,align:'center', templet:formatpayDt}
+                ,{field:'from', title: '来源' ,align:'center', templet:formatfrom}
+                ,{title: '操作' , align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+        });
+        
+     	// 监听单元格 需要给table设置 lay-filter 属性
+        table.on('edit(memberTable)', function(obj){
+        	var id = obj.data.id;
+        	var value = obj.value;
+        	var field = obj.field;
+        	
+        	var member = {id:id, realName:'',qqNum:'',wxNum:''};
+        	
+        	if(field == 'realName') {
+        		member.realName = value;
+        	}
+        	if(field == 'qqNum') {
+        		member.qqNum = value;
+        	}
+        	if(field == 'wxNum') {
+        		member.wxNum = value;
+        	}
+        	
+			$.post("/admin/member/update", member, function(result){
+        		if(result.code == -1) {
+        			layer.msg('修改失败，请重试');
+        		}
+        	}, "json");
+        });
+	})
+	
+	function formatpayDt(d) {
+		if(d.payDt == '' || d.payDt == null) {
+			return "未支付";
+		} else {
+			return layui.util.toDateString(d.payDt, "yyyy-MM-dd HH:mm:ss");
+		}
+	}
+	
+	function formatparent(d) {
+		if(d.parentId == 0) {
+			return "无";
+		}
+	}
+	
+	function formatfrom(d) {
+		var type = d.from;
+		// 1 csdn 2 bilibili 3 lemon1234 4 公众号 5 小程序 6 朋友推荐 7 其他 	
+		switch(type) {
+			case 1: return "csdn"; break;
+			case 2: return "bilibili"; break;
+			case 3: return "lemon1234"; break;
+			case 4: return "公众号"; break;
+			case 5: return "小程序"; break;
+			case 6: return "朋友推荐"; break;
+			case 7: return "其他"; break;
+		}
+	}
+	
+	function formatAction(d) {
+		if(d.payDt == '' || d.payDt == null) {
+			return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyPay("+d.id+")'><i class='layui-icon layui-icon-edit'></i>确认支付</button>";
+		} else {
+			return "无操作";
+		}
+	}
+	
+	function addMember() {
+		layer.open({
+			type: 2,
+			title: '添加会员',
+			area: ['700px', '550px'],
+			content: '/admin/addMember.html'
+		});
+	}
+	
+	function modifyPay(id) {
+		layer.confirm('确定已支付？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/member/update",{"id":id, payDt:'2020-09-20 00:04:00'},function (result) {
+                if(result.code == 0){
+                    layer.msg("已修改！");
+                    table.reload("memberTable",{});
+                }else{
+                    layer.msg("修改失败，请联系管理员！");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

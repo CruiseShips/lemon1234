@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.ActivityMapper">
+
+    <resultMap type="Activity" id="ActivityResult">
+    </resultMap>
+	
+	<select id="list" parameterType="Map" resultMap="ActivityResult">
+		SELECT * FROM t_activity
+		WHERE 1=1
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		ORDER BY sort
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+		SELECT COUNT(1) FROM t_activity 
+		WHERE 1=1
+	</select>
+	
+	<insert id="addActivity" parameterType="Activity">
+		INSERT INTO t_activity(id, title, content, img, status, sort)
+		VALUES(null, #{title}, #{content}, #{img}, #{status}, #{sort})
+	</insert>
+	
+	<update id="update" parameterType="Activity">
+		UPDATE t_activity
+		<set>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="img != null">
+				img = #{img},
+			</if>
+			<if test="status != null and status != -1">
+				status = #{status},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_activity
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="getdetail" parameterType="Integer" resultType="Activity">
+		SELECT * FROM t_activity WHERE id = #{id}
+	</select>
+</mapper>

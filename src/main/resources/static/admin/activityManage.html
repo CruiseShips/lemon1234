@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>activity 管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+	<style type="text/css">
+		.layui-table-cell {
+            height: auto;
+            line-height: 28px;
+        }
+	</style>
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>activity 管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div style="padding: 20px">
+        <div class="layui-form">
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addActivity()">添加活动</button>
+            </div>
+        </div>
+    </div>
+	<div>
+        <table width="100%" id="activityTable" lay-filter="activityTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#activityTable'
+            ,url:'/admin/activity/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center'}
+                ,{field:'title', title: '活动名称' ,align:'center'}
+                ,{field:'img', title: '图片' ,align:'center', templet:formatImg}
+                ,{field:'status', title: '状态',align:'center', templet:formatStatus}
+                ,{field:'sort', title: '排序',align:'center', edit: 'text'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+                
+            ]]
+            ,page: true
+        });
+        
+     	// 监听单元格 需要给table设置 lay-filter 属性
+        table.on('edit(activityTable)', function(obj){
+        	var id = obj.data.id;
+        	var value = obj.value;
+        	
+        	$.post("/admin/activity/update", {id:id, sort:value, status:-1}, function(result){
+        		if(!result.success) {
+        			layer.msg(result.errorInfo);
+        		}
+        	}, "json");
+        });
+	})
+	
+	function formatImg(d) {
+		return "<img src='"+d.img+"'/>";
+	}
+	
+	function formatStatus(d) {
+		if(d.status == 1) {
+			return "不显示";
+		} else {
+			return "显示";
+		}
+	}
+	
+	function formatAction(d) {
+		return "<button class='layui-btn layui-btn-danger layui-btn-xs' onclick='modifyImg("+d.id+")'><i class='layui-icon layui-icon-edit'></i>修改活动图片</button>"
+				+
+			   "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyOne("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button>"
+		 		+
+		 	   "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/activity/delete",{"id":id},function (result) {
+                if(result.success){
+                    layer.msg("删除成功！");
+                    table.reload("activityTable",{});
+                }else{
+                    layer.msg("删除失败，请联系管理员");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+	function modifyImg(id) {
+		layer.open({
+            type: 2,
+            title: '修改活动图片',
+            area: ['600px', '500px'],
+            content: '/admin/openActivityImage.html?id='+id
+        });
+	}
+	
+	function modifyOne(id) {
+		layer.open({
+            type: 2,
+            title: '修改活动',
+            area: ['1300px', '700px'],
+            content: '/admin/updateActivity.html?id='+id
+        });
+	}
+	
+	function addActivity() {
+		layer.open({
+            type: 2,
+            title: '添加活动',
+            area: ['1300px', '700px'],
+            content: '/admin/addActivity.html'
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

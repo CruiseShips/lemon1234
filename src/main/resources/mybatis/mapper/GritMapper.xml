@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.GritMapper">
+
+    <resultMap type="Grit" id="GritResult">
+    </resultMap>
+
+	<select id="getRand" resultType="Grit">
+		SELECT * FROM t_grit WHERE status = 1 ORDER BY RAND() LIMIT 1
+	</select>
+	
+	<select id="list" parameterType="Map" resultMap="GritResult">
+		SELECT * FROM t_grit
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_grit
+    </select>
+    
+    <select id="getGrits" parameterType="String" resultMap="GritResult">
+    	SELECT * FROM t_grit WHERE openId = #{openId}
+    </select>
+    
+    <update id="update" parameterType="Grit">
+    	UPDATE t_grit
+    	<set>
+    		<if test="status != null">
+    			status = #{status},
+    		</if>
+    		<if test="text != null">
+    			text = #{text},
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_grit
+    	WHERE id = #{id}
+    </delete>
+    
+    <insert id="addGrit" parameterType="Grit">
+    	INSERT INTO t_grit(id, text, openId, createDt, status)
+    	VALUES(null, #{text}, #{openId}, NOW(), #{status})
+    </insert>
+	
+</mapper>

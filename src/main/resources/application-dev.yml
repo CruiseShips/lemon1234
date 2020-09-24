@@ -1,0 +1,32 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_lemon?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 123456
+  thymeleaf:
+    cache: false
+  aop:    proxy-target-class: true
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/config/mybatis-config.xml
+  
+logging:
+    level:
+      com.lemon1234.mapper: TRACE
+    
+documentImgFile: file:f:/lemon1234_image/documentImg/
+adminImgFile: file:f:/lemon1234_image/adminImg/
+apacheOSImgFile: file:f:/lemon1234_image/apacheOSImg/
+ckeditorImgFile: file:f:/lemon1234_image/ckeditorImg/
+activityImgFile: file:f:/lemon1234_image/activityImg/

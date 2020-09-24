@@ -1,0 +1,11 @@
+<meta charset="utf-8"/>
+<div id="menu">
+	<!-- menu -->
+	<div class="container menu">
+		<ul class="nav nav-pills">
+		  	<li role="presentation" th:each="menu:${application.menuList}">
+		  		<a th:href="${menu.requestUrl}" th:text="${menu.name}" th:style="'color:' + ${menu.color} + ';'"></a>
+		  	</li>
+		</ul>
+	</div>
+</div>

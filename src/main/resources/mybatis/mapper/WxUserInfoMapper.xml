@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.WxUserInfoMapper">
+
+    <resultMap type="WxUserInfo" id="WxUserInfoResult">
+    </resultMap>
+    
+    <select id="findWxUser" parameterType="String" resultType="WxUserInfo">
+    	SELECT * FROM t_wxuserinfo WHERE openId = #{openId}
+    </select>
+    
+    <update id="update" parameterType="WxUserInfo">
+    	UPDATE t_wxuserinfo
+    	<set>
+    		<if test="nickName != null">
+    			nickName = #{nickName},
+    		</if>
+    		<if test="img != null">
+    			img = #{img},
+    		</if>
+    		<if test="province != null">
+    			province = #{province},
+    		</if>
+    		<if test="country != null">
+    			country = #{country},
+    		</if>
+    		<if test="city != null">
+    			city = #{city},
+    		</if>
+    		<if test="gender != null">
+    			gender = #{gender},
+    		</if>
+    		<if test="lastUpdateDt != null">
+    			lastUpdateDt = NOW(),
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+
+	<insert id="addWxUser" parameterType="WxUserInfo">
+		INSERT INTO t_wxuserinfo(id, nickName, img, province, country, city, gender, openId, createDt, lastUpdateDt)
+		VALUES(null, #{nickName}, #{img}, #{province}, #{country}, #{city}, #{gender}, #{openId}, NOW(), NOW())
+	</insert>
+	
+	<select id="list" parameterType="Map" resultMap="WxUserInfoResult">
+		SELECT * FROM t_wxuserinfo
+		ORDER BY createDt DESC
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+		SELECT COUNT(1) FROM t_wxuserinfo
+	</select>
+	
+	<select id="proportion" resultType="Map">
+		SELECT gender,COUNT(1) as count FROM t_wxuserinfo GROUP BY gender
+	</select>
+</mapper>

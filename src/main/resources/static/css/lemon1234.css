@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+body a:link{
+	color:#000000;
+	text-decoration:none;
+}
+body a:visited {
+	color:#000000;
+	text-decoration:none;
+}
+body a:hover {
+	color:#000000;
+	text-decoration:none;
+}
+body a:active {
+	color:#000000;
+	text-decoration:none;
+}
+
+/* head */
+.head_1 {
+	width: 100%;
+	height: 30px;
+	background-color: #FDF5E6;
+	line-height: 30px;
+	padding: 0 60px;
+	box-sizing: border-box;
+}
+.head_1 .left {
+	float: left;
+	display: inline-block;
+	text-decoration: none;
+}
+.head_1 .right {
+	float: right;
+	display: inline-block;
+	text-decoration: none;
+}
+
+/* menu */
+.menu {
+	margin-top: 20px;
+	padding: 5px;
+	box-shadow: 0px 2px 5px #ebebeb;
+	position: relative;
+	background: #fff;
+	
+}
+
+/* carousel */
+.carousel {
+	width: 1170px;
+	margin: 10px auto;
+   	overflow: hidden;
+   	padding-top: 0px;
+}
+
+/* foot */
+.foot {
+	width: 100%;
+	height: 250px;
+	background-color: #FF6A6A;
+}
+
+/* body */
+/* 公告  */
+.anno {
+	height: 150px;
+}
+.gg {
+	height: 150px; 
+	border-right: 1px solid;
+}
+.gg span {
+	font-size: 20px;
+}
+
+/* apache 开源组件 */
+.apache {
+	margin: 10px auto;
+}
+.title {
+	line-height: 40px;
+}
+.apache .apacheMedia {
+	margin: 5px auto;
+}
+.apacheImg {
+	width: 240px; 
+	height:140px; 
+	padding: 5px;
+}
+
+/* apache 或者 document 搜索框 */
+
+
+/* 技术文档 */
+.document {
+	margin: 10px auto;
+}
+.documenttitle {
+	width: 100%; 
+	height: 40px; 
+	line-height: 40px; 
+	margin-left: 22px;
+}
+.documentbody {
+	float: left; 
+	margin-left: 22px;
+}
+.documentbody img {
+	margin-top: 5px; 
+}
+.documentsummary {
+	width: 200px; 
+	height: 40px;
+}
+
+/* 获取网站源码 */

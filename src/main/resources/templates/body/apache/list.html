@@ -1,0 +1,49 @@
+<meta charset="utf-8"/>
+<div id="apache">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a href="/apache/getlist/1">Apache 开源组件</a>
+			<a th:if="${apacheOSType != null}">
+				<cite th:text="${'范围 ' + apacheOSType.name}"></cite>
+			</a>
+			<a th:if="${apacheOSType == null}">
+				<cite>全部</cite>
+			</a>
+		</span>
+		
+		<div class="layui-form-item" style="width: 100%; min-height:60px; margin: 20px auto; padding: 5px;">
+			<font style="font-size: 20px;">Apache类型:</font>
+			<div class="layui-inline" style="font-size: 20px; margin-left: 5px;">
+				<a style="width: 60px; height:30px;" href="/apache/getlist/1">全部</a>
+			</div>
+			<div class="layui-inline" style="font-size: 20px; margin-left: 5px;" th:each="type:${application.apacheOSTypeList}">
+				<a style="width: 60px; height:30px;" th:text="${type.name}" th:href="'/apache/getlist/1?typeId=' + ${type.id}"></a>
+			</div>
+		</div>
+		
+		<div style="min-height: 500px; margin-top: 15px;">
+			<div th:each="apacheOS:${apacheOSList}">
+				<div style="width: 100%; height:110px; margin: 10px auto; padding: 5px;">
+					<div style="position: absolute;">
+						<a th:href="'/apache/' + ${apacheOS.id}">
+							<img th:src="${apacheOS.img}" style="width: 200px; height: 100px;">
+						</a>
+					</div>
+					<div style="position: absolute; margin-left: 210px;">
+						<a th:href="'/apache/' + ${apacheOS.id}">
+							<h2 th:text="${apacheOS.name}"></h2>
+						</a>
+						<a th:href="'/apache/' + ${apacheOS.id}">
+							<p style="width: 800px;" th:text="${apacheOS.summary}"></p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item" style="width: 100%; height:60px; margin: 20px auto; padding: 5px;">
+			<div th:utext="${pageCode}" style="text-align: center;"></div>
+		</div>
+	</div>
+</div>

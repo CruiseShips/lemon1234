@@ -1,0 +1,30 @@
+<meta charset="utf-8"/>
+<div id="document">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a href="/document/getlist/1">技术文档</a>
+			<a><cite th:text="${document.name}"></cite></a>
+		</span>
+		
+		<div style="width: 100%; min-height:270px; margin: 20px auto; padding: 5px;">
+			<div style="position: absolute;">
+				<img th:src="${document.img}" width="400px;" height="260px;">
+			</div>
+			<div style="position: absolute; margin-left: 410px;">
+				<h1 th:text="${document.name}" style="text-align: center;"></h1>
+				<p class="text-center" th:text="'作者:' + ${document.author} + ' | 收录日期: ' + ${#dates.format(document.createDt,'yyyy-MM-dd HH:mm:ss')}">
+				<p th:if="${document.status eq 0}" th:text="'可正常访问'"></p>
+				<p th:if="${document.status eq 1}" th:text="'连接过期'"></p>
+				<p th:text="${document.baiduUrl}"></p>
+				<p th:text="${document.password}"></p>
+			</div>
+			
+			<hr>
+		</div>
+		
+		<div style="width: 100%; min-height:600px; margin: 20px auto; padding: 5px;">
+			<p class="text-capitalize" th:utext="${document.content}"></p>
+		</div>
+	</div>
+</div>
