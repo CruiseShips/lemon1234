@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>添加 ApacheOS</title>
+	<title>添加 OpenOS</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -11,7 +11,7 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>添加 ApacheOS</cite></a>
+		<a><cite>添加 OpenOS</cite></a>
 	</span>
 </div>
 
@@ -20,7 +20,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">OS名称：</label>
             <div class="layui-input-block">
-                <input type="text" id="name" name="name" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="name" name="name" placeholder="请输入OpenOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -32,19 +32,19 @@
 		<div class="layui-form-item">
             <label class="layui-form-label">官网地址：</label>
             <div class="layui-input-block">
-                <input type="text" id="url" name="url" placeholder="请输入ApacheOS官网地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="url" name="url" placeholder="请输入OpenOS官网地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">使用语言：</label>
             <div class="layui-input-block">
-                <select id="languageId" name="language.id" class="layui-input" style="width: 360px" placeholder="请选择ApahceOS使用语言" lay-filter="languageId"></select>
+                <select id="languageId" name="language.id" class="layui-input" style="width: 360px" placeholder="请选择OpenOS使用的语言" lay-filter="languageId"></select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">类别状态：</label>
             <div class="layui-input-block">
-                <select id="apacheOSTypeId" name="apacheOSType.id" class="layui-input" style="width: 360px" placeholder="请选择ApahceOS状态类别" lay-filter="apacheOSTypeId"></select>
+                <select id="openOSTypeId" name="openOSType.id" class="layui-input" style="width: 360px" placeholder="请选择OpenOS状态类别" lay-filter="openOSTypeId"></select>
             </div>
         </div>
         <div class="layui-form-item">
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">Apache叙述：</label>
+            <label class="layui-form-label">OpenOS叙述：</label>
             <div class="layui-input-block">
                 <textarea type="text" class="ckeditor" id="content" name="content" class="layui-input" ></textarea>
             </div>
@@ -66,13 +66,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">博客链接：</label>
             <div class="layui-input-block">
-                <input type="text" id="studyUrl" name="studyUrl" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="studyUrl" name="studyUrl" placeholder="请输入OpenOS博客链接"  autocomplete="off" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">demo地址：</label>
             <div class="layui-input-block">
-                <input type="text" id="demoUrl" name="demoUrl" placeholder="请输入ApacheOS名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="demoUrl" name="demoUrl" placeholder="请输入OpenOS Demo地址"  autocomplete="off" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -90,18 +90,18 @@
 <script type="text/javascript">
 /*<![CDATA[*/
 	
-	apacheOSTypeId=-1;
+	openOSTypeId=-1;
 	languageId=-1;
 	
 	layui.use(['element','form'], function(){
 		var form=layui.form;
         var element = layui.element;
         
-        $.post("/admin/apacheOSType/list",{},function(result){
+        $.post("/admin/openOSType/list",{},function(result){
             if(result.code==0){
-                $("#apacheOSTypeId").prepend("<option value='-1'>请选择类型类别</option>");
+                $("#openOSTypeId").prepend("<option value='-1'>请选择类型类别</option>");
                 for (var i = 0; i < result.data.length; i++) {
-                    $("#apacheOSTypeId").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
+                    $("#openOSTypeId").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
                 }
                 layui.form.render("select");
             }else{
@@ -121,8 +121,8 @@
             }
         },"json");
         
-        form.on('select(apacheOSTypeId)', function(data){
-            apacheOSTypeId=data.value;
+        form.on('select(openOSTypeId)', function(data){
+        	openOSTypeId=data.value;
         });
 
         form.on('select(languageId)', function(data){
@@ -148,6 +148,10 @@
         	layer.alert("请输入简介");
             return false;
         }
+        if(summary.length > 300) {
+        	layer.alert("简介不能超过300个字哦~");
+            return false;
+        }
         if(url == "") {
         	layer.alert("请输入官网链接");
             return false;
@@ -160,7 +164,7 @@
         	layer.alert("请输入ApacheOS叙述");
             return false;
         }
-        if(apacheOSTypeId == -1) {
+        if(openOSTypeId == -1) {
         	layer.alert("请选择ApacheOS类型");
             return false;
         }
@@ -169,10 +173,10 @@
             return false;
         }
         
-        $.post("/admin/apacheOS/addApacheOS",{name:name,summary:summary,url:url,status:status,content:content,"language.id":languageId,"apacheOSType.id":apacheOSTypeId,studyUrl:studyUrl,demoUrl:demoUrl},function(result){
+        $.post("/admin/apacheOS/addOpenOS",{name:name,summary:summary,url:url,status:status,content:content,"language.id":languageId,"openOSType.id":openOSTypeId,studyUrl:studyUrl,demoUrl:demoUrl},function(result){
             if(result.success){
                 layer.alert('添加成功！',function () {
-                    window.parent.openPage('apacheManage.html');
+                    window.parent.openPage('openManage.html');
                 });
             }else{
                 layer.alert(result.errorInfo);

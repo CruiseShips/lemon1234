@@ -1,0 +1,49 @@
+<meta charset="utf-8"/>
+<div id="open">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a href="/open/getlist/1">Open 开源组件</a>
+			<a th:if="${openOSType != null}">
+				<cite th:text="${'范围 ' + openOSType.name}"></cite>
+			</a>
+			<a th:if="${openOSType == null}">
+				<cite>全部</cite>
+			</a>
+		</span>
+		
+		<div class="layui-form-item" style="width: 100%; min-height:60px; margin: 20px auto; padding: 5px;">
+			<font style="font-size: 20px;">Open 类型:</font>
+			<div class="layui-inline" style="font-size: 20px; margin-left: 5px;">
+				<a style="width: 60px; height:30px;" href="/open/getlist/1">全部</a>
+			</div>
+			<div class="layui-inline" style="font-size: 20px; margin-left: 5px;" th:each="type:${application.openOSTypes}">
+				<a style="width: 60px; height:30px;" th:text="${type.name}" th:href="'/open/getlist/1?typeId=' + ${type.id}"></a>
+			</div>
+		</div>
+		
+		<div style="min-height: 500px; margin-top: 15px;">
+			<div th:each="openOS:${openOSList}">
+				<div style="width: 100%; height:110px; margin: 10px auto; padding: 5px;">
+					<div style="position: absolute;">
+						<a th:href="'/open/' + ${openOS.id}">
+							<img th:src="${openOS.img}" style="width: 200px; height: 100px;">
+						</a>
+					</div>
+					<div style="position: absolute; margin-left: 210px;">
+						<a th:href="'/open/' + ${openOS.id}">
+							<h2 th:text="${openOS.name}"></h2>
+						</a>
+						<a th:href="'/open/' + ${openOS.id}">
+							<p style="width: 800px;" th:text="${openOS.summary}"></p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item" style="width: 100%; height:60px; margin: 20px auto; padding: 5px;">
+			<div th:utext="${pageCode}" style="text-align: center;"></div>
+		</div>
+	</div>
+</div>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Apache 框架管理</title>
+	<title>Open 框架管理</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -11,7 +11,7 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>Apache 框架管理</cite></a>
+		<a><cite>Open 框架管理</cite></a>
 	</span>
 </div>
 <div style="padding-top: 20px;">
@@ -19,9 +19,9 @@
         <div class="layui-form">
 
             <div class="layui-inline">
-                <label class="layui-form-label" style="width: 140px;">Apache 开源名称：</label>
+                <label class="layui-form-label" style="width: 140px;">Open 开源名称：</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="s_name"  placeholder="请输入" autocomplete="off" style="width: 400px" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+                    <input type="text" id="s_name"  placeholder="请输入 Open开源名称" autocomplete="off" style="width: 400px" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
                 </div>
             </div>
 
@@ -29,12 +29,12 @@
                 <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search" style="margin: 15px;">
                     <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
                 </button>
-                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addApacheOS()">添加新的ApacheOS</button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addOpenOS()">添加新的OpenOS</button>
             </div>
         </div>
     </div>
     <div>
-        <table width="100%" id="apacheOSTable" ></table>
+        <table width="100%" id="openOSTable" ></table>
     </div>
 </div>
 
@@ -51,12 +51,12 @@
         table = layui.table;
         
         table.render({
-            elem: '#apacheOSTable'
-            ,url:'/admin/apacheOS/list'
+            elem: '#openOSTable'
+            ,url:'/admin/openOS/list'
             ,cols: [[
                 {type:'checkbox'}
                 ,{field:'id', width:60, title: '编号' ,align:'center'}
-                ,{field:'name', width:150, title: 'ApacheOS 名称' ,align:'center'}
+                ,{field:'name', width:150, title: 'OpenOS 名称' ,align:'center'}
                 ,{field:'summary', width:500, title: '简介'}
                 ,{field:'img', width:150,title: '图片',templet:formatImg, align:'center'}
                 ,{field:'url', width:200,title: '连接' ,align:'center'}
@@ -79,7 +79,7 @@
 	
 	function search(){
         var s_name=$("#s_name").val();
-        table.reload("apacheOSTable",{
+        table.reload("openOSTable",{
             page:{
                 curr:1
             }
@@ -90,20 +90,20 @@
     }
 	
 	function formatAction(d) {
-		var button = "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyApacheOSImage("+d.id+")'><i class='layui-icon layui-icon-edit'></i>修改图片</button>" 
+		var button = "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyOpenOSImage("+d.id+")'><i class='layui-icon layui-icon-edit'></i>修改图片</button>" 
 					 +
-					 "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyApacheOS("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button>"
+					 "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyOpenOS("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button>"
 					 +
 					 "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
 		return button;
 	}
 	
-	function modifyApacheOSImage(id) {
+	function modifyOpenOSImage(id) {
 		layer.open({
             type: 2,
-            title: '修改ApacheOS图片',
+            title: '修改OpenOS图片',
             area: ['600px', '500px'],
-            content: '/admin/openApacheOSImage.html?id='+id
+            content: '/admin/openOpenOSImage.html?id='+id
         });
 	}
 	
@@ -113,10 +113,10 @@
             btn:['确定','取消']
         },function () {
             layer.closeAll("dialog");
-            $.post("/admin/apacheOS/delete",{"id":id},function (result) {
+            $.post("/admin/openOS/delete",{"id":id},function (result) {
                 if(result.success){
                     layer.msg("删除成功！");
-                    table.reload("apacheOSTable",{});
+                    table.reload("openOSTable",{});
                 }else{
                     layer.msg("删除失败，请联系管理员！");
                 }
@@ -126,16 +126,16 @@
         });
 	}
 	
-	function addApacheOS() {
-		window.parent.openPage('addApacheOS.html');
+	function addOpenOS() {
+		window.parent.openPage('addOpenOS.html');
 	}
 	
-	function modifyApacheOS(id) {
+	function modifyOpenOS(id) {
 		layer.open({
             type: 2,
-            title: '修改ApacheOS',
+            title: '修改OpenOS',
             area: ['1000px', '730px'],
-            content: '/admin/updateApacheOS.html?id='+id
+            content: '/admin/updateOpenOS.html?id='+id
         });
 	}
 	

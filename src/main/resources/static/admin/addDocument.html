@@ -104,6 +104,10 @@
         	layer.alert("请输入简介");
             return false;
         }
+        if(summary.length > 300) {
+        	layer.alert("简介不能超过300个字哦~");
+            return false;
+        }
         if(content == "") {
         	layer.alert("请输入主体内容");
             return false;

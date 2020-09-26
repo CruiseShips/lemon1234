@@ -28,10 +28,11 @@
 					</div>
 					<div style="position: absolute; margin-left: 210px;">
 						<a th:href="'/document/' + ${document.id}">
-							<h2 th:text="${document.name}"></h2>
+							<h3 th:text="${document.name}"></h3>
 						</a>
 						<a th:href="'/document/' + ${document.id}">
-							<p style="width: 800px;" th:text="${document.summary}"></p>
+							<p th:if="${#strings.length(document.summary) > 100}" style="width: 800px;" th:text="${#strings.abbreviate(document.summary, 100)}"></p>
+							<p th:if="${#strings.length(document.summary) <= 100}" style="width: 800px;" th:text="${document.summary}"></p>
 						</a>
 					</div>
 				</div>

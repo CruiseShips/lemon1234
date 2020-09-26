@@ -28,7 +28,11 @@ function ResizeImages(maxwidth,maxheight,targetDom)
 {
    var myimg,oldwidth,oldheight;
 
-   var imgs = document.getElementById(targetDom).getElementsByTagName('img');   //如果你定义的id不是article，请修改此处
+   var dom = document.getElementById(targetDom);
+   if(dom == null) {
+	   return;
+   }
+   var imgs = dom.getElementsByTagName('img');
 
 
    for(i=0;i<imgs.length;i++){

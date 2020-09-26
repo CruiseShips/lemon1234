@@ -75,28 +75,29 @@ body a:active {
 	font-size: 20px;
 }
 
-/* apache 开源组件 */
-.apache {
+/* open 开源组件 */
+.open {
 	margin: 10px auto;
 }
 .title {
 	line-height: 40px;
 }
-.apache .apacheMedia {
+.open .openMedia {
 	margin: 5px auto;
 }
-.apacheImg {
+.openImg {
 	width: 240px; 
 	height:140px; 
 	padding: 5px;
 }
 
-/* apache 或者 document 搜索框 */
+/* open 或者 document 搜索框 */
 
 
 /* 技术文档 */
 .document {
 	margin: 10px auto;
+	border: 1px solid;
 }
 .documenttitle {
 	width: 100%; 

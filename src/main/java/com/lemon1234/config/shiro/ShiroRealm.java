@@ -43,18 +43,18 @@ public class ShiroRealm extends AuthorizingRealm {
 			info.addStringPermission("按照每天获取前5的记录");
 			info.addStringPermission("获取一些列数字");
 			
-			info.addStringPermission("查看所有apache开源框架");
-			info.addStringPermission("查看apache开源框架信息");
-			info.addStringPermission("修改Apacheimg");
-			info.addStringPermission("删除apache");
-			info.addStringPermission("添加apache");
-			info.addStringPermission("修改apache");
+			info.addStringPermission("查看所有open开源框架");
+			info.addStringPermission("查看open开源框架信息");
+			info.addStringPermission("修改openImg");
+			info.addStringPermission("删除open");
+			info.addStringPermission("添加open");
+			info.addStringPermission("修改open");
 			
-			info.addStringPermission("查看所有apachetype");
-			info.addStringPermission("删除apachetype");
-			info.addStringPermission("通过id获取apacheType");
-			info.addStringPermission("修改apacheType");
-			info.addStringPermission("添加apacheType");
+			info.addStringPermission("查看所有opentype");
+			info.addStringPermission("删除opentype");
+			info.addStringPermission("通过id获取openType");
+			info.addStringPermission("修改openType");
+			info.addStringPermission("添加openType");
 			
 			info.addStringPermission("查看所有language");
 			info.addStringPermission("添加Language");

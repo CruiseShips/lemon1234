@@ -2,23 +2,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lemon1234.mapper.ApacheOSMapper">
+<mapper namespace="com.lemon1234.mapper.OpenOSMapper">
 	
-	<resultMap id="ApacheOSResult" type="ApacheOS">
+	<resultMap id="OpenOSResult" type="OpenOS">
 		<association property="language"
 					 column="languageId" select="com.lemon1234.mapper.LanguageMapper.getById"
 					 >
 		</association>
-		<association property="apacheOSType"
-					 column="typeId" select="com.lemon1234.mapper.ApacheOSTypeMapper.getById"
+		<association property="openOSType"
+					 column="typeId" select="com.lemon1234.mapper.OpenOSTypeMapper.getById"
 					 >
 		</association>
 	</resultMap>
 	
-	<select id="getlist" parameterType="Map" resultMap="ApacheOSResult">
+	<select id="getlist" parameterType="Map" resultMap="OpenOSResult">
 		SELECT
 			*
-		FROM t_apacheos 
+		FROM t_openos 
 		WHERE 1=1
 		<if test="status != null">
 			AND status = #{status}
@@ -44,7 +44,7 @@
 	
 	<select id="getCount" parameterType="Map" resultType="Integer">
 		SELECT COUNT(1)
-		FROM t_apacheos 
+		FROM t_openos 
 		WHERE 1=1
 		<if test="status != null">
 			AND status = #{status}
@@ -57,14 +57,14 @@
 		</if>
 	</select>
 	
-	<select id="getById" parameterType="Integer" resultMap="ApacheOSResult">
+	<select id="getById" parameterType="Integer" resultMap="OpenOSResult">
 		SELECT *
-		FROM t_apacheos
+		FROM t_openos
 		WHERE id = #{id}
 	</select>
 	
-	<update id="updateApacheOS" parameterType="ApacheOS">
-		UPDATE t_apacheos
+	<update id="updateOpenOS" parameterType="OpenOS">
+		UPDATE t_openos
 		<set>
 			<if test="view != null">
 				view = view + #{view},
@@ -90,8 +90,8 @@
 			<if test="status != null">
 				status = #{status},
 			</if>
-			<if test="apacheOSType != null and apacheOSType.id != null">
-				typeId = #{apacheOSType.id},
+			<if test="openOSType != null and openOSType.id != null">
+				typeId = #{openOSType.id},
 			</if>
 			<if test="studyUrl != null">
 				studyUrl = #{studyUrl},
@@ -106,24 +106,24 @@
 		WHERE id = #{id}
 	</update>
 	
-	<delete id="deleteApacheOS" parameterType="Integer">
-		DELETE FROM t_apacheos WHERE id = #{id}
+	<delete id="deleteOpenOS" parameterType="Integer">
+		DELETE FROM t_openos WHERE id = #{id}
 	</delete>
 	
-	<insert id="addApacheOS" parameterType="ApacheOS">
-		INSERT INTO t_apacheos(
+	<insert id="addOpenOS" parameterType="OpenOS">
+		INSERT INTO t_openos(
 			id, name, summary, img, content, url, createDt, languageId, status, typeId, studyUrl, demoUrl, view, share
 		)
-		VALUES(null, #{name}, #{summary}, #{img}, #{content}, #{url}, NOW(), #{language.id}, #{status}, #{apacheOSType.id}, #{studyUrl}, #{demoUrl}, #{view}, #{share})
+		VALUES(null, #{name}, #{summary}, #{img}, #{content}, #{url}, NOW(), #{language.id}, #{status}, #{openOSType.id}, #{studyUrl}, #{demoUrl}, #{view}, #{share})
 	</insert>
 	
 	<select id="findByTypeId" parameterType="Integer" resultType="Integer">
-		SELECT COUNT(1) from t_apacheos
+		SELECT COUNT(1) from t_openos
 		WHERE typeId = #{id}
 	</select>
 	
 	<select id="findByLanguageId" parameterType="Integer" resultType="Integer">
-		SELECT COUNT(1) from t_apacheos
+		SELECT COUNT(1) from t_openos
 		WHERE languageId = #{id}
 	</select>
 	

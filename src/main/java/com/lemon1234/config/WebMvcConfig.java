@@ -13,8 +13,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private String documentImgFile;
 	@Value("${adminImgFile}")
 	private String adminImgFile;
-	@Value("${apacheOSImgFile}")
-	private String apacheOSImgFile;
+	@Value("${openOSImgFile}")
+	private String openOSImgFile;
 	@Value("${ckeditorImgFile}")
 	private String ckeditorImgFile;
 	@Value("${activityImgFile}")
@@ -33,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/documentImg/**").addResourceLocations(documentImgFile);
 		registry.addResourceHandler("/adminImg/**").addResourceLocations(adminImgFile);
-		registry.addResourceHandler("/apacheOSImg/**").addResourceLocations(apacheOSImgFile);
+		registry.addResourceHandler("/openOSImg/**").addResourceLocations(openOSImgFile);
 		registry.addResourceHandler("/ckeditorImg/**").addResourceLocations(ckeditorImgFile);
 		registry.addResourceHandler("/activityImg/**").addResourceLocations(activityImgFile);
 	}

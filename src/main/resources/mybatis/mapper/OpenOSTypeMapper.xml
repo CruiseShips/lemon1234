@@ -2,17 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lemon1234.mapper.ApacheOSTypeMapper">
+<mapper namespace="com.lemon1234.mapper.OpenOSTypeMapper">
 
-    <resultMap type="ApacheOSType" id="ApacheOSTypeResult">
+    <resultMap type="OpenOSType" id="OpenOSTypeResult">
     </resultMap>
 
-    <select id="getById" parameterType="ApacheOSType" resultMap="ApacheOSTypeResult">
-        select * from t_apacheostype where id = #{id}
+    <select id="getById" parameterType="OpenOSType" resultMap="OpenOSTypeResult">
+        select * from t_openostype where id = #{id}
     </select>
     
-    <select id="getlist" parameterType="Map" resultMap="ApacheOSTypeResult">
-    	SELECT * FROM t_apacheostype
+    <select id="getlist" parameterType="Map" resultMap="OpenOSTypeResult">
+    	SELECT * FROM t_openostype
     	ORDER BY sort
     	<if test="page != null and limit != null">
 			limit #{page},#{limit}
@@ -20,16 +20,16 @@
     </select>
     
     <select id="getCount" parameterType="Map" resultType="Integer">
-    	SELECT COUNT(1) FROM t_apacheostype
+    	SELECT COUNT(1) FROM t_openostype
     </select>
     
     <delete id="delete" parameterType="Integer">
-    	DELETE FROM t_apacheostype 
+    	DELETE FROM t_openostype 
     	WHERE id = #{id}
     </delete>
     
-    <update id="update" parameterType="ApacheOSType">
-    	UPDATE t_apacheostype
+    <update id="update" parameterType="OpenOSType">
+    	UPDATE t_openostype
     	<set>
     		<if test="name != null">
     			name = #{name},
@@ -41,8 +41,8 @@
     	WHERE id = #{id}
     </update>
 
-	<insert id="addApacheOSType" parameterType="ApacheOSType">
-		INSERT INTO t_apacheostype(id, name, sort)
+	<insert id="addOpenOSType" parameterType="OpenOSType">
+		INSERT INTO t_openostype(id, name, sort)
 		VALUES(null, #{name}, #{sort})
 	</insert>
 </mapper>

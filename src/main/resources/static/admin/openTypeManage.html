@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>ApacheType 类型管理</title>
+	<title>OpenType 类型管理</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -11,19 +11,19 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>Apache 类型架管理</cite></a>
+		<a><cite>Open 类型架管理</cite></a>
 	</span>
 </div>
 <div style="padding-top: 20px;">
 	<div style="padding: 20px">
         <div class="layui-form">
             <div class="layui-inline">
-                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addApacheOSType()">添加新的ApacheOS Type</button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addOpenOSType()">添加新的OpenOS Type</button>
             </div>
         </div>
     </div>
 	<div>
-        <table width="100%" id="apacheTypeTable" ></table>
+        <table width="100%" id="openTypeTable" ></table>
     </div>
 </div>
 
@@ -40,8 +40,8 @@
         table = layui.table;
         
         table.render({
-            elem: '#apacheTypeTable'
-            ,url:'/admin/apacheOSType/list'
+            elem: '#openTypeTable'
+            ,url:'/admin/openOSType/list'
             ,cols: [[
                 {type:'checkbox'}
                 ,{field:'id', title: '编号' ,align:'center'}
@@ -65,12 +65,12 @@
             btn:['确定','取消']
         },function () {
             layer.closeAll("dialog");
-            $.post("/admin/apacheOSType/delete",{"id":id},function (result) {
+            $.post("/admin/openOSType/delete",{"id":id},function (result) {
                 if(result.success){
                     layer.msg("删除成功！");
-                    table.reload("apacheTypeTable",{});
+                    table.reload("openTypeTable",{});
                 }else{
-                    layer.msg("删除失败，存在已经关联的ApacheOS，无法删除");
+                    layer.msg("删除失败，存在已经关联的OpenOS，无法删除");
                 }
             },"json");
         },function () {
@@ -81,18 +81,18 @@
 	function modifyOne(id) {
 		layer.open({
             type: 2,
-            title: '修改ApacheOSType',
+            title: '修改OpenOSType',
             area: ['600px', '310px'],
-            content: '/admin/updateApacheOSType.html?id='+id
+            content: '/admin/updateOpenOSType.html?id='+id
         });
 	}
 	
-	function addApacheOSType() {
+	function addOpenOSType() {
 		layer.open({
             type: 2,
-            title: '添加ApacheOSType',
+            title: '添加OpenOSType',
             area: ['600px', '310px'],
-            content: '/admin/addApacheOSType.html'
+            content: '/admin/addOpenOSType.html'
         });
 	}
 	

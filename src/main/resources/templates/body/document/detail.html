@@ -14,16 +14,16 @@
 			<div style="position: absolute; margin-left: 410px;">
 				<h1 th:text="${document.name}" style="text-align: center;"></h1>
 				<p class="text-center" th:text="'作者:' + ${document.author} + ' | 收录日期: ' + ${#dates.format(document.createDt,'yyyy-MM-dd HH:mm:ss')}">
-				<p th:if="${document.status eq 0}" th:text="'可正常访问'"></p>
-				<p th:if="${document.status eq 1}" th:text="'连接过期'"></p>
-				<p th:text="${document.baiduUrl}"></p>
-				<p th:text="${document.password}"></p>
+				<p th:if="${document.status eq 0}" th:text="'可正常访问百度云盘'"></p>
+				<p th:if="${document.status eq 1}" th:text="'百度云盘连接过期'"></p>
+				<p th:text="${'百度云盘连接：   ' + document.baiduUrl}"></p>
+				<p th:text="${'密码：   ' + document.password}"></p>
 			</div>
 			
 			<hr>
 		</div>
 		
-		<div style="width: 100%; min-height:600px; margin: 20px auto; padding: 5px;">
+		<div style="width: 100%; min-height:600px; margin: 20px auto; padding: 5px; word-wrap:break-word;" id="content">
 			<p class="text-capitalize" th:utext="${document.content}"></p>
 		</div>
 	</div>

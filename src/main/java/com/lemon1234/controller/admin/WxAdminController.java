@@ -151,19 +151,21 @@ public class WxAdminController {
 		List<Object> sex = new ArrayList<Object>();
 		List<Object> count = new ArrayList<Object>();
 		
-		// gender count
-		Set<String> keys = proportion.get(0).keySet();
-		for(Map<String, Object> map : proportion) {
-			for(String key : keys) {
-				Object num = map.get(key);
-				if("gender".equals(key)) {
-					// 性别 0：未知、1：男、2：女
-					sex.add(num);
+		if(proportion != null && proportion.size() > 0) {
+			// gender count
+			Set<String> keys = proportion.get(0).keySet();
+			for(Map<String, Object> map : proportion) {
+				for(String key : keys) {
+					Object num = map.get(key);
+					if("gender".equals(key)) {
+						// 性别 0：未知、1：男、2：女
+						sex.add(num);
+					}
+					if("count".equals(key)) {
+						count.add(num);
+					}
+					map.get(key);
 				}
-				if("count".equals(key)) {
-					count.add(num);
-				}
-				map.get(key);
 			}
 		}
 		
@@ -183,18 +185,20 @@ public class WxAdminController {
 		List<Object> dt = new ArrayList<Object>();
 		List<Object> count = new ArrayList<Object>();
 		
-		//count dt
-		Set<String> keys = proportion.get(0).keySet();
-		for(Map<String, Object> map : proportion) {
-			for(String key : keys) {
-				Object num = map.get(key);
-				if("dt".equals(key)) {
-					dt.add(num);
+		if(proportion != null && proportion.size() > 0) {
+			//count dt
+			Set<String> keys = proportion.get(0).keySet();
+			for(Map<String, Object> map : proportion) {
+				for(String key : keys) {
+					Object num = map.get(key);
+					if("dt".equals(key)) {
+						dt.add(num);
+					}
+					if("count".equals(key)) {
+						count.add(num);
+					}
+					map.get(key);
 				}
-				if("count".equals(key)) {
-					count.add(num);
-				}
-				map.get(key);
 			}
 		}
 		

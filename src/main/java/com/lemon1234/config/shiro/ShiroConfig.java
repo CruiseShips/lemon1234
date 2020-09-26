@@ -51,14 +51,14 @@ public class ShiroConfig {
         
         // 图片路径
         filterChainDefinitionMap.put("/documentImg/**", "anon");
-        filterChainDefinitionMap.put("/apacheOSImg/**", "anon");
+        filterChainDefinitionMap.put("/openOSImg/**", "anon");
         filterChainDefinitionMap.put("/adminImg/**", "anon");
         filterChainDefinitionMap.put("/activityImg/**", "anon");
         filterChainDefinitionMap.put("/ckeditorImg/**", "anon");
         
         // 前端请求
         filterChainDefinitionMap.put("/anno/**", "anon");
-        filterChainDefinitionMap.put("/apache/**", "anon");
+        filterChainDefinitionMap.put("/open/**", "anon");
         filterChainDefinitionMap.put("/getOSCode", "anon");
         filterChainDefinitionMap.put("/aboutMe", "anon");
         filterChainDefinitionMap.put("/route", "anon");

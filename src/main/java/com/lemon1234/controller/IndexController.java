@@ -12,11 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lemon1234.entity.Activity;
 import com.lemon1234.entity.Announcement;
-import com.lemon1234.entity.ApacheOS;
+import com.lemon1234.entity.OpenOS;
 import com.lemon1234.entity.Document;
 import com.lemon1234.service.ActivityService;
 import com.lemon1234.service.AnnouncementService;
-import com.lemon1234.service.ApacheOSService;
+import com.lemon1234.service.OpenOSService;
 import com.lemon1234.service.DocumentService;
 
 @Controller
@@ -29,7 +29,7 @@ public class IndexController {
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
-	private ApacheOSService apacheOSService;
+	private OpenOSService openOSService;
 	@Autowired
 	private ActivityService activityService;
 	
@@ -41,7 +41,7 @@ public class IndexController {
 		param.put("status", 0);
 		List<Document> documentList = documentService.getlist(param);
 		param.put("limit", 5);
-		List<ApacheOS> apacheOSList = apacheOSService.getlist(param);
+		List<OpenOS> openOSList = openOSService.getlist(param);
 		param.clear();
 		param.put("page", 0);
 		param.put("limit", 6);
@@ -57,7 +57,7 @@ public class IndexController {
 		
 		mav.addObject("documentList", documentList);
 		mav.addObject("announcementList", announcementList);
-		mav.addObject("apacheOSList", apacheOSList);
+		mav.addObject("openOSList", openOSList);
 		mav.addObject("activityList", activityList);
 		mav.addObject("url", "common/body");
 		mav.addObject("port", "#body");

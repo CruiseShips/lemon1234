@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Apache 框架修改图片</title>
+	<title>修改 OpenOS框架图片</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -13,7 +13,7 @@
     <div class="layui-upload" style="padding-top: 5px">
         <button type="button" class="layui-btn" id="uploadBtn">上传图片</button>
         <div class="layui-inline layui-word-aux">
-            图片大小限制500KB 标准尺寸448*280
+            图片大小限制1024KB
         </div>
         <div class="layui-upload-list">
             <img height="280" width="448" class="layui-upload-img" id="uploadImage">
@@ -38,8 +38,8 @@
       	//普通图片上传
         var uplboadInst = upload.render({
             elem: '#uploadBtn'
-            ,url: '/admin/apacheOS/uploadImage?id='+$("#id").val()
-            ,size: 500 //限制文件大小，单位 KB
+            ,url: '/admin/openOS/uploadImage?id='+$("#id").val()
+            ,size: 1024 //限制文件大小，单位 KB
             ,before: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
@@ -80,10 +80,10 @@
         var id=getQueryVariable("id");
         $("#id").val(id);
         if(id){
-            $.post("/admin/apacheOS/getdetail",{id:id},function(result){
+            $.post("/admin/openOS/getdetail",{id:id},function(result){
                 if(result.success){
-                    var apacheOS=result.apacheOS;
-                    $("#uploadImage").attr("src", apacheOS.img);
+                    var openOS = result.openOS;
+                    $("#uploadImage").attr("src", openOS.img);
                 }else{
                     layer.alert('服务器加载有问题，请联系管理员！');
                 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>添加  ApacheType</title>
+	<title>添加 OpenType</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -11,7 +11,7 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>添加 ApacheOSType</cite></a>
+		<a><cite>添加 OpenOSType</cite></a>
 	</span>
 </div>
 <div style="padding: 20px">
@@ -61,7 +61,7 @@
 			return false;
 		}
 		
-		$.post("/admin/apacheOSType/addApacheOSType",{name:name,sort:sort},function(result){
+		$.post("/admin/openOSType/addOpenOSType",{name:name,sort:sort},function(result){
             if(result.success){
                 layer.alert('添加成功！',function () {
                 	parent.location.reload();

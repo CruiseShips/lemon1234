@@ -11,34 +11,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lemon1234.entity.ApacheOSType;
-import com.lemon1234.service.ApacheOSService;
-import com.lemon1234.service.ApacheOSTypeService;
+import com.lemon1234.entity.OpenOSType;
+import com.lemon1234.service.OpenOSService;
+import com.lemon1234.service.OpenOSTypeService;
 import com.lemon1234.start.Lemon1234ServerStart;
 
 @Controller
-@RequestMapping("/admin/apacheOSType")
-public class ApacheOSTypeAdminController {
+@RequestMapping("/admin/openOSType")
+public class OpenOSTypeAdminController {
 
 	@Autowired
-	private ApacheOSTypeService apacheOSTypeService;
+	private OpenOSTypeService openOSTypeService;
 	@Autowired
-	private ApacheOSService apacheOSService;
+	private OpenOSService openOSService;
 	@Autowired
 	private Lemon1234ServerStart start;
 	
-	@RequiresPermissions(value={"查看所有apachetype"})
+	@RequiresPermissions(value={"查看所有opentype"})
 	@ResponseBody
 	@RequestMapping("/list")
 	public Map<String, Object> getlist(
 			@RequestParam(value = "page", required = false)Integer page,
 			@RequestParam(value = "limit", required = false)Integer limit) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("page", this.getPageStart(page, limit));
-		param.put("limit", limit);
+		if(page != null && limit != null) {
+			param.put("page", this.getPageStart(page, limit));
+			param.put("limit", limit);	
+		}
 		
-		List<ApacheOSType> types = apacheOSTypeService.getlist(param);
-		int count = apacheOSTypeService.getCount(param);
+		List<OpenOSType> types = openOSTypeService.getlist(param);
+		int count = openOSTypeService.getCount(param);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", 0);
@@ -47,45 +49,45 @@ public class ApacheOSTypeAdminController {
 		return result;
 	}
 	
-	@RequiresPermissions(value = {"删除apachetype"})
+	@RequiresPermissions(value = {"删除opentype"})
 	@ResponseBody
 	@RequestMapping("/delete")
 	public Map<String, Object> delete(Integer id) throws Exception {
 		// 查看是不是能够删除
-		Integer count = apacheOSService.findByTypeId(id);
+		Integer count = openOSService.findByTypeId(id);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if(count > 0) {
 			result.put("success", false);
 		} else {
-			apacheOSTypeService.delete(id);
+			openOSTypeService.delete(id);
 			result.put("success", true);
 		}
 		start.initData();
 		return result;
 	}
 	
-	@RequiresPermissions(value = {"通过id获取apacheType"})
+	@RequiresPermissions(value = {"通过id获取openType"})
 	@ResponseBody
 	@RequestMapping("/getdetail")
 	public Map<String, Object> getdetail(Integer id) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		ApacheOSType apacheOSType = new ApacheOSType();
-		apacheOSType.setId(id);
-		apacheOSType = apacheOSTypeService.getById(apacheOSType);
+		OpenOSType openOSType = new OpenOSType();
+		openOSType.setId(id);
+		openOSType = openOSTypeService.getById(openOSType);
 		
-		result.put("apacheOSType", apacheOSType);
+		result.put("openOSType", openOSType);
 		result.put("success", true);
 		return result;
 	}
 	
-	@RequiresPermissions(value = {"修改apacheType"})
+	@RequiresPermissions(value = {"修改openType"})
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(ApacheOSType apacheOSType) throws Exception {
+	public Map<String, Object> update(OpenOSType openOSType) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(apacheOSType != null && apacheOSType.getId() != 0) {
-			apacheOSTypeService.update(apacheOSType);
+		if(openOSType != null && openOSType.getId() != 0) {
+			openOSTypeService.update(openOSType);
 			result.put("success", true);
 		} else {
 			result.put("success", false);
@@ -94,12 +96,12 @@ public class ApacheOSTypeAdminController {
 		return result;
 	}
 	
-	@RequiresPermissions(value = {"添加apacheType"})
+	@RequiresPermissions(value = {"添加openType"})
 	@ResponseBody
-	@RequestMapping("/addApacheOSType")
-	public Map<String, Object> addApacheOSType(ApacheOSType apacheOSType) throws Exception {
+	@RequestMapping("/addOpenOSType")
+	public Map<String, Object> addOpenOSType(OpenOSType openOSType) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
-		apacheOSTypeService.addApacheOSType(apacheOSType);
+		openOSTypeService.addOpenOSType(openOSType);
 		result.put("success", true);
 		start.initData();
 		return result;

@@ -21,7 +21,8 @@
 				<div class="row" th:each="anno:${announcementList}" th:style="'color:'+${anno.color} + ';'">
 					<div class="col-md-12">
 						<a th:href="'/anno/' + ${anno.id}" target="_blank">
-							<b th:text="${anno.yyyyMMdd} + ' ' + ${anno.title}"></b>
+							<b th:if="${#strings.length(anno.title) <= 20}" th:text="${anno.yyyyMMdd} + ' ' + ${anno.title}"></b>
+							<b th:if="${#strings.length(anno.title) > 20}" th:text="${anno.yyyyMMdd + ' ' + #strings.abbreviate(anno.title,20)}"></b>
 						</a>
 					</div>
 				</div>
@@ -38,21 +39,21 @@
 		最新博客
 	</div> -->
 	
-	<!-- apache开源介绍 -->
-	<div class="container apache">
-		<b class="title">Apache 开源组件</b>
-		<a href="/apache/getlist/1" target="_blank" class="text-right">(More)</a>
-		<div class="media apacheMedia" th:each="apache:${apacheOSList}">
+	<!-- open开源介绍 -->
+	<div class="container open">
+		<b class="title">Open 开源组件</b>
+		<a href="/open/getlist/1" target="_blank" class="text-right">(More)</a>
+		<div class="media openMedia" th:each="open:${openOSList}">
 			<div class="media-left">
-				<a th:href="'/apache/' + ${apache.id}" target="_blank">
-					<img class="media-object apacheImg" th:src="${apache.img}">
+				<a th:href="'/open/' + ${open.id}" target="_blank">
+					<img class="media-object openImg" th:src="${open.img}">
 				</a>
 			</div>
 			<div class="media-body">
-				<a th:href="'/apache/' + ${apache.id}" target="_blank">
-					<span class="media-heading" th:text="${apache.name}" style="font-size: 20px;"></span>
-					<span th:text="'分享量:' + ${apache.share} + ' | 点击量:' + ${apache.view}"></span>
-					<p class="text-capitalize" th:text="${apache.summary}"></p>
+				<a th:href="'/open/' + ${open.id}" target="_blank">
+					<span class="media-heading" th:text="${open.name}" style="font-size: 20px;"></span>
+					<span th:text="'分享量:' + ${open.share} + ' | 点击量:' + ${open.view}"></span>
+					<p class="text-capitalize" th:text="${open.summary}"></p>
 				</a>
 			</div>
 		</div>
@@ -70,12 +71,13 @@
 			</a>
 			<div>
 				<a th:href="'/document/' + ${document.id}" target="_blank">
-					<span th:text="${document.name + '-' + document.author}">名称-作者</span>
+					<span th:text="${document.name + '-' + document.author}"></span>
 				</a>
 			</div>
 			<div class="documentsummary">
 				<a th:href="'/document/' + ${document.id}" target="_blank">
-					<span th:text='${document.summary}'>介绍</span>
+					<span th:if="${#strings.length(document.summary) > 28}" th:text='${#strings.abbreviate(document.summary,25)}'></span>
+					<span th:if="${#strings.length(document.summary) <= 28}" th:text='${document.summary}'></span>
 				</a>
 			</div>
 		</div>

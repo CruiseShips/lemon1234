@@ -28,6 +28,6 @@ logging:
     
 documentImgFile: file:/home/lemon1234_image/documentImg/
 adminImgFile: file:/home/lemon1234_image/adminImg/
-apacheOSImgFile: file:/home/lemon1234_image/apacheOSImg/
+openOSImgFile: file:/home/lemon1234_image/openOSImg/
 ckeditorImgFile: file:/home/lemon1234_image/ckeditorImg/
 activityImgFile: file:/home/lemon1234_image/activityImg/

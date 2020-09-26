@@ -1,6 +1,6 @@
 package com.lemon1234.entity;
 
-public class ApacheOSType {
+public class OpenOSType {
 
 	private int id;
 	// 类型名称
@@ -32,10 +32,10 @@ public class ApacheOSType {
 		this.sort = sort;
 	}
 
-	public ApacheOSType(String typeId) {
+	public OpenOSType(String typeId) {
 		this.id = Integer.parseInt(typeId);
 	}
 
-	public ApacheOSType() {
+	public OpenOSType() {
 	}
 }

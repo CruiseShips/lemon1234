@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lemon1234.entity.Language;
-import com.lemon1234.service.ApacheOSService;
+import com.lemon1234.service.OpenOSService;
 import com.lemon1234.service.LanguageService;
 
 @Controller
@@ -22,7 +22,7 @@ public class LanguageAdminController {
 	@Autowired
 	private LanguageService languageService;
 	@Autowired
-	private ApacheOSService apacheOSService;
+	private OpenOSService openOSService;
 	
 	@RequiresPermissions(value={"查看所有language"})
 	@ResponseBody
@@ -30,8 +30,10 @@ public class LanguageAdminController {
 	public Map<String, Object> getlist(@RequestParam(value = "page", required = false)Integer page,
 			@RequestParam(value = "limit", required = false)Integer limit) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("page", this.getPageStart(page, limit));
-		param.put("limit", limit);
+		if(page != null && limit != null) {
+			param.put("page", this.getPageStart(page, limit));
+			param.put("limit", limit);
+		}
 		
 		List<Language> languages = languageService.getlist(param);
 		Integer count = languageService.getCount(param);
@@ -58,7 +60,7 @@ public class LanguageAdminController {
 	@RequestMapping("/delete")
 	public Map<String, Object> delete(Integer id) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Integer count = apacheOSService.findByLanguageId(id);
+		Integer count = openOSService.findByLanguageId(id);
 		
 		if(count > 0) {
 			result.put("success", false);

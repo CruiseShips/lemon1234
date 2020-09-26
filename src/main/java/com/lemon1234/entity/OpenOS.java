@@ -3,9 +3,9 @@ package com.lemon1234.entity;
 import java.util.Date;
 
 /**
- * Apache Open Source
+ *  Open Source
  */
-public class ApacheOS {
+public class OpenOS {
 
 	private int id;
 	// 开源项目名字
@@ -31,8 +31,8 @@ public class ApacheOS {
 	// 分享次数
 	private int share;
 	
-	// 类别id https://projects.apache.org/projects.html?category#content
-	private ApacheOSType apacheOSType;
+	// 类别 id
+	private OpenOSType openOSType;
 	// 使用语言id
 	private Language language;
 	
@@ -114,11 +114,11 @@ public class ApacheOS {
 	public void setShare(int share) {
 		this.share = share;
 	}
-	public ApacheOSType getApacheOSType() {
-		return apacheOSType;
+	public OpenOSType getOpenOSType() {
+		return openOSType;
 	}
-	public void setApacheOSType(ApacheOSType apacheOSType) {
-		this.apacheOSType = apacheOSType;
+	public void setOpenOSType(OpenOSType openOSType) {
+		this.openOSType = openOSType;
 	}
 	
 }

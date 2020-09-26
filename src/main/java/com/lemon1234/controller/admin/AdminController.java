@@ -89,7 +89,8 @@ public class AdminController {
 	public ModelAndView index(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		if(request.getSession().getAttribute("currentUser") == null) {
-			return null;
+			mav.setViewName("login");
+			return mav;
 		}
 		
 		mav.setViewName("admin/admin");

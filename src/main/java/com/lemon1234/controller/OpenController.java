@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.lemon1234.entity.ApacheOS;
-import com.lemon1234.entity.ApacheOSType;
-import com.lemon1234.service.ApacheOSService;
-import com.lemon1234.service.ApacheOSTypeService;
+import com.lemon1234.entity.OpenOS;
+import com.lemon1234.entity.OpenOSType;
+import com.lemon1234.service.OpenOSService;
+import com.lemon1234.service.OpenOSTypeService;
 import com.lemon1234.util.PageUtil;
 import com.lemon1234.util.StringUtil;
 
 @Controller
-@RequestMapping("/apache")
-public class ApacheController {
+@RequestMapping("/open")
+public class OpenController {
 	
 	@Autowired
-	private ApacheOSService apacheOSService;
+	private OpenOSService openOSService;
 	@Autowired
-	private ApacheOSTypeService apacheOSTypeService;
+	private OpenOSTypeService openOSTypeService;
 	
 	private static final int PAGESIZE = 10;
 
@@ -33,20 +33,20 @@ public class ApacheController {
 	public ModelAndView getbyId(@PathVariable(value="id",required=false) int id) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
-		ApacheOS apacheOS = apacheOSService.getById(id);
+		OpenOS openOS = openOSService.getById(id);
 		this.updateView(id);
-		if(apacheOS == null) {
+		if(openOS == null) {
 			mav.addObject("url", "common/404");
 			mav.addObject("port", "#error404");
 			mav.addObject("title", "404 - Lemon1234");
 		} else {
 			// 查看的是 +1 之后的数
-			apacheOS.setView(apacheOS.getView() + 1);
+			openOS.setView(openOS.getView() + 1);
 			
-			mav.addObject("apacheOS", apacheOS);
-			mav.addObject("url", "body/apache/detail");
-			mav.addObject("port", "#apache");
-			mav.addObject("title", apacheOS.getName() + " - Lemon1234");
+			mav.addObject("openOS", openOS);
+			mav.addObject("url", "body/open/detail");
+			mav.addObject("port", "#open");
+			mav.addObject("title", openOS.getName() + " - Lemon1234");
 		}
 		mav.setViewName("index");
 		return mav;
@@ -69,30 +69,30 @@ public class ApacheController {
 			param.put("status", status);
 		}
 		
-		List<ApacheOS> apacheOSList = apacheOSService.getlist(param);
-		Integer count = apacheOSService.getCount(param);
+		List<OpenOS> openOSList = openOSService.getlist(param);
+		Integer count = openOSService.getCount(param);
 		StringBuffer sb = new StringBuffer();
-		ApacheOSType apacheOSType = null;
+		OpenOSType openOSType = null;
 		if(StringUtil.isNotEmpty(typeId)) {
 			sb.append("?typeId=" + typeId);
-			apacheOSType = apacheOSTypeService.getById(new ApacheOSType(typeId));
+			openOSType = openOSTypeService.getById(new OpenOSType(typeId));
 		}
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("apacheOSList", apacheOSList);
-		mav.addObject("pageCode", PageUtil.genPagination("/apache/getlist", count, Integer.parseInt(page), 10, sb.toString()));
-		mav.addObject("apacheOSType", apacheOSType);
-		mav.addObject("url", "body/apache/list");
-		mav.addObject("port", "#apache");
-		mav.addObject("title", "Apache 开源组件 - Lemon1234");
+		mav.addObject("openOSList", openOSList);
+		mav.addObject("pageCode", PageUtil.genPagination("/open/getlist", count, Integer.parseInt(page), 10, sb.toString()));
+		mav.addObject("openOSType", openOSType);
+		mav.addObject("url", "body/open/list");
+		mav.addObject("port", "#open");
+		mav.addObject("title", "Open 开源组件 - Lemon1234");
 		mav.setViewName("index");
 		return mav;
 	}
 	
 	private void updateView(int id) throws Exception {
-		ApacheOS apacheOS = new ApacheOS();
-		apacheOS.setId(id);
-		apacheOS.setView(1);
-		apacheOSService.updateApacheOS(apacheOS);
+		OpenOS openOS = new OpenOS();
+		openOS.setId(id);
+		openOS.setView(1);
+		openOSService.updateOpenOS(openOS);
 	}
 	
 	private int getPageStart(String page) {
