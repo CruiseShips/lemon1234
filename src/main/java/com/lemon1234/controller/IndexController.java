@@ -1,6 +1,5 @@
 package com.lemon1234.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,23 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lemon1234.entity.Activity;
-import com.lemon1234.entity.Announcement;
 import com.lemon1234.entity.OpenOS;
 import com.lemon1234.entity.Document;
 import com.lemon1234.service.ActivityService;
-import com.lemon1234.service.AnnouncementService;
 import com.lemon1234.service.OpenOSService;
 import com.lemon1234.service.DocumentService;
 
 @Controller
 public class IndexController {
 	
-	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	
 	@Autowired
 	private DocumentService documentService;
-	@Autowired
-	private AnnouncementService announcementService;
 	@Autowired
 	private OpenOSService openOSService;
 	@Autowired
@@ -43,20 +36,12 @@ public class IndexController {
 		param.put("limit", 5);
 		List<OpenOS> openOSList = openOSService.getlist(param);
 		param.clear();
-		param.put("page", 0);
-		param.put("limit", 6);
-		List<Announcement> announcementList = announcementService.getlist(param);
-		param.clear();
 		param.put("status", 0);
 		List<Activity> activityList = activityService.list(param);
 		
-		for (Announcement a:announcementList) {
-			a.setYyyyMMdd(sdf.format(a.getCreateDt()));
-		}
 		ModelAndView mav=new ModelAndView();
 		
 		mav.addObject("documentList", documentList);
-		mav.addObject("announcementList", announcementList);
 		mav.addObject("openOSList", openOSList);
 		mav.addObject("activityList", activityList);
 		mav.addObject("url", "common/body");

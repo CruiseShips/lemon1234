@@ -45,6 +45,30 @@
 	<!-- foot -->
 	<div th:include="common/foot::#foot"></div>
 
+	<!-- 绝对定位 -->
+	<div style="position:fixed; left:60px; top:200px; border: 1px solid lightgrey; display: block;">
+		<img src="/img/gzh.jpg" alt="胖子Java技术栈公众号" class="img-rounded" style="width: 140px; height: 140px; margin-left: 5px;">
+		<div style="text-align: center; padding: 5px">
+			<font>胖子Java技术栈公众号</font>
+		</div>
+		<img src="/img/xcx.jpg" alt="lemon1234官方小程序" class="img-rounded" style="width: 140px; height: 140px; margin-top: 10px; margin-left: 5px;">
+		<div style="text-align: center; padding: 5px">
+			<font>lemon1234官方小程序</font>
+		</div>
+	</div>
+	
+	<div style="position:fixed; right:30px; top:200px; border: 1px solid lightgrey; display: block; padding: 10px; width: 302px; height: 162px;">
+		<span style="font-size: 18px;">告示栏</span>
+		<div class="row" th:each="anno:${application.announcementList}">
+			<div class="col-md-12">
+				<a th:href="'/anno/' + ${anno.id}" target="_blank">
+					<b th:if="${#strings.length(anno.title) <= 20}" th:text="${anno.yyyyMMdd} + ' ' + ${anno.title}" th:style="'color:'+${anno.color} + ';'"></b>
+					<b th:if="${#strings.length(anno.title) > 20}" th:text="${anno.yyyyMMdd + ' ' + #strings.abbreviate(anno.title,20)}" th:style="'color:'+${anno.color} + ';'"></b>
+				</a>
+			</div>
+		</div>
+	</div>
+	
 </body>
 
 <!-- js 引入 -->
@@ -75,6 +99,19 @@
 	});
 	
 	$('#share').share({sites: ['wechat','qzone', 'qq', 'weibo', 'facebook', 'twitter', 'google']});
+	
+	function submitRegister() {
+		
+		var id = $("#documentId").html();
+		var name = $("#documentName").html();
+		
+		layer.open({
+			type: 2,
+			title: '失效连接投诉',
+			area: ['600px', '400px'],
+			content: '/info/submitRegister.html?id='+id+'&name='+name
+		});
+	}
 	
 /*]]>*/
 </script>

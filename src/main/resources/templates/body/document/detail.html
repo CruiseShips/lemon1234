@@ -18,13 +18,28 @@
 				<p th:if="${document.status eq 1}" th:text="'百度云盘连接过期'"></p>
 				<p th:text="${'百度云盘连接：   ' + document.baiduUrl}"></p>
 				<p th:text="${'密码：   ' + document.password}"></p>
+				<p>
+					<button type="button" class="btn btn-info btn-xs" style="color: black;" onclick="submitRegister();">失效连接提交</button>
+				</p>
 			</div>
-			
-			<hr>
 		</div>
 		
-		<div style="width: 100%; min-height:600px; margin: 20px auto; padding: 5px; word-wrap:break-word;" id="content">
+		<span th:text=${document.id} id="documentId" style="display: none;"></span>
+		<span th:text=${document.name} id="documentName" style="display: none;"></span>
+		
+		<div style="width: 100%; min-height:600px; margin: 10px auto; padding: 5px; word-wrap:break-word;" id="content">
 			<p class="text-capitalize" th:utext="${document.content}"></p>
+		</div>
+		
+		<div style="width: 100%; min-height:100px; margin: 20px auto; padding: 5px; word-wrap:break-word; border: 1px solid;">
+			失效连接管理
+			<div th:each="register:${registerList}">
+				<small th:text="${'创建日期：' + #dates.format(register.createDt, 'yyyy-MM-dd HH:mm:ss')}"></small>
+				<small th:if="${register.status eq 0}" th:text="${'状态：未处理'}"></small>
+				<small th:if="${register.status eq 1}" th:text="${'状态：已处理'}"></small>
+				<small th:if="${register.status eq 1}" th:text="${#dates.format(register.processDt, 'yyyy-MM-dd HH:mm:ss')}"></small>
+				<small th:text="${'提交人：' + register.nickName}"></small>
+			</div>
 		</div>
 	</div>
 </div>

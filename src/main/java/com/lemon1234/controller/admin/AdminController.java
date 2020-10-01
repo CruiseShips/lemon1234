@@ -22,9 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lemon1234.entity.Admin;
+import com.lemon1234.entity.Register;
 import com.lemon1234.service.AdminService;
 import com.lemon1234.service.DocumentService;
 import com.lemon1234.service.MemberService;
+import com.lemon1234.service.RegisterService;
 import com.lemon1234.service.WxUserInfoService;
 import com.lemon1234.util.CryptographyUtil;
 import com.lemon1234.util.JavaMailUtil;
@@ -42,6 +44,8 @@ public class AdminController {
 	private WxUserInfoService wxUserInfoService;
 	@Autowired
 	private DocumentService documentService;
+	@Autowired
+	private RegisterService registerService;
 	
 	@Value("${ckeditorImgFile}")
 	private String ckeditorImgFile;
@@ -194,10 +198,14 @@ public class AdminController {
 		Integer memberCount = memberService.getCount(null);
 		Integer wxUserCount = wxUserInfoService.getCount(null);
 		Integer docCount = documentService.getCount(null);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("status", Register.NOTDO);
+		Integer registerCount = registerService.getCount(param);
 		
 		result.put("m", memberCount);
 		result.put("w", wxUserCount);
 		result.put("d", docCount);
+		result.put("r", registerCount);
 		
 		result.put("success", true);
 		return result;

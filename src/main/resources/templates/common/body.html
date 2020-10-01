@@ -14,26 +14,7 @@
 	</div>
 	
 	<!-- body主体 -->
-	<div class="container anno">
-		<div class="row">
-			<div class="col-md-4 gg">
-				<span>告示栏</span>
-				<div class="row" th:each="anno:${announcementList}" th:style="'color:'+${anno.color} + ';'">
-					<div class="col-md-12">
-						<a th:href="'/anno/' + ${anno.id}" target="_blank">
-							<b th:if="${#strings.length(anno.title) <= 20}" th:text="${anno.yyyyMMdd} + ' ' + ${anno.title}"></b>
-							<b th:if="${#strings.length(anno.title) > 20}" th:text="${anno.yyyyMMdd + ' ' + #strings.abbreviate(anno.title,20)}"></b>
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-8">
-				本网站属于个人开发，因为站长主要做后端，求一个小姐姐帮忙弄弄前端，价钱好商量，有的话直接联系我的邮箱
-				<p>邮箱： 18500399506@163.com</p>
-			</div>
-		</div>
-	</div>
-	
+		
 	<!-- 最新博客 -->
 	<!-- <div class="container" style="border: 1px solid; margin: 10px auto;">
 		最新博客

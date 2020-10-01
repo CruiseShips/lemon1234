@@ -58,22 +58,16 @@ body a:active {
 /* foot */
 .foot {
 	width: 100%;
-	height: 250px;
-	background-color: #FF6A6A;
+	height: 230px;
+    margin-top: 20px;
+    color: #99979c;
+    text-align: center;
+    background-color: #FF6A6A;
+    color: black;
 }
 
 /* body */
 /* 公告  */
-.anno {
-	height: 150px;
-}
-.gg {
-	height: 150px; 
-	border-right: 1px solid;
-}
-.gg span {
-	font-size: 20px;
-}
 
 /* open 开源组件 */
 .open {

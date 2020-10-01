@@ -45,6 +45,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/layui/**", "anon");
+        filterChainDefinitionMap.put("/info/**", "anon");
         filterChainDefinitionMap.put("/mouse/**", "anon");
         filterChainDefinitionMap.put("/login/**", "anon");
         filterChainDefinitionMap.put("/ckeditor/**", "anon");
@@ -64,6 +65,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/route", "anon");
         filterChainDefinitionMap.put("/document/**", "anon");
         filterChainDefinitionMap.put("/activity/**", "anon");
+        filterChainDefinitionMap.put("/register/**", "anon");
         
         // 跳转后端登录页面
         filterChainDefinitionMap.put("/login", "anon");

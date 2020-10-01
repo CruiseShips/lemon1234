@@ -29,6 +29,9 @@
 				<div class="grid-demo grid-demo-bg1" style="padding: 5px;">
 					小程序总人数：<span class="layui-badge layui-bg-green" id="wxuser">222</span>
 				</div>
+				<div class="grid-demo grid-demo-bg1" style="padding: 5px;">
+					失效连接总数：<span class="layui-badge layui-bg-green" id="registernum">222</span>
+				</div>
 			</div>
     	</div>
     	<div class="layui-row">
@@ -158,6 +161,7 @@
 				$("#member").html(result.m);
 				$("#wxuser").html(result.w);
 				$("#docu").html(result.d);
+				$("#registernum").html(result.r);
 			}
 		}, "json");
 	});

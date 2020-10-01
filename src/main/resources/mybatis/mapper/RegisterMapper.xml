@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.RegisterMapper">
+
+    <resultMap type="Register" id="RegisterResult">
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="RegisterResult">
+    	SELECT * FROM t_register
+    	WHERE 1=1
+    	<if test="type != null and docId != null">
+    		AND type = #{type} AND docId = #{docId}
+    	</if>
+    	<if test="page != null and limit != null">
+			limit #{page}, #{limit}
+		</if>
+    </select>
+    
+    <insert id="addRegister" parameterType="Register">
+    	INSERT INTO t_register(id, phoneNum, qqNum, nickName, createDt, processDt, status, type, docId)
+    	VALUES(null, #{phoneNum}, #{qqNum}, #{nickName}, NOW(), null, #{status}, #{type}, #{docId})
+    </insert>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT * FROM t_register
+    	WHERE 1=1
+    	<if test="type != null and docId != null">
+    		AND type = #{type} AND docId = #{docId}
+    	</if>
+    </select>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_register
+    	WHERE id = #{id}
+    </delete>
+    
+    <update id="update" parameterType="Register">
+    	UPDATE t_register
+    	<set>
+    		<if test="status != null">
+    			status = #{status},
+    		</if>
+    		<if test="status != null and status == 1">
+    			processDt = NOW(),
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+</mapper>

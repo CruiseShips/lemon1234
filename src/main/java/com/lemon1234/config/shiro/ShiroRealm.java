@@ -97,6 +97,10 @@ public class ShiroRealm extends AuthorizingRealm {
 			info.addStringPermission("删除活动");
 			info.addStringPermission("上传活动图片");
 			
+			info.addStringPermission("查看所有失效连接");
+			info.addStringPermission("删除失效连接");
+			info.addStringPermission("修改失效连接状态");
+			
 			info.addStringPermission("上传图片");
 			info.addStringPermission("查看所有小程序用户");
 			info.addStringPermission("查看所有小程序qa");

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lemon1234.entity.Document;
+import com.lemon1234.entity.Register;
 import com.lemon1234.service.DocumentService;
+import com.lemon1234.service.RegisterService;
 import com.lemon1234.util.PageUtil;
 import com.lemon1234.util.StringUtil;
 
@@ -22,6 +24,8 @@ public class DocumentController {
 
 	@Autowired
 	private DocumentService documentService;
+	@Autowired
+	private RegisterService registerService;
 	
 	private static final int PAGESIZE = 10;
 	
@@ -66,12 +70,20 @@ public class DocumentController {
 		ModelAndView mav = new ModelAndView();
 		Document document = documentService.getById(id);
 		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("type", Register.DOCUMENT);
+		param.put("docId", id);
+		param.put("page", 0);
+		param.put("limit", 5);
+		List<Register> registerList = registerService.getlist(param);
+		
 		if(document == null) {
 			mav.addObject("url", "common/404");
 			mav.addObject("port", "#error404");
 			mav.addObject("title", "404 - Lemon1234");
 		} else {
 			mav.addObject("document", document);
+			mav.addObject("registerList", registerList);
 			mav.addObject("url", "body/document/detail");
 			mav.addObject("port", "#document");
 			mav.addObject("title", document.getName() + " - Lemon1234");

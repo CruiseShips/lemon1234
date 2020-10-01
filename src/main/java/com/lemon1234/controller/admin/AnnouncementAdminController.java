@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lemon1234.entity.Announcement;
 import com.lemon1234.service.AnnouncementService;
+import com.lemon1234.start.Lemon1234ServerStart;
 
 @Controller
 @RequestMapping("/admin/anno")
@@ -20,6 +21,8 @@ public class AnnouncementAdminController {
 
 	@Autowired
 	private AnnouncementService announcementService;
+	@Autowired
+	private Lemon1234ServerStart start;
 	
 	@RequiresPermissions(value = {"查看所有公告"})
 	@ResponseBody
@@ -47,6 +50,7 @@ public class AnnouncementAdminController {
 		announcementService.delete(id);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
+		start.initData();
 		return result;
 	}
 	
@@ -57,6 +61,7 @@ public class AnnouncementAdminController {
 		announcementService.addAnnouncement(announcement);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
+		start.initData();
 		return result;
 	}
 	
@@ -78,6 +83,7 @@ public class AnnouncementAdminController {
 		announcementService.update(announcement);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
+		start.initData();
 		return result;
 	}
 	

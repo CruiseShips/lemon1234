@@ -103,7 +103,6 @@
             return false;
 		}
 		
-		console.log(realName, qqNum, wxNum, from, parentId);
 		$.post("/admin/member/addMember",{realName:realName,qqNum:qqNum,wxNum:wxNum,from:from,parentId:parentId},function(result){
             if(result.success){
                 layer.alert('添加成功！',function () {

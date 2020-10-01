@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>失效连接管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>失效连接管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+    <div>
+        <table width="100%" id="registerTable" lay-filter="registerTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#registerTable'
+            ,url:'/admin/register/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', width:60, title: '编号' ,align:'center'}
+                ,{field:'phoneNum', width:150, title: '电话号码', align:'center'}
+                ,{field:'qqNum', width:150, title: 'QQ号', align:'center'}
+                ,{field:'nickName', width:100, title: '昵称', align:'center'}
+                ,{field:'createDt', width:200, title: '提交日期', align:'center', templet:'<div>{{ layui.util.toDateString(d.createDt, "yyyy-MM-dd HH:mm:ss") }}</div>'}
+                ,{field:'processDt', width:200, title: '处理日期', align:'center', templet:'<div>{{ layui.util.toDateString(d.processDt, "yyyy-MM-dd HH:mm:ss") }}</div>'}
+                ,{field:'status', width:130, title: '处理状态' ,align:'center', templet:formatswitch}
+                ,{field:'type', width:130, title: '文档失效类型' ,align:'center', templet:formatType}
+                ,{field:'docId', width:130, title: '失效连接id' ,align:'center'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+        });
+        
+        form.on('switch(switch)', function(data){
+        	var id = this.value;
+        	var status = data.elem.checked;
+        	if(status) {
+        		status = 1;
+        	} else {
+        		status = 0;
+        	}
+        	
+        	$.post("/admin/register/changeStatus", {id:id, status:status}, function(result){
+        		
+        	}, "json");
+        });
+	})
+	
+	function formatswitch(d) {
+		if(d.status == 0) {
+			return "<input type='checkbox' value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='已处理|未处理'>";
+		} else {
+			return "<input type='checkbox' checked value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='已处理|未处理'>";
+		}
+	}
+	
+	function formatType(d) {
+		var type = d.type;
+		if(type == 0) {
+			return "Document";
+		}
+	}
+	
+	function formatAction(d) {
+		var button = "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+		
+		return button;
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/register/delete",{"id":id},function (result) {
+                if(result.success){
+                    layer.msg("删除成功！");
+                    table.reload("registerTable",{});
+                }else{
+                    layer.msg("删除失败，请联系管理员！");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>
