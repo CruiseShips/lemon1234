@@ -67,6 +67,8 @@ public class OpenController {
 		}
 		if(StringUtil.isNotEmpty(status)) {
 			param.put("status", status);
+		} else {
+			param.put("status", 0);
 		}
 		
 		List<OpenOS> openOSList = openOSService.getlist(param);

@@ -3,24 +3,26 @@ lemon1234 官网
 
 仅供学习，切勿商用
 
-当前版本v2.1 ->
-	1. 新增加过期连接处理的问题，失效连接登记
+当前版本 v2.1.1 -> OpenOS 无法添加
+
+v2.1 \<br>
+	1. 新增加过期连接处理的问题，失效连接登记\<br>
 	2. 修改主页最下方样式，之前平铺，现在改成部分内容悬浮
 
-v2.0 -> 将apahce开源 模块修改成 open开源模块 
+v2.0 将apahce开源 模块修改成 open开源模块
 
 v1.0 该版本已经被替换，因为数据库设计的有问题，废弃
 
 
 # DockerFile 部署文件
 
-基础镜像使用
+基础镜像使用\<br>
 FROM java:8
 
-作者
+作者\<br>
 MAINTAINER lemon1234<18500399506@163.com>
 
-定义lable
+定义lable\<br>
 LABEL version="v1.0" \
 	  user_info="lemon1234 SpringBoot Jar" \
 	  build_date="2020-09-23"
@@ -33,10 +35,8 @@ ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
 
 # 数据库
--- ----------------------------
--- Table structure for t_activity
--- ----------------------------
-DROP TABLE IF EXISTS `t_activity`;
+## Table structure for t_activity
+DROP TABLE IF EXISTS `t_activity`;\<br>
 CREATE TABLE `t_activity`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -47,10 +47,8 @@ CREATE TABLE `t_activity`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_admin
--- ----------------------------
-DROP TABLE IF EXISTS `t_admin`;
+## Table structure for t_admin
+DROP TABLE IF EXISTS `t_admin`;\<br>
 CREATE TABLE `t_admin`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -62,10 +60,8 @@ CREATE TABLE `t_admin`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_announcement
--- ----------------------------
-DROP TABLE IF EXISTS `t_announcement`;
+## Table structure for t_announcement
+DROP TABLE IF EXISTS `t_announcement`;\<br>
 CREATE TABLE `t_announcement`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -75,10 +71,8 @@ CREATE TABLE `t_announcement`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_document
--- ----------------------------
-DROP TABLE IF EXISTS `t_document`;
+## Table structure for t_document
+DROP TABLE IF EXISTS `t_document`;\<br>
 CREATE TABLE `t_document`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -93,10 +87,8 @@ CREATE TABLE `t_document`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_grit
--- ----------------------------
-DROP TABLE IF EXISTS `t_grit`;
+## Table structure for t_grit
+DROP TABLE IF EXISTS `t_grit`;\<br>
 CREATE TABLE `t_grit`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -106,10 +98,8 @@ CREATE TABLE `t_grit`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_language
--- ----------------------------
-DROP TABLE IF EXISTS `t_language`;
+## Table structure for t_language
+DROP TABLE IF EXISTS `t_language`;\<br>
 CREATE TABLE `t_language`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -118,10 +108,8 @@ CREATE TABLE `t_language`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_link
--- ----------------------------
-DROP TABLE IF EXISTS `t_link`;
+## Table structure for t_link
+DROP TABLE IF EXISTS `t_link`;\<br>
 CREATE TABLE `t_link`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -130,10 +118,8 @@ CREATE TABLE `t_link`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_member
--- ----------------------------
-DROP TABLE IF EXISTS `t_member`;
+## Table structure for t_member
+DROP TABLE IF EXISTS `t_member`; \<br>
 CREATE TABLE `t_member`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `parentId` int(0) NOT NULL,
@@ -145,10 +131,8 @@ CREATE TABLE `t_member`  (
   PRIMARY KEY (`id`, `parentId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_menu
--- ----------------------------
-DROP TABLE IF EXISTS `t_menu`;
+## Table structure for t_menu
+DROP TABLE IF EXISTS `t_menu`;\<br>
 CREATE TABLE `t_menu`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -158,10 +142,8 @@ CREATE TABLE `t_menu`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_openos
--- ----------------------------
-DROP TABLE IF EXISTS `t_openos`;
+## Table structure for t_openos
+DROP TABLE IF EXISTS `t_openos`;\<br>
 CREATE TABLE `t_openos`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -180,10 +162,8 @@ CREATE TABLE `t_openos`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_openostype
--- ----------------------------
-DROP TABLE IF EXISTS `t_openostype`;
+## Table structure for t_openostype
+DROP TABLE IF EXISTS `t_openostype`;\<br>
 CREATE TABLE `t_openostype`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -191,10 +171,8 @@ CREATE TABLE `t_openostype`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_register
--- ----------------------------
-DROP TABLE IF EXISTS `t_register`;
+## Table structure for t_register
+DROP TABLE IF EXISTS `t_register`;\<br>
 CREATE TABLE `t_register`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `phoneNum` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -208,10 +186,8 @@ CREATE TABLE `t_register`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_shout
--- ----------------------------
-DROP TABLE IF EXISTS `t_shout`;
+## Table structure for t_shout
+DROP TABLE IF EXISTS `t_shout`;\<br>
 CREATE TABLE `t_shout`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `openId` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -221,10 +197,8 @@ CREATE TABLE `t_shout`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for t_wxuserinfo
--- ----------------------------
-DROP TABLE IF EXISTS `t_wxuserinfo`;
+## Table structure for t_wxuserinfo
+DROP TABLE IF EXISTS `t_wxuserinfo`;\<br>
 CREATE TABLE `t_wxuserinfo`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `nickName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,

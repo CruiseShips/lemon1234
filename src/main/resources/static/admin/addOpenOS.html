@@ -173,7 +173,7 @@
             return false;
         }
         
-        $.post("/admin/apacheOS/addOpenOS",{name:name,summary:summary,url:url,status:status,content:content,"language.id":languageId,"openOSType.id":openOSTypeId,studyUrl:studyUrl,demoUrl:demoUrl},function(result){
+        $.post("/admin/openOS/addOpenOS",{name:name,summary:summary,url:url,status:status,content:content,"language.id":languageId,"openOSType.id":openOSTypeId,studyUrl:studyUrl,demoUrl:demoUrl},function(result){
             if(result.success){
                 layer.alert('添加成功！',function () {
                     window.parent.openPage('openManage.html');
