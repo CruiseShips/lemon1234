@@ -12,7 +12,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.31.185:3306/db_lemon1234?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&autoReconnect=true
     username: root
-    password: chen130824+.
+    password: 123456
   thymeleaf:
     cache: false
   aop:    proxy-target-class: true

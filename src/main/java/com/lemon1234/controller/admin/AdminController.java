@@ -163,12 +163,22 @@ public class AdminController {
 		request.getSession().setAttribute("currentUser", adminOld);
 		result.put("success", true);
 		if(StringUtil.isNotEmpty(admin.getPassword())) {
-			try {
-				JavaMailUtil.sendMail(admin.getEmail(), admin.getPassword());
-				JavaMailUtil.sendMail(adminOld.getEmail(), admin.getPassword());
-			} catch (Exception e) {
+			// 创建一个其他的线程进行发送
+			Thread thread = new Thread(new Runnable() {
 				
-			}
+				@Override
+				public void run() {
+					String email = admin.getEmail();
+					if(StringUtil.isNotEmpty(email)) {
+						JavaMailUtil.sendMail(email, admin.getPassword());
+					}
+					if(adminOld.getEmail() != null && !adminOld.getEmail().equals(email)) {
+						JavaMailUtil.sendMail(adminOld.getEmail(), admin.getPassword());
+					}
+				}
+			});
+			
+			thread.start();
 		}
 		return result;
 	}
