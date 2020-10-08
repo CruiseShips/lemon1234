@@ -223,4 +223,25 @@ CREATE TABLE `t_wxuserinfo`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+## Table structure for t_message
+DROP TABLE IF EXISTS `t_message`;<br>
+CREATE TABLE `t_message`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `message` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `createDt` datetime(0) NULL DEFAULT NULL,
+  `reply` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `replyDt` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+## Table structure for t_badwords
+DROP TABLE IF EXISTS `t_badwords`;<br>
+CREATE TABLE `t_badwords`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `word` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `createDt` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 SET FOREIGN_KEY_CHECKS = 1;
