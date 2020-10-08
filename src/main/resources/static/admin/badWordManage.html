@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>badWords 管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>badWords 管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div style="padding: 20px">
+        <div class="layui-form">
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addBadWords()">添加新敏感词汇</button>
+            </div>
+        </div>
+    </div>
+	<div>
+        <table width="100%" id="badWordsTable" lay-filter="badWordsTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#badWordsTable'
+            ,url:'/admin/badword/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center'}
+                ,{field:'word', title: '敏感词' ,align:'center', edit: 'text'}
+                ,{field:'createDt', title: '创建日期',align:'center', templet:formatCreateDt}
+                ,{title: '操作' ,align:'center', templet:formatAction}
+            ]]
+            ,page: true
+            ,limit: 20
+        });
+        
+     	// 监听单元格 需要给table设置 lay-filter 属性
+        table.on('edit(badWordsTable)', function(obj){
+        	var id = obj.data.id;
+        	var value = obj.value;
+        	
+			$.post("/admin/badword/update", {id:id,word:value}, function(result){
+        		
+        	}, "json");
+        });
+	})
+	
+	function formatCreateDt(d) {
+		if(d.createDt == null) {
+			return '';
+		} else {
+			return layui.util.toDateString(d.createDt, "yyyy-MM-dd HH:mm:ss");
+		}
+	}
+	
+	function formatAction(d) {
+		return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	function addBadWords() {
+		layer.open({
+			type: 2,
+			title: '添加敏感词汇',
+			area: ['600px', '270px'],
+			content: '/admin/addBadWords.html'
+		});
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？', {
+		    title:"系统提示"
+			  ,btn: ['确定','取消'] //按钮
+			}, function(){
+				layer.closeAll('dialog');
+				$.post("/admin/badword/delete",{"id":id},function(result){
+					if(result.success){
+						layer.msg("删除成功！");
+						table.reload("badWordsTable",{});
+					}else{
+						layer.msg("删除失败，请联系管理员！");
+					}
+				},"json");
+			}, function(){
+			  
+			});
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

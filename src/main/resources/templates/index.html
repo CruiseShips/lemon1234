@@ -83,7 +83,7 @@
     
 	layui.use(['carousel', 'element', 'form'], function(){
 		var layer = layui.layer;
-		
+		var element = layui.element;
 		$ = layui.jquery; // 使用jquery
 		
 		var carousel = layui.carousel,form = layui.form;
@@ -111,6 +111,30 @@
 			area: ['600px', '400px'],
 			content: '/info/submitRegister.html?id='+id+'&name='+name
 		});
+	}
+	
+	function submitMessage() {
+		
+		var liuyan = $("#liuyan").val().trim();
+		
+		if(liuyan == "") {
+			layer.msg("请输入留言内容");
+            return false;
+		}
+		if(liuyan.length > 500) {
+			layer.msg("留言内容太长");
+            return false;
+		}
+		
+		$.post("/message/addMessage",{message:liuyan},function(result){
+            if(result.success){
+                layer.alert('留言成功！',function () {
+                	parent.location.reload();
+                });
+            }else{
+                layer.msg(result.errorInfo);
+            }
+        },"json");
 	}
 	
 /*]]>*/

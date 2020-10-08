@@ -19,6 +19,7 @@ import com.lemon1234.entity.Link;
 import com.lemon1234.entity.Menu;
 import com.lemon1234.service.OpenOSTypeService;
 import com.lemon1234.service.AnnouncementService;
+import com.lemon1234.service.BadWordsService;
 import com.lemon1234.service.LinkService;
 import com.lemon1234.service.MenuService;
 
@@ -37,6 +38,8 @@ public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshe
 	private OpenOSTypeService openOSTypeService;
 	@Autowired
 	private AnnouncementService announcementService;
+	@Autowired
+	private BadWordsService badWordsService;
 	
 	public void initData() {
 		List<Menu> menuList = menuService.getlist(null);
@@ -54,6 +57,14 @@ public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshe
 		servletContext.setAttribute("menuList", menuList);
 		servletContext.setAttribute("linkList", linkList);
 		servletContext.setAttribute("openOSTypes", openOSTypes);
+		
+		this.initBadWord();
+	}
+	
+	public void initBadWord() {
+		List<String> wordList = badWordsService.getwords();
+		
+		servletContext.setAttribute("wordList", wordList);
 	}
 
 	@Override

@@ -108,6 +108,17 @@ public class ShiroRealm extends AuthorizingRealm {
 			info.addStringPermission("修改Grit名称"); // name
 			info.addStringPermission("删除Grit");
 			info.addStringPermission("添加Grit");
+			
+			info.addStringPermission("查看所有留言");
+			info.addStringPermission("删除留言");
+			info.addStringPermission("获取留言");
+			info.addStringPermission("修改留言");
+			
+			info.addStringPermission("查看所有敏感词汇");
+			info.addStringPermission("删除敏感词汇");
+			info.addStringPermission("修改敏感词汇");
+			info.addStringPermission("获取敏感词汇");
+			info.addStringPermission("添加敏感词汇");
 		} else {
 			return null;
 		}

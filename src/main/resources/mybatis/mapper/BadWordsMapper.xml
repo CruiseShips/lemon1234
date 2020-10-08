@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.BadWordsMapper">
+
+    <resultMap type="BadWords" id="BadWordsResult">
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="BadWordsResult">
+        SELECT *
+		FROM t_badwords
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_badwords
+    </select>
+    
+    <select id="getwords" resultType="String">
+    	SELECT word FROM t_badwords
+    </select>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_badwords WHERE id = #{id}
+    </delete>
+
+	<select id="getdetail" parameterType="Integer" resultType="BadWords">
+    	SELECT word FROM t_badwords WHERE id = #{id}
+    </select>
+    
+    <update id="update" parameterType="BadWords">
+    	UPDATE t_badwords
+    	<set>
+    		<if test="word != null">
+    			word = #{word},
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+	
+	<insert id="addWords" parameterType="BadWords">
+		INSERT INTO t_badwords(id, word, createDt)
+		VALUES(null, #{word}, NOW())
+	</insert>
+	
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.MessageMapper">
+
+    <resultMap type="Message" id="MessageResult">
+    </resultMap>
+
+    <select id="getlist" parameterType="Map" resultMap="MessageResult">
+        SELECT *
+		FROM t_message ORDER BY createDt DESC
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+    </select>
+    
+    <select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_message
+    </select>
+    
+    <insert id="addMessage" parameterType="Message">
+    	INSERT INTO t_message(id, ip, message, createDt, reply, replyDt)
+    	VALUES(null, #{ip}, #{message}, NOW(), null, null)
+    </insert>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_message
+    	WHERE id = #{id}
+    </delete>
+    
+    <select id="getdetail" parameterType="Integer" resultType="Message">
+    	SELECT * FROM t_message WHERE id = #{id}
+    </select>
+    
+    <update id="update" parameterType="Menu">
+    	UPDATE t_message
+    	<set>
+    		<if test="reply != null">
+    			reply = #{reply}, replyDt = NOW(),
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+    
+</mapper>
