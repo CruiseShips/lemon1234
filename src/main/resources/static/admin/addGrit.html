@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>添加  沙粒</title>
+	<title>添加  答案</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/layui/css/layui.css" />
 	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
@@ -11,15 +11,15 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>添加沙粒</cite></a>
+		<a><cite>添加答案</cite></a>
 	</span>
 </div>
 <div style="padding: 20px">
     <form class="layui-form" action=""  method="post">
         <div class="layui-form-item">
-            <label class="layui-form-label">沙粒文本：</label>
+            <label class="layui-form-label">答案：</label>
             <div class="layui-input-block">
-                <input type="text" id="name" name="name" placeholder="请输入沙粒文本"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="name" name="name" placeholder="请输入答案"  autocomplete="off" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -45,7 +45,7 @@
 		var name = $("#name").val().trim();
 		
 		if(name == "") {
-			layer.alert("请输入菜单名称");
+			layer.alert("请输入答案");
             return false;
 		}
 		

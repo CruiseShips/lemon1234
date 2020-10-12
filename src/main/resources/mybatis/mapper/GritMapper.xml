@@ -13,6 +13,11 @@
 	
 	<select id="list" parameterType="Map" resultMap="GritResult">
 		SELECT * FROM t_grit
+		WHERE 1=1
+    	<if test="text != null">
+    		AND text = #{text}
+    	</if>
+		ORDER BY createDt DESC
 		<if test="page != null and limit != null">
 			limit #{page},#{limit}
 		</if>
@@ -20,6 +25,10 @@
 	
 	<select id="getCount" parameterType="Map" resultType="Integer">
     	SELECT COUNT(1) FROM t_grit
+    	WHERE 1=1
+    	<if test="text != null">
+    		AND text = #{text}
+    	</if>
     </select>
     
     <select id="getGrits" parameterType="String" resultMap="GritResult">

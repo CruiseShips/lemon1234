@@ -110,14 +110,23 @@ public class WxController {
 		if(StringUtil.isEmpty(text) || StringUtil.isEmpty(openId)) {
 			result.put("success", false);
 		} else {
-			Grit grit = new Grit();
-			grit.setCreateDt(new Date());
-			grit.setOpenId(openId);
-			grit.setText(text);
-			grit.setStatus(Grit.NO);
-			
-			gritService.addGrit(grit);
-			result.put("success", true);
+			// 先去查看是否有重复的
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("text", text);
+			Integer count = gritService.getCount(param);
+			if(count > 0) {
+				result.put("success", false);
+			} else {
+				// 没有直接添加，有的话返回错误信息
+				Grit grit = new Grit();
+				grit.setCreateDt(new Date());
+				grit.setOpenId(openId);
+				grit.setText(text);
+				grit.setStatus(Grit.NO);
+				
+				gritService.addGrit(grit);
+				result.put("success", true);
+			}
 		}
 		return result;
 	}

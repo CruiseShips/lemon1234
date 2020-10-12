@@ -107,12 +107,21 @@ public class WxAdminController {
 	@RequestMapping("/changeName")
 	public Map<String, Object> changeName(@RequestParam(value = "id", required = false)Integer id, @RequestParam(value = "text", required = false)String text) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Grit grit = new Grit();
-		grit.setId(id);
-		grit.setText(text);
-		gritService.update(grit);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("text", text.trim());
+		Integer count = gritService.getCount(param);
+		if(count > 0) {
+			result.put("success", false);
+			result.put("errorInfo", "修改失败，请更改后再提交");
+		} else {
+			Grit grit = new Grit();
+			grit.setId(id);
+			grit.setText(text);
+			gritService.update(grit);
+			
+			result.put("success", true);
+		}
 		
-		result.put("success", true);
 		return result;
 	}
 	
@@ -131,13 +140,23 @@ public class WxAdminController {
 	@RequestMapping("/addGrit")
 	public Map<String, Object> addGrit(@RequestParam(value = "text", required = false)String text) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Grit grit = new Grit();
-		grit.setText(text);
-		grit.setOpenId("admin");
-		grit.setStatus(Grit.PASS);
 		
-		gritService.addGrit(grit);
-		result.put("success", true);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("text", text.trim());
+		Integer count = gritService.getCount(param);
+		if(count > 0) {
+			result.put("success", false);
+			result.put("errorInfo", "添加失败，请更改后再提交");
+		} else {
+			// 没有直接添加，有的话返回错误信息
+			Grit grit = new Grit();
+			grit.setText(text);
+			grit.setOpenId("admin");
+			grit.setStatus(Grit.PASS);
+			
+			gritService.addGrit(grit);
+			result.put("success", true);
+		}
 		return result;
 	}
 	

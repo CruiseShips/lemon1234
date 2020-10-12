@@ -24,7 +24,7 @@
 	<div style="padding: 20px">
         <div class="layui-form">
             <div class="layui-inline">
-                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addGrit()">添加新沙粒</button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addGrit()">添加新答案</button>
             </div>
         </div>
     </div>
@@ -81,7 +81,9 @@
         	var value = obj.value;
         	
 			$.post("/admin/wx/changeName", {id:id,text:value}, function(result){
-        		
+        		if(!result.success) {
+        			layer.msg(result.errorInfo);
+        		}
         	}, "json");
         });
 	})
@@ -109,7 +111,7 @@
                     layer.msg("删除成功！");
                     table.reload("aTable",{});
                 }else{
-                    layer.msg("删除失败，存在已经关联的ApacheOS，无法删除");
+                    layer.msg("删除失败，请刷新后重新删除");
                 }
             },"json");
         },function () {
@@ -120,8 +122,8 @@
 	function addGrit() {
 		layer.open({
             type: 2,
-            title: '添加沙粒',
-            area: ['400px', '300px'],
+            title: '添加答案',
+            area: ['500px', '300px'],
             content: '/admin/addGrit.html'
         });
 	}
