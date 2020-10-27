@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Java面试题 管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>Java面试题 管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div style="padding: 20px">
+        <div class="layui-form">
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="addIvq()">添加新面试题</button>
+            </div>
+        </div>
+    </div>
+	<div>
+        <table width="100%" id="ivqTable" lay-filter="ivqTable"></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#ivqTable'
+            ,url:'/admin/ivq/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center'}
+                ,{field:'name', title: '面试题名称' ,align:'center', edit: 'text'}
+                ,{field:'hard', title: '困难程度' ,align:'center', edit: 'text'}
+                ,{field:'qCount', title: '问题数量',align:'center'}
+                ,{field:'star', title: '点赞量',align:'center'}
+                ,{field:'share', title: '分享量',align:'center'}
+                ,{field:'view', title: '查看量',align:'center'}
+                ,{field:'createDt', title: '创建日期',align:'center', templet:'<div>{{ layui.util.toDateString(d.createDt, "yyyy-MM-dd HH:mm:ss") }}</div>'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+        });
+        
+     	// 监听单元格 需要给table设置 lay-filter 属性
+        table.on('edit(ivqTable)', function(obj){
+        	var id = obj.data.id;
+        	var value = obj.value;
+        	var field = obj.field;
+        	
+        	if(field == "name") {
+        		$.post("/admin/ivq/update", {id:id,name:value}, function(result){
+            		if(!result.success) {
+            			layer.msg(result.errorInfo);
+            		}
+            	}, "json");
+        	} else {
+        		$.post("/admin/ivq/update", {id:id,hard:value}, function(result){
+            		if(!result.success) {
+            			layer.msg(result.errorInfo);
+            		}
+            	}, "json");
+        	}
+        	
+        });
+	})
+	
+	function formatAction(d) {
+		return  "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='searchOne("+d.id+")'><i class='layui-icon layui-icon-edit'></i>查看面试题</button>"
+				+
+				"<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	function searchOne(id) {
+		window.parent.openPage('questionManae.html?id=' + id);
+	}
+	
+	function addIvq() {
+		layer.open({
+			type: 2,
+			title: '添加面试题',
+			area: ['600px', '450px'],
+			content: '/admin/addIvq.html'
+		});
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？（并会把管理该记录的所有记录全部删除）', {
+		    title:"系统提示"
+			  ,btn: ['确定','取消'] //按钮
+			}, function(){
+				layer.closeAll('dialog');
+				$.post("/admin/ivq/delete",{"id":id},function(result){
+					if(result.success){
+						layer.msg("删除成功！");
+						table.reload("ivqTable",{});
+					}else{
+						layer.msg("删除失败，请联系管理员！");
+					}
+				},"json");
+			}, function(){
+			  
+			});
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

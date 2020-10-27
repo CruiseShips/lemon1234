@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Doubt 管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>Doubt 管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	<div>
+        <table width="100%" id="doubtTable" ></table>
+    </div>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript"  th:inline="none">
+/*<![CDATA[*/
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        table.render({
+            elem: '#doubtTable'
+            ,url:'/admin/doubt/list'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '编号' ,align:'center', width:60}
+                ,{field:'doubt', title: '疑问' ,align:'center'}
+                ,{field:'status', title: '是否处理' ,align:'center', templet:formatswitch}
+                ,{field:'createDt', title: '创建日期' ,align:'center', templet:'<div>{{ layui.util.toDateString(d.createDt, "yyyy-MM-dd HH:mm:ss") }}</div>'}
+                ,{title: '操作' ,align:'center' ,templet:formatAction}
+            ]]
+            ,page: true
+            ,limit: 20
+        });
+        
+        form.on('switch(switch)', function(data){
+        	var id = this.value;
+        	var status = data.elem.checked;
+        	if(status) {
+        		status = 1;
+        	} else {
+        		status = 0;
+        	}
+        	
+        	$.post("/admin/doubt/update", {id:id,status:status}, function(result){
+        	}, "json");
+        });
+	})
+	
+	function formatswitch(d) {
+		if(d.status == 0) {
+			return "<input type='checkbox' value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='处理|未处理'>";
+		} else {
+			return "<input type='checkbox' checked value= '" + d.id + "' name='open' lay-skin='switch' lay-filter='switch' lay-text='处理|未处理'>";
+		}
+	}
+	
+	function formatAction(d) {
+		if(d.status == 0) {
+			return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyOne("+d.qId+","+d.id+")'><i class='layui-icon layui-icon-edit'></i>修改</button>"
+	 		+
+	 	   "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+		} else {
+			return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+		}
+		
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            $.post("/admin/doubt/delete",{"id":id},function (result) {
+                if(result.success){
+                    layer.msg("删除成功！");
+                    table.reload("doubtTable",{});
+                }else{
+                    layer.msg("删除失败");
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+	function modifyOne(id,doubtId) {
+		layer.open({
+            type: 2,
+            title: '修改面试题',
+            area: ['1300px', '800px'],
+            content: '/admin/updateQuestion.html?id='+id+'&doubtId='+doubtId
+        });
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

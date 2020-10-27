@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.DoubtMapper">
+	
+	<resultMap id="DoubtResult" type="Doubt">
+	</resultMap>
+	
+	<insert id="addDoubt" parameterType="Doubt">
+		INSERT INTO t_doubt(id, qId, doubt, status, createDt, processDt)
+		VALUES(null, #{qId}, #{doubt}, 0, NOW(), null)
+	</insert>
+	
+	<delete id="deletebyviewId" parameterType="Integer">
+		DELETE FROM t_doubt
+		WHERE qId IN (SELECT id FROM t_question WHERE viewId = #{viewId})
+	</delete>
+	
+	<delete id="deletebyqId" parameterType="Integer">
+		DELETE FROM t_doubt
+		WHERE qId = #{qId}
+	</delete>
+	
+	<select id="list" parameterType="Map" resultMap="DoubtResult">
+		SELECT * FROM t_doubt
+		ORDER BY status,processDt DESC
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+		SELECT COUNT(1) FROM t_doubt
+	</select>
+	
+	<update id="update" parameterType="Doubt">
+		UPDATE t_doubt
+		<set>
+			<if test="doubt != null">
+				doubt = #{doubt},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="processDt != null">
+				processDt = NOW(),
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_doubt
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

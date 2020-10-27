@@ -14,7 +14,7 @@ public class PageUtil {
 	public static String genPagination(String targetUrl,int totalNum,int currentPage,int pageSize,String param){
         long totalPage=totalNum%pageSize==0?totalNum/pageSize:totalNum/pageSize+1;
         if(totalPage==0){
-            return "未查询到结果，请您换个关键字试下！";
+            return "未查询到结果";
         }else{
             StringBuffer pageCode=new StringBuffer();
             pageCode.append("<div class='layui-box layui-laypage layui-laypage-default' id='layui-laypage-1' >");

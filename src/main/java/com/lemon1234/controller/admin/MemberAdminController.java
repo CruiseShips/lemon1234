@@ -91,6 +91,9 @@ public class MemberAdminController {
 	@ResponseBody
 	@RequestMapping("/addMember")
 	public Map<String, Object> addMember(Member member) throws Exception {
+		if(member.getParentId() == -1) {
+			member.setParentId(0);
+		}
 		memberService.addMember(member);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);

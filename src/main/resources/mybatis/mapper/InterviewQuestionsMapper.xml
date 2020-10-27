@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.InterviewQuestionsMapper">
+	
+	<resultMap id="InterviewQuestionsResult" type="InterviewQuestions">
+	</resultMap>
+	
+	<select id="getlist" parameterType="Map" resultMap="InterviewQuestionsResult">
+		SELECT * FROM t_interviewquestions
+		ORDER BY createDt DESC
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="Map" resultType="Integer">
+    	SELECT COUNT(1) FROM t_interviewquestions
+    </select>
+    
+    <select id="getdetail" parameterType="Integer" resultType="InterviewQuestions">
+    	SELECT * FROM t_interviewquestions WHERE id = #{id}
+    </select>
+    
+    <update id="update" parameterType="InterviewQuestions">
+    	UPDATE t_interviewquestions
+    	<set>
+    		<if test="name != null">
+    			name = #{name},
+    		</if>
+    		<if test="hard != null">
+    			hard = #{hard},
+    		</if>
+    		<if test="qCount != null">
+    			qCount = qCount + #{qCount},
+    		</if>
+    		<if test="star != null and star != 0">
+    			star = star + 1,
+    		</if>
+    		<if test="share != null and share != 0">
+    			share = share + 1,
+    		</if>
+    		<if test="view != null and view != 0">
+    			view = view + 1,
+    		</if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="Integer">
+    	DELETE FROM t_interviewquestions
+    	WHERE id = #{id}
+    </delete>
+    
+    <insert id="addIvq" parameterType="InterviewQuestions">
+    	INSERT INTO t_interviewquestions(id, name, hard, qCount, star, share, view, createDt)
+    	VALUES(null, #{name}, #{hard}, 0, 0, 0, 0, NOW())
+    </insert>
+	
+</mapper>

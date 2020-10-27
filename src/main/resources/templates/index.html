@@ -69,12 +69,34 @@
 		</div>
 	</div>
 	
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<form class="form-horizontal" style="padding: 20px;">
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-2 control-label">错误描述(300字)</label>
+						<div class="col-sm-10">
+							<textarea class="form-control" rows="3" id="doubt"></textarea>
+						</div>
+					</div>
+					<input type="hidden" id="thisId" value="">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-default" onclick="submitDoubt();return false;">提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 </body>
 
 <!-- js 引入 -->
 <script src="/js/jquery-1.11.2.min.js"></script>
 <script src="/layui/lay/modules/layer.js"></script>
 <script src="/layui/layui.js"></script>
+<script src="/bootstrap3.3.7/js/bootstrap.min.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/jquery.share.min.js"></script>
 
@@ -135,6 +157,79 @@
                 layer.msg(result.errorInfo);
             }
         },"json");
+	}
+	
+	function getanswer(id) {
+		var answer = $('#' + id + 'answer').attr('class');
+		var explanation = $('#' + id + 'explanation').attr('class');
+		if(answer == 'hidden' || explanation == 'hidden'){
+			$('#' + id + 'answer').attr('class','show');
+			$('#' + id + 'explanation').attr('class','show');
+			$('#' + id + 'feedback').attr('class','btn btn-default btn-xs show');
+			feedback
+			$('#' + id + 'button').html('关闭答案');
+		} else {
+			$('#' + id + 'answer').attr('class','hidden');
+			$('#' + id + 'explanation').attr('class','hidden');
+			$('#' + id + 'feedback').attr('class','btn btn-default btn-xs hidden');
+			$('#' + id + 'button').html('查看答案');
+		}
+	}
+	
+	function feedback(id) {
+		$('#modal').modal({
+			keyboard: true
+		})
+		$('#thisId').val(id);
+		$('#doubt').val('');
+	}
+	
+	function submitDoubt() {
+		var doubt = $("#doubt").val().trim();
+		var id = $("#thisId").val().trim();
+		
+        if(doubt == "") {
+        	layer.alert("请输入您的反馈");
+            return false;
+        }
+        if(doubt.length >= 300) {
+        	layer.alert("输入超过300个文字");
+            return false;
+        }
+        if(id == "") {
+        	layer.alert("浏览器发生错误，请您复制好您的反馈从新打开提交");
+            return false;
+        }
+        
+        $.post("/ivq/addDoubt", {qId:id, doubt:doubt}, function(result){
+        	if(result.success) {
+        		layer.alert('感谢您的反馈。');
+        		setTimeout(function(){
+        			$('#modal').modal('hide');
+        			$('#thisId').val('');
+        		},1000);
+        	}
+        }, "json");
+	}
+	
+	function shareIvq(id) {
+		var share = $('#share').attr('class');
+		if(share == 'share hidden share-component social-share') {
+			$('#share').attr('class','share show share-component social-share');
+			$.post("/ivq/updAmount", {id:id, share:1}, function(result){
+				
+			}, "json");
+		} else {
+			$('#share').attr('class','share hidden share-component social-share');
+		}
+	}
+	
+	function star(id) {
+		$.post("/ivq/updAmount", {id:id, star:1}, function(result){
+			if(result.success) {
+				$("#star").hide();
+			}
+		}, "json");
 	}
 	
 /*]]>*/

@@ -119,6 +119,22 @@ public class ShiroRealm extends AuthorizingRealm {
 			info.addStringPermission("修改敏感词汇");
 			info.addStringPermission("获取敏感词汇");
 			info.addStringPermission("添加敏感词汇");
+			
+			info.addStringPermission("查看所有Java面试题");
+			info.addStringPermission("删除Java面试题");
+			info.addStringPermission("修改Java面试题");
+			info.addStringPermission("添加Java面试题");
+			
+			info.addStringPermission("查看所有面试问题");
+			info.addStringPermission("更改面试问题");
+			info.addStringPermission("删除面试问题");
+			info.addStringPermission("获取面试题目数量");
+			info.addStringPermission("添加面试问题");
+			info.addStringPermission("查看面试问题");
+			
+			info.addStringPermission("查看所有有问题的面试题");
+			info.addStringPermission("修改有问题的面试题状态");
+			info.addStringPermission("删除有问题的面试题状态");
 		} else {
 			return null;
 		}

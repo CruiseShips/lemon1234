@@ -67,6 +67,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/activity/**", "anon");
         filterChainDefinitionMap.put("/register/**", "anon");
         filterChainDefinitionMap.put("/message/**", "anon");
+        filterChainDefinitionMap.put("/ivq/**", "anon");
         
         // 跳转后端登录页面
         filterChainDefinitionMap.put("/login", "anon");

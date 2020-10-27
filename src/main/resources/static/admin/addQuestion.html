@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>添加 Question</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/layui/css/modules/layer/default/layer.css" />
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>修改 Question</cite></a>
+	</span>
+</div>
+
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">问题：</label>
+            <div class="layui-input-block">
+                <textarea type="text" class="ckeditor" id="question" name="question" class="layui-input" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+			<label class="layui-form-label">选择题？</label>
+			<div class="layui-input-block">
+				<input type="radio" name="isChoose" value="是" title="是">
+				<input type="radio" name="isChoose" value="否" title="否" checked>
+			</div>
+		</div>
+        <div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">选项：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入选项" class="layui-textarea" name="option" id="option"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">回答：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入回答" class="layui-textarea" name="answer" id="answer"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">解释：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入解释" class="layui-textarea" name="explanation" id="explanation"></textarea>
+			</div>
+		</div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+        var element = layui.element;
+	});
+	
+	// 获取上个页面传过来的ID
+	function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+	
+	function submitData(){
+		var question = CKEDITOR.instances.question.getData();
+        var isChoose = $('input:radio[name="isChoose"]:checked').val()
+        var option = $("#option").val().trim();
+        var answer = $("#answer").val().trim();
+        var explanation = $("#explanation").val().trim();
+        
+        var viewId = getQueryVariable("id");
+        
+        if(question == "") {
+        	layer.alert("请输入问题名称");
+            return false;
+        }
+        if(isChoose == '是') {
+        	if(option == "") {
+        		layer.alert("请输入选项");
+                return false;
+        	}
+        }
+        if(answer == "") {
+        	layer.alert("请输入问题答案");
+            return false;
+        }
+        if(explanation == "") {
+        	layer.alert("请输入问题解释");
+            return false;
+        }
+        if(viewId == "") {
+        	layer.alert("服务器出错，请关闭后重试");
+            return false;
+        }
+        
+        if(isChoose == "是") {
+        	$.post("/admin/question/addQuestion",{viewId:viewId,question:question,isChoose:1,option:option,answer,explanation:explanation},function(result){
+                if(result.success){
+                    layer.alert('添加成功！',function () {
+                    	parent.location.reload();
+                    });
+                }else{
+                    layer.alert(result.errorInfo);
+                }
+            },"json");
+        } else {
+        	$.post("/admin/question/addQuestion",{viewId:viewId,question:question,isChoose:3,answer:answer,explanation:explanation},function(result){
+                if(result.success){
+                    layer.alert('添加成功！',function () {
+                    	parent.location.reload();
+                    });
+                }else{
+                    layer.alert(result.errorInfo);
+                }
+            },"json");
+        }
+	}
+	
+/*]]>*/
+</script>
+</body>
+</html>

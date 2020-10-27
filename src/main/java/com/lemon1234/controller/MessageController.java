@@ -47,12 +47,6 @@ public class MessageController {
 		Integer count = messageService.getCount(param);
 		
 		ModelAndView mav = new ModelAndView();
-		if(messageList == null) {
-			mav.addObject("url", "common/404");
-			mav.addObject("port", "#error404");
-			mav.addObject("title", "404 - Lemon1234");
-			return mav;
-		}
 		mav.addObject("messageList", messageList);
 		mav.addObject("pageCode", PageUtil.genPagination("/message/getlist", count, Integer.parseInt(page), 10, ""));
 		

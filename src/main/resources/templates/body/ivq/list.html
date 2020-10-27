@@ -1,0 +1,32 @@
+<meta charset="utf-8"/>
+<div id="ivq">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a><cite>Java面试题</cite></a>
+		</span>
+		
+		<div class="layui-form-item" style="width: 100%; min-height:500px; margin: 20px auto; padding: 5px;">
+			<div th:each="ivq:${ivqList}">
+				<blockquote>
+					<p>
+						<a th:href="${'/ivq/' + ivq.id}">
+							<strong th:text="${ivq.name}"></strong>
+						</a>
+					</p>
+					<footer>
+						<span class="label label-primary text-right" th:text="${'问题个数:' + ivq.qCount}"></span>
+						<span class="label label-success text-right" th:text="${'点赞:'+ ivq.star}"></span>
+						<span class="label label-info text-right" th:text="${'分享量:'+ ivq.share}"></span>
+						<span class="label label-warning text-right" th:text="${'查看量:'+ ivq.view}"></span>
+						<span class="label label-danger text-right" th:text="${'困难度:'+ ivq.hard}"></span>
+					</footer>
+				</blockquote>
+			</div>
+		</div>
+		
+		<div class="layui-form-item" style="width: 100%; height:60px; margin: 20px auto; padding: 5px;">
+			<div th:utext="${pageCode}" style="text-align: center;"></div>
+		</div>
+	</div>
+</div>

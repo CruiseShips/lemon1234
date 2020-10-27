@@ -1,0 +1,58 @@
+<meta charset="utf-8"/>
+<div id="ivq">
+	<div style="width: 1170px; margin: 20px auto;">
+		<span class="layui-breadcrumb">
+			<a href="/">首页</a>
+			<a href="/ivq/getlist/1">Java面试题</a>
+			<a><cite th:text="${ivqInterviewQuestions.name}"></cite></a>
+		</span>
+		
+		<div style="width: 100%; min-height:100px; margin: 20px auto; padding: 5px;">
+			<h1 th:text="${ivqInterviewQuestions.name}" style="text-align: center;">
+			</h1>
+			<p class="text-center">
+				<span class="label label-primary" th:text="${'问题个数:' + ivqInterviewQuestions.qCount}"></span>
+				<span class="label label-success" th:text="${'点赞:'+ ivqInterviewQuestions.star}"></span>
+				<span class="label label-info" th:text="${'分享量:'+ ivqInterviewQuestions.share}"></span>
+				<span class="label label-warning" th:text="${'查看量:'+ ivqInterviewQuestions.view}"></span>
+				<span class="label label-danger" th:text="${'困难度:'+ ivqInterviewQuestions.hard}"></span>
+				<strong th:text="${'创建日期:' + #dates.format(ivqInterviewQuestions.createDt,'yyyy-MM-dd HH:mm:ss')}"></strong>
+			</p>
+		</div>
+		
+		<div style="width: 100%; min-height:567px; margin: 20px auto; padding: 5px;">
+			<div th:each="q:${questionList}">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="alert alert-success">
+							<p class="text-uppercase" th:utext="${'Q:' + q.question}"></p>
+							<p th:if="${q.isChoose == 1 || q.isChoose == 2}" th:text="${'选项：' + q.option}"></p>
+						</div>
+						<p>
+							<button th:id="${q.id + 'button'}" type="button" class="btn btn-default btn-xs" th:onclick = "'getanswer(' + ${q.id} + ')'">查看答案</button>
+						</p>
+						
+						<p class="hidden" th:id="${q.id + 'answer'}" th:text="${'答案：' + q.answer}"></p>
+						<p class="hidden" th:id="${q.id + 'explanation'}" th:text="${'解释：' + q.explanation}"></p>
+						<button type="button" class="btn btn-default btn-xs hidden" th:id="${q.id + 'feedback'}" th:onclick = "'feedback(' + ${q.id} + ')'">问题或回答有误？</button>
+						
+						<span th:text="${#dates.format(q.createDt, 'yyyy-MM-dd hh:mm:ss')}"></span>
+						<abbr th:title="${q.founder}" class="initialism">问题提供者</abbr>
+					</div>
+				</div>
+			</div>
+			<div th:if="${questionList.size() eq 0}">
+				<div class="page-header">
+					<h1>暂无题库</h1>
+				</div>
+			</div>
+		</div>
+		
+		<div style="width: 100%; min-height: 20px; margin: 20px auto; padding: 5px;" th:if="${questionList.size() gt 0}">
+			<button style="margin-left: 5px; display: inline-block;" class="btn btn-info" type="button" th:onclick="'shareIvq(' + ${ivqInterviewQuestions.id} + ');'">分享</button>
+			<button id="star" style="margin-left: 5px; display: inline-block;" class="btn btn-info" type="button" th:onclick="'star(' + ${ivqInterviewQuestions.id} + ');'">点赞</button>
+			<div id="share" class="share hidden" style="display: inline-block;"></div>
+			
+		</div>
+	</div>
+</div>

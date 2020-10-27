@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lemon1234.mapper.QuestionMapper">
+	
+	<resultMap id="QuestionResult" type="Question">
+	</resultMap>
+	
+	<select id="getlistbyivqId" parameterType="Map" resultMap="QuestionResult">
+		SELECT * FROM t_question 
+		WHERE 1=1
+		<if test="viewId != null">
+			AND viewId = #{viewId}
+		</if>
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		ORDER BY createDt DESC
+	</select>
+	
+	<select id="getlistbyViewId" parameterType="Integer" resultMap="QuestionResult">
+		SELECT * FROM t_question
+		WHERE viewId = #{viewId}
+	</select>
+	
+	<select id="getCountbyViewId" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(1) FROM t_question
+		WHERE viewId = #{viewId}
+	</select>
+	
+	<update id="update" parameterType="Question">
+		UPDATE t_question
+		<set>
+			<if test="question != null">
+				question = #{question},
+			</if>
+			<if test="isChoose != null">
+				isChoose = #{isChoose},
+			</if>
+			<if test="option != null">
+				`option` = #{option},
+			</if>
+			<if test="answer != null">
+				answer = #{answer},
+			</if>
+			<if test="explanation != null">
+				explanation = #{explanation},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM t_question
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deletebyviewId" parameterType="Integer">
+		DELETE FROM t_question
+		WHERE viewId = #{viewId}
+	</delete>
+	
+	<insert id="addQuestion" parameterType="Question">
+		INSERT INTO t_question(id, viewId, question, isChoose, `option`, answer, explanation, founder, status, createDt)
+		VALUES(null, #{viewId}, #{question}, #{isChoose}, #{option}, #{answer}, #{explanation}, #{founder}, #{status}, NOW())
+	</insert>
+	
+	<select id="getdetail" parameterType="Integer" resultType="Question">
+		SELECT * FROM t_question WHERE id = #{id}
+	</select>
+	
+</mapper>
