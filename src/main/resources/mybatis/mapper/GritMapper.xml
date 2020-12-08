@@ -32,7 +32,7 @@
     </select>
     
     <select id="getGrits" parameterType="String" resultMap="GritResult">
-    	SELECT * FROM t_grit WHERE openId = #{openId}
+    	SELECT * FROM t_grit WHERE openId = #{openId} ORDER BY createDt LIMIT 20
     </select>
     
     <update id="update" parameterType="Grit">

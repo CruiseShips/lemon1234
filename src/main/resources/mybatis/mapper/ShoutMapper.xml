@@ -13,7 +13,7 @@
 	</insert>
 	
 	<select id="getShout" parameterType="String" resultMap="ShoutResult">
-		SELECT * FROM t_shout WHERE openId = #{openId}
+		SELECT * FROM t_shout WHERE openId = #{openId} ORDER BY createDt DESC
 		LIMIT 10
 	</select>
 	

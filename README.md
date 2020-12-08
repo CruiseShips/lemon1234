@@ -2,8 +2,8 @@
 lemon1234 官网（官网地址：[lemon1234.com](https://www.lemon1234.com "悬停显示")  ）
 
 仅供学习，切勿商用
-
-	当前版本 v2.3.0
+	
+	v2.3.0
 	1. HttpRequestUtil类中的获取ip地址为服务器nginx中容器的地址
 	2. AOP切面同样修改了获取ip地址的方式
 	2. 添加Java面试题功能模块（新增加三个实体类）
@@ -312,6 +312,15 @@ CREATE TABLE `t_question`  (
   `founder` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `status` int(0) NULL DEFAULT NULL,
   `createDt` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+## Table structure for t_wxopenid
+DROP TABLE IF EXISTS `t_wxopenid`;
+CREATE TABLE `t_wxopenid`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `openId` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `batNo` bigint(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

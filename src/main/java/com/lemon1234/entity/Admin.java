@@ -21,7 +21,7 @@ public class Admin {
 	
 	// 权限
 	private int roleLevel;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -76,12 +76,6 @@ public class Admin {
 
 	public void setRoleLevel(int roleLevel) {
 		this.roleLevel = roleLevel;
-	}
-
-	@Override
-	public String toString() {
-		return "Admin [id=" + id + ", name=" + name + ", userName=" + userName + ", password=" + password + ", email="
-				+ email + ", imageName=" + imageName + ", roleLevel=" + roleLevel + "]";
 	}
 	
 }
