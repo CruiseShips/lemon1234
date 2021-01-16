@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +19,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.lemon1234.entity.Grit;
 import com.lemon1234.entity.Shout;
 import com.lemon1234.entity.WxUserInfo;
+import com.lemon1234.service.BadWordsService;
 import com.lemon1234.service.GritService;
 import com.lemon1234.service.ShoutService;
 import com.lemon1234.service.WxUserInfoService;
 import com.lemon1234.util.HttpRequestUtil;
+import com.lemon1234.util.SensitiveWordsUtil;
 import com.lemon1234.util.StringUtil;
 
 @Controller
@@ -32,6 +37,8 @@ public class WxController {
 	private ShoutService shoutService;
 	@Autowired
 	private GritService gritService;
+	@Autowired
+	private BadWordsService badWordsService;
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -79,8 +86,22 @@ public class WxController {
 	
 	@ResponseBody
 	@RequestMapping("/addShout")
-	public Map<String, Object> addShout(Shout shout) throws Exception {
+	public Map<String, Object> addShout(HttpServletRequest request, Shout shout) throws Exception {
+		String text = shout.getText();
 		Map<String, Object> result = new HashMap<String, Object>();
+		// 检测是不是有不良词汇
+		ServletContext servletContext = request.getServletContext();
+		@SuppressWarnings("unchecked")
+		List<String> words = (List<String>) servletContext.getAttribute("wordList");
+		if(words == null) {
+			words = badWordsService.getwords();
+		}
+		boolean isFalse = SensitiveWordsUtil.badWordFind(words, text);
+		if(isFalse) {
+			result.put("errorInfo", "留言内容有不文明词汇");
+			result.put("success", false);
+			return result;
+		}
 		Grit grit = gritService.getRand();
 		shout.setGrit(grit.getText());
 		shoutService.addShout(shout);
@@ -104,6 +125,7 @@ public class WxController {
 	@ResponseBody
 	@RequestMapping("/addGrit")
 	public Map<String, Object> addGrit(
+				HttpServletRequest request,
 				@RequestParam(value = "text", required = false)String text, 
 				@RequestParam(value = "openId", required = false)String openId) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -116,16 +138,30 @@ public class WxController {
 			Integer count = gritService.getCount(param);
 			if(count > 0) {
 				result.put("success", false);
+				result.put("errorInfo", "存在类似提示，请更换~");
 			} else {
-				// 没有直接添加，有的话返回错误信息
-				Grit grit = new Grit();
-				grit.setCreateDt(new Date());
-				grit.setOpenId(openId);
-				grit.setText(text);
-				grit.setStatus(Grit.NO);
-				
-				gritService.addGrit(grit);
-				result.put("success", true);
+				// 检测是不是有不良词汇
+				ServletContext servletContext = request.getServletContext();
+				@SuppressWarnings("unchecked")
+				List<String> words = (List<String>) servletContext.getAttribute("wordList");
+				if(words == null) {
+					words = badWordsService.getwords();
+				}
+				boolean isFalse = SensitiveWordsUtil.badWordFind(words, text);
+				if(isFalse) {
+					result.put("errorInfo", "留言内容有不文明词汇");
+					result.put("success", false);
+				} else {
+					// 没有直接添加，有的话返回错误信息
+					Grit grit = new Grit();
+					grit.setCreateDt(new Date());
+					grit.setOpenId(openId);
+					grit.setText(text);
+					grit.setStatus(Grit.NO);
+					
+					gritService.addGrit(grit);
+					result.put("success", true);
+				}
 			}
 		}
 		return result;

@@ -3,8 +3,11 @@ package com.lemon1234.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.lemon1234.interceptor.RequestInterceptor;
 
 @Component("webMvcComponent")
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -38,4 +41,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/activityImg/**").addResourceLocations(activityImgFile);
 	}
 
+	@Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RequestInterceptor())
+                .addPathPatterns("/**");
+    }
 }

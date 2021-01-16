@@ -119,6 +119,24 @@
 
 	</dependencies>
 
+
+	<!-- 开源协议 -->
+	<licenses>
+		<license>
+			<name>Apache 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<!-- 指定作者，可以任意转发使用，但是保留版权 -->
+	<developers>
+		<developer>
+			<id>lemon1234</id>
+			<name>Zhihua Chen</name>
+			<email>18500399506@163.com</email>
+		</developer>
+	</developers>
+	
 	<build>
 		<plugins>
 			<plugin>
