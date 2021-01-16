@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.lemon1234</groupId>
 	<artifactId>lemon1234</artifactId>
-	<version>2.3.0-GA</version>
+	<version>2.4.0-GA</version>
 	<name>lemon1234</name>
 	<description>Lemon1234</description>
 
