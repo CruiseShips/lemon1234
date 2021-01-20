@@ -7,21 +7,24 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.lemon1234.entity.OpenOSType;
+import com.lemon1234.controller.wx.WxController;
 import com.lemon1234.entity.Announcement;
 import com.lemon1234.entity.Link;
 import com.lemon1234.entity.Menu;
-import com.lemon1234.service.OpenOSTypeService;
+import com.lemon1234.entity.OpenOSType;
 import com.lemon1234.service.AnnouncementService;
-import com.lemon1234.service.BadWordsService;
 import com.lemon1234.service.LinkService;
 import com.lemon1234.service.MenuService;
+import com.lemon1234.service.OpenOSTypeService;
 
 @Component("lemon1234ServerStart")
 public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshedEvent>{
@@ -29,6 +32,8 @@ public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshe
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	private ServletContext servletContext = null;
+	
+	private Logger logger = LoggerFactory.getLogger(Lemon1234ServerStart.class);
 	
 	@Autowired
 	private MenuService menuService;
@@ -39,7 +44,7 @@ public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshe
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
-	private BadWordsService badWordsService;
+	private WxController wxController;
 	
 	public void initData() {
 		List<Menu> menuList = menuService.getlist(null);
@@ -57,15 +62,44 @@ public class Lemon1234ServerStart implements ApplicationListener<ContextRefreshe
 		servletContext.setAttribute("menuList", menuList);
 		servletContext.setAttribute("linkList", linkList);
 		servletContext.setAttribute("openOSTypes", openOSTypes);
-		
-		this.initBadWord();
 	}
 	
-	public void initBadWord() {
-		List<String> wordList = badWordsService.getwords();
-		
-		servletContext.setAttribute("wordList", wordList);
-	}
+	// 2小时 - 3分钟
+	@Scheduled(fixedRate = 7020000)
+    public void testTasks() {
+		String token = null;
+		if(servletContext != null) {
+			try {
+				token = wxController.getAccessToken();
+				servletContext.setAttribute("token", token);
+				logger.info("微信 AccessToken 更新 ： " + token);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(token == null) {
+					int i = 0;
+					while(true) {
+						try {
+							Thread.sleep(3000);
+							token = wxController.getAccessToken();
+							if(token != null) {
+								servletContext.setAttribute("token", token);
+								logger.info("微信 AccessToken 更新 ： " + token);
+								break;
+							} else {
+								i++;
+							}
+							if(i == 3) {
+								break;
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+    }
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {

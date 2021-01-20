@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lemon1234.entity.Message;
-import com.lemon1234.service.BadWordsService;
 import com.lemon1234.service.MessageService;
 import com.lemon1234.util.HttpRequestUtil;
 import com.lemon1234.util.PageUtil;
-import com.lemon1234.util.SensitiveWordsUtil;
 import com.lemon1234.util.StringUtil;
+import com.lemon1234.util.WxUtil;
 
 @Controller
 @RequestMapping("/message")
@@ -28,9 +27,6 @@ public class MessageController {
 
 	@Autowired
 	private MessageService messageService;
-	
-	@Autowired
-	private BadWordsService badWordsService;
 	
 	private static final int PAGESIZE = 10;
 	
@@ -67,15 +63,11 @@ public class MessageController {
 			result.put("success", false);
 			return result;
 		}
-		
-		// 检测是不是有不良词汇
 		ServletContext servletContext = request.getServletContext();
-		@SuppressWarnings("unchecked")
-		List<String> words = (List<String>) servletContext.getAttribute("wordList");
-		if(words == null) {
-			words = badWordsService.getwords();
-		}
-		boolean isFalse = SensitiveWordsUtil.badWordFind(words, message);
+		String token = (String) servletContext.getAttribute("token");
+		// 检测是不是有不良词汇
+		boolean isFalse = WxUtil.checkText(message, token);
+		
 		if(isFalse) {
 			result.put("errorInfo", "留言内容有不文明词汇");
 			result.put("success", false);

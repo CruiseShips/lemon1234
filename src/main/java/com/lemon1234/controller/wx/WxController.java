@@ -19,13 +19,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.lemon1234.entity.Grit;
 import com.lemon1234.entity.Shout;
 import com.lemon1234.entity.WxUserInfo;
-import com.lemon1234.service.BadWordsService;
 import com.lemon1234.service.GritService;
 import com.lemon1234.service.ShoutService;
 import com.lemon1234.service.WxUserInfoService;
 import com.lemon1234.util.HttpRequestUtil;
-import com.lemon1234.util.SensitiveWordsUtil;
 import com.lemon1234.util.StringUtil;
+import com.lemon1234.util.WxUtil;
 
 @Controller
 @RequestMapping("/wx")
@@ -37,10 +36,27 @@ public class WxController {
 	private ShoutService shoutService;
 	@Autowired
 	private GritService gritService;
-	@Autowired
-	private BadWordsService badWordsService;
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	/**
+	 * 获取微信 AccessToken
+	 * 
+	 * https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getAccessToken() throws Exception {
+		
+		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx66855f8530eadefb&secret=cdfc92ca0c8fe1fb9f6920e305a040eb";
+		JSONObject jsonObject = HttpRequestUtil.httpRequestGet(url);
+		
+		if(jsonObject != null && jsonObject.get("access_token") != null) {
+			return (String) jsonObject.get("access_token");
+		}
+		return null;
+	}
 	
 	/**
 	 * https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
@@ -58,7 +74,7 @@ public class WxController {
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=wx66855f8530eadefb&secret=cdfc92ca0c8fe1fb9f6920e305a040eb" 
 					+ "&js_code=" + code + "&grant_type=authorization_code";
 		JSONObject jsonObject = HttpRequestUtil.httpRequestGet(url);
-		System.out.println(jsonObject);
+		
 		if(jsonObject == null) {
 			result.put("success", false);
 			return result;
@@ -89,14 +105,12 @@ public class WxController {
 	public Map<String, Object> addShout(HttpServletRequest request, Shout shout) throws Exception {
 		String text = shout.getText();
 		Map<String, Object> result = new HashMap<String, Object>();
-		// 检测是不是有不良词汇
+		
 		ServletContext servletContext = request.getServletContext();
-		@SuppressWarnings("unchecked")
-		List<String> words = (List<String>) servletContext.getAttribute("wordList");
-		if(words == null) {
-			words = badWordsService.getwords();
-		}
-		boolean isFalse = SensitiveWordsUtil.badWordFind(words, text);
+		String token = (String) servletContext.getAttribute("token");
+		// 检测是不是有不良词汇
+		boolean isFalse = WxUtil.checkText(text, token);
+		
 		if(isFalse) {
 			result.put("errorInfo", "留言内容有不文明词汇");
 			result.put("success", false);
@@ -142,12 +156,9 @@ public class WxController {
 			} else {
 				// 检测是不是有不良词汇
 				ServletContext servletContext = request.getServletContext();
-				@SuppressWarnings("unchecked")
-				List<String> words = (List<String>) servletContext.getAttribute("wordList");
-				if(words == null) {
-					words = badWordsService.getwords();
-				}
-				boolean isFalse = SensitiveWordsUtil.badWordFind(words, text);
+				String token = (String) servletContext.getAttribute("token");
+				// 检测是不是有不良词汇
+				boolean isFalse = WxUtil.checkText(text, token);
 				if(isFalse) {
 					result.put("errorInfo", "留言内容有不文明词汇");
 					result.put("success", false);

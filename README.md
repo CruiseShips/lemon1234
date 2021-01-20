@@ -3,6 +3,12 @@ lemon1234 官网（官网地址：[lemon1234.com](https://www.lemon1234.com "悬
 
 仅供学习，切勿商用
 
+	v2.4.1
+	1. 删除敏感词汇系统
+	2. 增加微信内容安全检测：security.msgSecCheck
+	3. 添加AccessToken，定时器更新AccessToken，2小时-3分钟更新一次
+	4. 删除表t_badword
+
 	v2.4.0
 	1. 修改小程序提交文字内容无验证，现在可以进行拦截并且验证文字是否违规
 	2. 添加拦截器，进行拦截手机端请求，并且转发新的h5端

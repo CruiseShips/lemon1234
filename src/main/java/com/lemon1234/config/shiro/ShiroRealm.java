@@ -114,12 +114,6 @@ public class ShiroRealm extends AuthorizingRealm {
 			info.addStringPermission("获取留言");
 			info.addStringPermission("修改留言");
 			
-			info.addStringPermission("查看所有敏感词汇");
-			info.addStringPermission("删除敏感词汇");
-			info.addStringPermission("修改敏感词汇");
-			info.addStringPermission("获取敏感词汇");
-			info.addStringPermission("添加敏感词汇");
-			
 			info.addStringPermission("查看所有Java面试题");
 			info.addStringPermission("删除Java面试题");
 			info.addStringPermission("修改Java面试题");
